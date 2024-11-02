@@ -52,8 +52,19 @@ internal class RegisterInterfaceAttributeMeta : RegisterAttributeMetaBase, IEqua
         writeLine($"// RegisterClassesWhereNameEndsWith(ServiceLifetime.{ServiceLifetime}, typeof({interfaceName}))");
         foreach (INamedTypeSymbol type in ClassesToRegister)
         {
+            INamedTypeSymbol implementedInterface =
+                type
+                .Interfaces
+                .First(x =>
+                    ClassIdentityComparer.Instance.Equals(
+                        x.ConstructedFrom,
+                        Interface.ConstructedFrom
+                    )
+                );
+
+            string implementedInterfaceName = implementedInterface.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
             string className = type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-            writeLine($"services.Add{ServiceLifetime}(typeof({interfaceName}), typeof({className}));");
+            writeLine($"services.Add{ServiceLifetime}(typeof({implementedInterfaceName}), typeof({className}));");
         }
     }
 
@@ -62,5 +73,10 @@ internal class RegisterInterfaceAttributeMeta : RegisterAttributeMetaBase, IEqua
     public override bool Matches(INamedTypeSymbol typeSymbol) =>
         typeSymbol
         .Interfaces
-        .Any(x => ClassIdentityComparer.Instance.Equals(Interface, x));
+        .Any(x => 
+            ClassIdentityComparer.Instance.Equals(
+                Interface.ConstructedFrom,
+                x.ConstructedFrom
+            )
+         );
 }
