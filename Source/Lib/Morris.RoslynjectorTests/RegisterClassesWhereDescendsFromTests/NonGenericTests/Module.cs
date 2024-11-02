@@ -3,23 +3,25 @@ using Morris.Roslynjector;
 
 namespace Morris.RoslynjectorTests.RegisterClassesWhereDescendsFromTests.NonGenericTests;
 
-[RegisterClassesWhereDescendsFrom(ServiceLifetime.Singleton, typeof(NonGenericForSingletonBase))]
-[RegisterClassesWhereDescendsFrom(ServiceLifetime.Scoped, typeof(NonGenericForScopedBase))]
-[RegisterClassesWhereDescendsFrom(ServiceLifetime.Transient, typeof(NonGenericForTransientBase))]
+[RegisterClassesWhereDescendsFrom(ServiceLifetime.Singleton, typeof(SingletonBase))]
+[RegisterClassesWhereDescendsFrom(ServiceLifetime.Scoped, typeof(ScopedBase))]
+[RegisterClassesWhereDescendsFrom(ServiceLifetime.Transient, typeof(TransientBase))]
 public static partial class Module
 {
 
 }
 
-public abstract class NonGenericForSingletonBase { }
-public class SingletonDescendant1OfNonGenericBase : NonGenericForSingletonBase { }
-public class SingletonDescendant2OfNonGenericBase : NonGenericForSingletonBase { }
+public abstract class SingletonBase { }
+public class SingletonDescendant1 : SingletonBase { }
+public class SingletonDescendant2 : SingletonBase { }
+public class SingletonGrandchild : SingletonDescendant1 { }
 
-public abstract class NonGenericForScopedBase { }
-public class ScopedDescendant1OfNonGenericBase : NonGenericForScopedBase { }
-public class ScopedDescendant2OfNonGenericBase : NonGenericForScopedBase { }
+public abstract class ScopedBase { }
+public class ScopedDescendant1 : ScopedBase { }
+public class ScopedDescendant2 : ScopedBase { }
+public class ScopedGrandchild : ScopedDescendant1 { }
 
-public abstract class NonGenericForTransientBase { }
-public class TransientDescendant1OfNonGenericBase : NonGenericForTransientBase { }
-public class TransientDescendant2OfNonGenericBase : NonGenericForTransientBase { }
-
+public abstract class TransientBase { }
+public class TransientDescendant1 : TransientBase { }
+public class TransientDescendant2 : TransientBase { }
+public class TransientGrandchild : TransientDescendant1 { }

@@ -10,18 +10,23 @@ public class RegisterClassesWhereDescendsFromTests
     [TestMethod]
     public void OnlyValidCandidatesAreRegistered()
     {
-        Assert.AreEqual(6, Services.Count);
+        Assert.AreEqual(9, Services.Count);
     }
 
     [TestMethod]
     public void ClassesAreRegisteredWithCorrectScope()
     {
-        Services.AssertIsRegistered(ServiceLifetime.Singleton, typeof(SingletonDescendant1OfNonGenericBase));
-        Services.AssertIsRegistered(ServiceLifetime.Singleton, typeof(SingletonDescendant2OfNonGenericBase));
-        Services.AssertIsRegistered(ServiceLifetime.Scoped, typeof(ScopedDescendant1OfNonGenericBase));
-        Services.AssertIsRegistered(ServiceLifetime.Scoped, typeof(ScopedDescendant2OfNonGenericBase));
-        Services.AssertIsRegistered(ServiceLifetime.Transient, typeof(TransientDescendant1OfNonGenericBase));
-        Services.AssertIsRegistered(ServiceLifetime.Transient, typeof(TransientDescendant2OfNonGenericBase));
+        Services.AssertIsRegistered(ServiceLifetime.Singleton, typeof(SingletonDescendant1));
+        Services.AssertIsRegistered(ServiceLifetime.Singleton, typeof(SingletonDescendant2));
+        Services.AssertIsRegistered(ServiceLifetime.Singleton, typeof(SingletonGrandchild));
+
+        Services.AssertIsRegistered(ServiceLifetime.Scoped, typeof(ScopedDescendant1));
+        Services.AssertIsRegistered(ServiceLifetime.Scoped, typeof(ScopedDescendant2));
+        Services.AssertIsRegistered(ServiceLifetime.Scoped, typeof(ScopedGrandchild));
+
+        Services.AssertIsRegistered(ServiceLifetime.Transient, typeof(TransientDescendant1));
+        Services.AssertIsRegistered(ServiceLifetime.Transient, typeof(TransientDescendant2));
+        Services.AssertIsRegistered(ServiceLifetime.Transient, typeof(TransientGrandchild));
     }
 
     public RegisterClassesWhereDescendsFromTests()
