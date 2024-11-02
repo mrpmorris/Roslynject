@@ -3,25 +3,26 @@ using Morris.Roslynjector;
 
 namespace Morris.RoslynjectorTests.RegisterClassesWhereDescendsFromTests.GenericTests;
 
-[RegisterClassesWhereDescendsFrom(ServiceLifetime.Singleton, typeof(GenericForSingletonBase<>))]
-[RegisterClassesWhereDescendsFrom(ServiceLifetime.Scoped, typeof(GenericForScopedBase<>))]
-[RegisterClassesWhereDescendsFrom(ServiceLifetime.Transient, typeof(GenericForTransientBase<>))]
+[RegisterClassesWhereDescendsFrom(ServiceLifetime.Singleton, typeof(SingletonBase<>))]
+[RegisterClassesWhereDescendsFrom(ServiceLifetime.Scoped, typeof(ScopedBase<>))]
+[RegisterClassesWhereDescendsFrom(ServiceLifetime.Transient, typeof(TransientBase<>))]
 public static partial class Module
 {
 
 }
 
-public abstract class GenericForSingletonBase<T> { }
-public class SingletonDescendant1OfGenericBase : GenericForSingletonBase<int> { }
-public class SingletonDescendant2OfGenericBase : GenericForSingletonBase<string> { }
-public class GenericSingletonDescendantOfGenericBase<T> : GenericForSingletonBase<T> { }
+public abstract class SingletonBase<T> { }
+public class SingletonDescendant1 : SingletonBase<int> { }
+public class SingletonDescendant2 : SingletonBase<string> { }
+public class GenericDescendantOfSingletonBase<T> : SingletonBase<T> { }
 
-public abstract class GenericForScopedBase<T> { }
-public class ScopedDescendant1OfGenericBase : GenericForScopedBase<int> { }
-public class ScopedDescendant2OfGenericBase : GenericForScopedBase<string> { }
-public class GenericScopedDescendantOfGenericBase<T> : GenericForScopedBase<T> { }
+public abstract class ScopedBase<T> { }
+public class ScopedDescendant1 : ScopedBase<int> { }
+public class ScopedDescendant2 : ScopedBase<string> { }
+public class GenericDescendantOfScopedBase<T> : ScopedBase<T> { }
 
-public abstract class GenericForTransientBase<T> { }
-public class TransientDescendant1OfGenericBase : GenericForTransientBase<int> { }
-public class TransientDescendant2OfGenericBase : GenericForTransientBase<string> { }
-public class GenericTransientDescendantOfGenericBase<T> : GenericForTransientBase<T> { }
+public abstract class TransientBase<T> { }
+public class TransientDescendant1 : TransientBase<int> { }
+public class TransientDescendant2 : TransientBase<string> { }
+public class GenericDescendantOfTransientBase<T> : TransientBase<T> { }
+

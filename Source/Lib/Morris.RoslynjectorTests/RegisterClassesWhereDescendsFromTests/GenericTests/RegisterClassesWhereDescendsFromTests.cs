@@ -16,12 +16,12 @@ public class RegisterClassesWhereDescendsFromTests
     [TestMethod]
     public void ClassesAreRegisteredWithCorrectScope()
     {
-        Services.AssertIsRegistered(ServiceLifetime.Singleton, typeof(SingletonDescendant1OfGenericBase));
-        Services.AssertIsRegistered(ServiceLifetime.Singleton, typeof(SingletonDescendant2OfGenericBase));
-        Services.AssertIsRegistered(ServiceLifetime.Scoped, typeof(ScopedDescendant1OfGenericBase));
-        Services.AssertIsRegistered(ServiceLifetime.Scoped, typeof(ScopedDescendant2OfGenericBase));
-        Services.AssertIsRegistered(ServiceLifetime.Transient, typeof(TransientDescendant1OfGenericBase));
-        Services.AssertIsRegistered(ServiceLifetime.Transient, typeof(TransientDescendant2OfGenericBase));
+        Services.AssertIsRegistered(ServiceLifetime.Singleton, typeof(SingletonDescendant1));
+        Services.AssertIsRegistered(ServiceLifetime.Singleton, typeof(SingletonDescendant2));
+        Services.AssertIsRegistered(ServiceLifetime.Scoped, typeof(ScopedDescendant1));
+        Services.AssertIsRegistered(ServiceLifetime.Scoped, typeof(ScopedDescendant2));
+        Services.AssertIsRegistered(ServiceLifetime.Transient, typeof(TransientDescendant1));
+        Services.AssertIsRegistered(ServiceLifetime.Transient, typeof(TransientDescendant2));
     }
 
     public RegisterClassesWhereDescendsFromTests()
