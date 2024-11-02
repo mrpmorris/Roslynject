@@ -3,12 +3,12 @@
 namespace Morris.Roslynjector;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public class RegisterInterfacesAttribute : Attribute
+public class RegisterInterfaceAttribute : Attribute
 {
     public ServiceLifetime ServiceLifetime { get; set; }
     public Type Class { get; set; } = null!;
 
-    public RegisterInterfacesAttribute(
+    public RegisterInterfaceAttribute(
         ServiceLifetime serviceLifetime,
         Type @class)
     {

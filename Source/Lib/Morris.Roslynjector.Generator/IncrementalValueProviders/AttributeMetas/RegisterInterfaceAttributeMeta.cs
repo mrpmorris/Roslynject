@@ -4,12 +4,12 @@ using System.Collections.Immutable;
 
 namespace Morris.Roslynjector.Generator.IncrementalValueProviders.AttributeMetas;
 
-internal class RegisterInterfacesAttributeMeta : RegisterAttributeMetaBase, IEquatable<RegisterInterfacesAttributeMeta>
+internal class RegisterInterfaceAttributeMeta : RegisterAttributeMetaBase, IEquatable<RegisterInterfaceAttributeMeta>
 {
     public readonly INamedTypeSymbol Interface;
     private readonly Lazy<int> CachedHashCode;
 
-    public RegisterInterfacesAttributeMeta(
+    public RegisterInterfaceAttributeMeta(
         ServiceLifetime serviceLifetime,
         INamedTypeSymbol @interface,
         ImmutableArray<INamedTypeSymbol> classesToRegister)
@@ -26,19 +26,19 @@ internal class RegisterInterfacesAttributeMeta : RegisterAttributeMetaBase, IEqu
         );
     }
 
-    public static bool operator ==(RegisterInterfacesAttributeMeta left, RegisterInterfacesAttributeMeta right) => left.Equals(right);
-    public static bool operator !=(RegisterInterfacesAttributeMeta left, RegisterInterfacesAttributeMeta right) => !(left == right);
-    public override bool Equals(object obj) => obj is RegisterInterfacesAttributeMeta other && Equals(other);
+    public static bool operator ==(RegisterInterfaceAttributeMeta left, RegisterInterfaceAttributeMeta right) => left.Equals(right);
+    public static bool operator !=(RegisterInterfaceAttributeMeta left, RegisterInterfaceAttributeMeta right) => !(left == right);
+    public override bool Equals(object obj) => obj is RegisterInterfaceAttributeMeta other && Equals(other);
 
     public override RegisterAttributeMetaBase CloneWithClassesToRegister(
         ImmutableArray<INamedTypeSymbol> classes)
     =>
-        new RegisterInterfacesAttributeMeta(
+        new RegisterInterfaceAttributeMeta(
             serviceLifetime: ServiceLifetime,
             @interface: Interface,
             classesToRegister: classes);
 
-    public bool Equals(RegisterInterfacesAttributeMeta other) =>
+    public bool Equals(RegisterInterfaceAttributeMeta other) =>
         ServiceLifetime == other.ServiceLifetime
         && ClassSignatureComparer.Instance.Equals(Interface, other.Interface)
         && Enumerable.SequenceEqual(
@@ -48,9 +48,19 @@ internal class RegisterInterfacesAttributeMeta : RegisterAttributeMetaBase, IEqu
 
     public override void GenerateCode(Action<string> writeLine)
     {
+        string interfaceName = Interface.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+        writeLine($"// RegisterClassesWhereNameEndsWith(ServiceLifetime.{ServiceLifetime}, typeof({interfaceName}))");
+        foreach (INamedTypeSymbol type in ClassesToRegister)
+        {
+            string className = type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+            writeLine($"services.Add{ServiceLifetime}(typeof({interfaceName}), typeof({className}));");
+        }
     }
 
     public override int GetHashCode() => CachedHashCode.Value;
 
-    public override bool Matches(INamedTypeSymbol typeSymbol) => false;
+    public override bool Matches(INamedTypeSymbol typeSymbol) =>
+        typeSymbol
+        .Interfaces
+        .Any(x => ClassIdentityComparer.Instance.Equals(Interface, x));
 }

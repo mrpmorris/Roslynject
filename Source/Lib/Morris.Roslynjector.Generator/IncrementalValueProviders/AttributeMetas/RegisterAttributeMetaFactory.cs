@@ -28,17 +28,27 @@ internal static class RegisterAttributeMetaFactory
         string attributeName = attributeTypeSymbol.Name;
         switch (attributeName)
         {
-            case "RegisterInterfacesAttribute":
-                var interfaceType = semanticModel.GetTypeInfo(arguments[1].Expression, cancellationToken).Type as INamedTypeSymbol;
+            case "RegisterInterfaceAttribute":
+                var interfaceType = semanticModel
+                    .GetTypeInfo(
+                        ((TypeOfExpressionSyntax)arguments[1].Expression).Type,
+                        cancellationToken)
+                    .Type as INamedTypeSymbol;
+
                 return interfaceType is null
                     ? null
-                    : new RegisterInterfacesAttributeMeta(
+                    : new RegisterInterfaceAttributeMeta(
                         serviceLifetime,
                         interfaceType,
                         ImmutableArray<INamedTypeSymbol>.Empty);
 
             case "RegisterInterfacesWhereDescendsFromAttribute":
-                var baseInterface = semanticModel.GetTypeInfo(arguments[1].Expression, cancellationToken).Type as INamedTypeSymbol;
+                var baseInterface = semanticModel
+                    .GetTypeInfo(
+                        ((TypeOfExpressionSyntax)arguments[1].Expression).Type,
+                        cancellationToken)
+                    .Type as INamedTypeSymbol;
+
                 return baseInterface is null
                     ? null
                     : new RegisterInterfacesWhereDescendsFromAttributeMeta(
@@ -47,7 +57,7 @@ internal static class RegisterAttributeMetaFactory
                         ImmutableArray<INamedTypeSymbol>.Empty);
 
             case "RegisterInterfacesWhereNameEndsWithAttribute":
-                var suffix = arguments[1].Expression.ToString().Trim('"');
+                string suffix = arguments[1].Expression.ToString().Trim('"');
                 return new RegisterInterfacesWhereNameEndsWithAttributeMeta(
                     serviceLifetime,
                     suffix,
@@ -59,6 +69,7 @@ internal static class RegisterAttributeMetaFactory
                         ((TypeOfExpressionSyntax)arguments[1].Expression).Type,
                         cancellationToken)
                     .Type as INamedTypeSymbol;
+
                 return baseClass is null
                     ? null
                     : new RegisterClassesWhereDescendsFromAttributeMeta(
