@@ -1,8 +1,8 @@
 ﻿using Microsoft.CodeAnalysis;
 using Morris.Roslynjector.Generator.Extensions;
 using Morris.Roslynjector.Generator.IncrementalValueProviders.AttributeMetas;
+using Morris.Roslynjector.Generator.IncrementalValueProviders.DiscoveredRegistrationClasses;
 using Morris.Roslynjector.Generator.IncrementalValueProviders.InjectionCandidates;
-using Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationClassMetas;
 using Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationClassOutputs;
 using System.CodeDom.Compiler;
 
@@ -13,14 +13,14 @@ public class RoslynjectorGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        IncrementalValuesProvider<RegistrationClassMeta> registrationClasses =
-            RegistrationClassMetasFactory.CreateValuesProvider(context);
+        IncrementalValuesProvider<DiscoveredRegistrationClass> discoveredRegistrationClasses =
+            DiscoveredRegistrationClassesFactory.CreateValuesProvider(context);
         IncrementalValuesProvider<INamedTypeSymbol> injectionCandidates =
             InjectionCandidatesFactory.CreateValuesProvider(context);
 
-        IncrementalValuesProvider<RegistrationClassMeta> outputRegistrationClasses =
+        IncrementalValuesProvider<DiscoveredRegistrationClass> outputRegistrationClasses =
             RegistrationClassOutputsFactory.CreateValuesProvider(
-                registrationClasses: registrationClasses,
+                registrationClasses: discoveredRegistrationClasses,
                 candidateClasses: injectionCandidates);
 
         context.RegisterSourceOutput(
@@ -39,9 +39,9 @@ public class RoslynjectorGenerator : IIncrementalGenerator
                     writer.WriteLine();
 
                     IDisposable? namespaceCodeBlock = null;
-                    if (!string.IsNullOrEmpty(registrationClass.Namespace))
+                    if (!string.IsNullOrEmpty(registrationClass.NamespaceName))
                     {
-                        writer.WriteLine($"namespace {registrationClass.Namespace}");
+                        writer.WriteLine($"namespace {registrationClass.NamespaceName}");
                         namespaceCodeBlock = writer.CodeBlock();
                     }
 

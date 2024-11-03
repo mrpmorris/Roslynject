@@ -1,12 +1,12 @@
 ﻿using Microsoft.CodeAnalysis;
-using Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationClassMetas;
+using Morris.Roslynjector.Generator.IncrementalValueProviders.DiscoveredRegistrationClasses;
 
 namespace Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationClassOutputs;
 
 internal static class RegistrationClassOutputsFactory
 {
-    public static IncrementalValuesProvider<RegistrationClassMeta> CreateValuesProvider(
-        IncrementalValuesProvider<RegistrationClassMeta> registrationClasses,
+    public static IncrementalValuesProvider<DiscoveredRegistrationClass> CreateValuesProvider(
+        IncrementalValuesProvider<DiscoveredRegistrationClass> registrationClasses,
         IncrementalValuesProvider<INamedTypeSymbol> candidateClasses)
     =>
         registrationClasses

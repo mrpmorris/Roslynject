@@ -4,11 +4,11 @@ using Morris.Roslynjector.Generator.Extensions;
 using Morris.Roslynjector.Generator.IncrementalValueProviders.AttributeMetas;
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
-namespace Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationClassMetas;
+namespace Morris.Roslynjector.Generator.IncrementalValueProviders.DiscoveredRegistrationClasses;
 
-internal static class RegistrationClassMetasFactory
+internal static class DiscoveredRegistrationClassesFactory
 {
-    public static IncrementalValuesProvider<RegistrationClassMeta> CreateValuesProvider(
+    public static IncrementalValuesProvider<DiscoveredRegistrationClass> CreateValuesProvider(
         IncrementalGeneratorInitializationContext context)
     =>
         context
@@ -36,7 +36,7 @@ internal static class RegistrationClassMetasFactory
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static RegistrationClassMeta TransformSyntaxContext(
+    private static DiscoveredRegistrationClass TransformSyntaxContext(
         GeneratorSyntaxContext context,
         CancellationToken cancellationToken)
     {
@@ -61,8 +61,8 @@ internal static class RegistrationClassMetasFactory
         if (namespaceAndName is null)
             return null!;
 
-        return new RegistrationClassMeta(
-            @namespace: namespaceAndName.Value.Namespace,
+        return new DiscoveredRegistrationClass(
+            namespaceName: namespaceAndName.Value.Namespace,
             className: namespaceAndName.Value.Name,
             attributes: attributes);
     }

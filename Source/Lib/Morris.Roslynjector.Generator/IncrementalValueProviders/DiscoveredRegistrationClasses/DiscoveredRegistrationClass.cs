@@ -4,24 +4,24 @@ using Morris.Roslynjector.Generator.Helpers;
 using Morris.Roslynjector.Generator.IncrementalValueProviders.AttributeMetas;
 using System.Collections.Immutable;
 
-namespace Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationClassMetas;
+namespace Morris.Roslynjector.Generator.IncrementalValueProviders.DiscoveredRegistrationClasses;
 
-internal class RegistrationClassMeta : IEquatable<RegistrationClassMeta>
+internal class DiscoveredRegistrationClass : IEquatable<DiscoveredRegistrationClass>
 {
     public readonly string ClassName;
-    public readonly string? Namespace;
+    public readonly string? NamespaceName;
     public readonly ImmutableArray<RegisterAttributeMetaBase> Attributes;
 
-    public string FullName => NamespaceHelper.Combine(Namespace, ClassName);
+    public string FullName => NamespaceHelper.Combine(NamespaceName, ClassName);
 
     private readonly Lazy<int> CachedHashCode;
 
-    public RegistrationClassMeta(
-        string? @namespace,
+    public DiscoveredRegistrationClass(
+        string? namespaceName,
         string className,
         ImmutableArray<RegisterAttributeMetaBase> attributes)
     {
-        Namespace = @namespace;
+        NamespaceName = namespaceName;
         ClassName = className;
         Attributes = attributes;
 
@@ -29,18 +29,18 @@ internal class RegistrationClassMeta : IEquatable<RegistrationClassMeta>
             HashCode
             .Combine(
                 className,
-                @namespace,
+                namespaceName,
                 Attributes.GetContentsHashCode()));
     }
 
-    public static bool operator ==(RegistrationClassMeta left, RegistrationClassMeta right) => left.Equals(right);
-    public static bool operator !=(RegistrationClassMeta left, RegistrationClassMeta right) => !(left == right);
-    public override bool Equals(object obj) => obj is RegistrationClassMeta other && Equals(other);
+    public static bool operator ==(DiscoveredRegistrationClass left, DiscoveredRegistrationClass right) => left.Equals(right);
+    public static bool operator !=(DiscoveredRegistrationClass left, DiscoveredRegistrationClass right) => !(left == right);
+    public override bool Equals(object obj) => obj is DiscoveredRegistrationClass other && Equals(other);
 
-    public RegistrationClassMeta CloneWithCandidateClasses(ImmutableArray<INamedTypeSymbol> classes)
+    public DiscoveredRegistrationClass CloneWithCandidateClasses(ImmutableArray<INamedTypeSymbol> classes)
     =>
-        new RegistrationClassMeta(
-            @namespace: Namespace,
+        new DiscoveredRegistrationClass(
+            namespaceName: NamespaceName,
             className: ClassName,
             attributes:
                 Attributes
@@ -56,12 +56,12 @@ internal class RegistrationClassMeta : IEquatable<RegistrationClassMeta>
                 .ToImmutableArray()
         );
 
-    public bool Equals(RegistrationClassMeta other) =>
+    public bool Equals(DiscoveredRegistrationClass other) =>
         ReferenceEquals(this, other)
         ||
 
             ClassName == other.ClassName
-            && Namespace == other.Namespace
+            && NamespaceName == other.NamespaceName
             && Attributes.SequenceEqual(other.Attributes)
         ;
 

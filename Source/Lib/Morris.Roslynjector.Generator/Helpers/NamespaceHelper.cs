@@ -6,8 +6,8 @@ namespace Morris.Roslynjector.Generator.Helpers;
 internal static class NamespaceHelper
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string Combine(string? @namespace, string className) =>
-        @namespace is null
+    public static string Combine(string? namespaceName, string className) =>
+        namespaceName is null
         ? className
-        : @namespace + "." + className;
+        : namespaceName + "." + className;
 }
