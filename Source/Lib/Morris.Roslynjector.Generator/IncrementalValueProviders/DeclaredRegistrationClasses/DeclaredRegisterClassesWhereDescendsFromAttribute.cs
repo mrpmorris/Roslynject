@@ -30,7 +30,7 @@ internal class DeclaredRegisterClassesWhereDescendsFromAttribute : DeclaredRegis
 
     public bool Equals(DeclaredRegisterClassesWhereDescendsFromAttribute other) =>
         ServiceLifetime == other.ServiceLifetime
-        && SymbolEqualityComparer.Default.Equals(BaseClassType, other.BaseClassType));
+        && TypeIdentifyWithInheritanceComparer.Default.Equals(BaseClassType, other.BaseClassType);
 
     public override int GetHashCode() => CachedHashCode.Value;
 

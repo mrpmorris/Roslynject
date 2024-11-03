@@ -20,7 +20,7 @@ internal static class InjectionCandidatesFactory
                 return result;
             }
         )
-        .WithComparer(new ClassSignatureComparer());
+        .WithComparer(new TypeIdentifyWithInheritanceComparer());
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static bool SyntaxNodePredicate(

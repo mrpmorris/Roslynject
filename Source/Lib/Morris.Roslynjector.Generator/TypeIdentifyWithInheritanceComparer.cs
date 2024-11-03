@@ -3,9 +3,9 @@ using Morris.Roslynjector.Generator.Extensions;
 
 namespace Morris.Roslynjector.Generator;
 
-internal class ClassSignatureComparer : IEqualityComparer<INamedTypeSymbol>
+internal class TypeIdentifyWithInheritanceComparer : IEqualityComparer<INamedTypeSymbol>
 {
-    public static readonly ClassSignatureComparer Instance = new();
+    public static readonly TypeIdentifyWithInheritanceComparer Default = new();
 
     public bool Equals(INamedTypeSymbol? x, INamedTypeSymbol? y) =>
         (x, y) switch

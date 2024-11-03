@@ -30,7 +30,7 @@ internal class DeclaredRegisterInterfaceAttribute : DeclaredRegisterAttributeBas
 
     public bool Equals(DeclaredRegisterInterfaceAttribute other) =>
         ServiceLifetime == other.ServiceLifetime
-        && ClassSignatureComparer.Instance.Equals(InterfaceType, other.InterfaceType));
+        && TypeIdentifyWithInheritanceComparer.Default.Equals(InterfaceType, other.InterfaceType);
 
     public override int GetHashCode() => CachedHashCode.Value;
 
@@ -38,7 +38,7 @@ internal class DeclaredRegisterInterfaceAttribute : DeclaredRegisterAttributeBas
         typeSymbol
         .Interfaces
         .Any(x =>
-            ClassIdentityComparer.Instance.Equals(
+            TypeIdentityComparer.Default.Equals(
                 InterfaceType.ConstructedFrom,
                 x.ConstructedFrom
             )

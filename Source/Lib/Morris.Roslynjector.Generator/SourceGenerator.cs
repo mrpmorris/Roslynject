@@ -17,56 +17,56 @@ public class RoslynjectorGenerator : IIncrementalGenerator
         IncrementalValuesProvider<INamedTypeSymbol> injectionCandidates =
             InjectionCandidatesFactory.CreateValuesProvider(context);
 
-        IncrementalValuesProvider<DeclaredRegistrationClass> outputRegistrationClasses =
-            RegistrationClassOutputsFactory.CreateValuesProvider(
-                registrationClasses: declaredRegistrationClasses,
-                candidateClasses: injectionCandidates);
+        //IncrementalValuesProvider<DeclaredRegistrationClass> outputRegistrationClasses =
+        //    RegistrationClassOutputsFactory.CreateValuesProvider(
+        //        registrationClasses: declaredRegistrationClasses,
+        //        candidateClasses: injectionCandidates);
 
-        context.RegisterSourceOutput(
-            source: outputRegistrationClasses.Collect(),
-            static (productionContext, input) =>
-            {
-                using var sourceCodeBuilder = new StringWriter();
-                using var writer = new IndentedTextWriter(sourceCodeBuilder);
+        //context.RegisterSourceOutput(
+        //    source: outputRegistrationClasses.Collect(),
+        //    static (productionContext, input) =>
+        //    {
+        //        using var sourceCodeBuilder = new StringWriter();
+        //        using var writer = new IndentedTextWriter(sourceCodeBuilder);
 
-                // TODO: PeteM - D1
-                writer.WriteLine($"// Generated at {DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")}");
-                writer.WriteLine("using Microsoft.Extensions.DependencyInjection;");
+        //        // TODO: PeteM - D1
+        //        writer.WriteLine($"// Generated at {DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")}");
+        //        writer.WriteLine("using Microsoft.Extensions.DependencyInjection;");
 
-                foreach (var registrationClass in input)
-                {
-                    writer.WriteLine();
+        //        foreach (var registrationClass in input)
+        //        {
+        //            writer.WriteLine();
 
-                    IDisposable? namespaceCodeBlock = null;
-                    if (!string.IsNullOrEmpty(registrationClass.NamespaceName))
-                    {
-                        writer.WriteLine($"namespace {registrationClass.NamespaceName}");
-                        namespaceCodeBlock = writer.CodeBlock();
-                    }
+        //            IDisposable? namespaceCodeBlock = null;
+        //            if (!string.IsNullOrEmpty(registrationClass.NamespaceName))
+        //            {
+        //                writer.WriteLine($"namespace {registrationClass.NamespaceName}");
+        //                namespaceCodeBlock = writer.CodeBlock();
+        //            }
 
-                    writer.WriteLine($"partial class {registrationClass.ClassName}");
-                    using (writer.CodeBlock())
-                    {
-                        writer.WriteLine("static partial void AfterRegister(IServiceCollection services);");
-                        writer.WriteLine();
-                        writer.WriteLine("public static void Register(IServiceCollection services)");
-                        using (writer.CodeBlock())
-                        {
-                            foreach (DeclaredRegisterAttributeBase attr in registrationClass.Attributes)
-                            {
-                                attr.GenerateCode(writer.WriteLine);
-                                writer.WriteLine();
-                            }
-                            writer.WriteLine("AfterRegister(services);");
-                        }
-                    }
-                    namespaceCodeBlock?.Dispose();
-                }
+        //            writer.WriteLine($"partial class {registrationClass.ClassName}");
+        //            using (writer.CodeBlock())
+        //            {
+        //                writer.WriteLine("static partial void AfterRegister(IServiceCollection services);");
+        //                writer.WriteLine();
+        //                writer.WriteLine("public static void Register(IServiceCollection services)");
+        //                using (writer.CodeBlock())
+        //                {
+        //                    foreach (DeclaredRegisterAttributeBase attr in registrationClass.Attributes)
+        //                    {
+        //                        //attr.GenerateCode(writer.WriteLine);
+        //                        writer.WriteLine();
+        //                    }
+        //                    writer.WriteLine("AfterRegister(services);");
+        //                }
+        //            }
+        //            namespaceCodeBlock?.Dispose();
+        //        }
 
-                writer.Flush();
+        //        writer.Flush();
 
-                string generatedSourceCode = sourceCodeBuilder.ToString();
-                productionContext.AddSource("Morris.Roslynjector.g.cs", generatedSourceCode);
-            });
+        //        string generatedSourceCode = sourceCodeBuilder.ToString();
+        //        productionContext.AddSource("Morris.Roslynjector.g.cs", generatedSourceCode);
+        //    });
     }
 }
