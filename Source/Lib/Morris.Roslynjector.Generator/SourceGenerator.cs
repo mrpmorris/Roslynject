@@ -1,7 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Morris.Roslynjector.Generator.Extensions;
-using Morris.Roslynjector.Generator.IncrementalValueProviders.AttributeMetas;
-using Morris.Roslynjector.Generator.IncrementalValueProviders.DiscoveredRegistrationClasses;
+using Morris.Roslynjector.Generator.IncrementalValueProviders.DeclaredRegistrationClasses;
 using Morris.Roslynjector.Generator.IncrementalValueProviders.InjectionCandidates;
 using Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationClassOutputs;
 using System.CodeDom.Compiler;
@@ -13,14 +12,14 @@ public class RoslynjectorGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        IncrementalValuesProvider<DiscoveredRegistrationClass> discoveredRegistrationClasses =
-            DiscoveredRegistrationClassesFactory.CreateValuesProvider(context);
+        IncrementalValuesProvider<DeclaredRegistrationClass> declaredRegistrationClasses =
+            DeclaredRegistrationClassesFactory.CreateValuesProvider(context);
         IncrementalValuesProvider<INamedTypeSymbol> injectionCandidates =
             InjectionCandidatesFactory.CreateValuesProvider(context);
 
-        IncrementalValuesProvider<DiscoveredRegistrationClass> outputRegistrationClasses =
+        IncrementalValuesProvider<DeclaredRegistrationClass> outputRegistrationClasses =
             RegistrationClassOutputsFactory.CreateValuesProvider(
-                registrationClasses: discoveredRegistrationClasses,
+                registrationClasses: declaredRegistrationClasses,
                 candidateClasses: injectionCandidates);
 
         context.RegisterSourceOutput(
@@ -53,7 +52,7 @@ public class RoslynjectorGenerator : IIncrementalGenerator
                         writer.WriteLine("public static void Register(IServiceCollection services)");
                         using (writer.CodeBlock())
                         {
-                            foreach (RegisterAttributeMetaBase attr in registrationClass.Attributes)
+                            foreach (DeclaredRegisterAttributeBase attr in registrationClass.Attributes)
                             {
                                 attr.GenerateCode(writer.WriteLine);
                                 writer.WriteLine();

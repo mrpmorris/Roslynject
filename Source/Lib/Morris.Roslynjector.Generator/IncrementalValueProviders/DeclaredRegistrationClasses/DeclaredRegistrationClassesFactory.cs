@@ -1,14 +1,13 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Morris.Roslynjector.Generator.Extensions;
-using Morris.Roslynjector.Generator.IncrementalValueProviders.AttributeMetas;
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
-namespace Morris.Roslynjector.Generator.IncrementalValueProviders.DiscoveredRegistrationClasses;
+namespace Morris.Roslynjector.Generator.IncrementalValueProviders.DeclaredRegistrationClasses;
 
-internal static class DiscoveredRegistrationClassesFactory
+internal static class DeclaredRegistrationClassesFactory
 {
-    public static IncrementalValuesProvider<DiscoveredRegistrationClass> CreateValuesProvider(
+    public static IncrementalValuesProvider<DeclaredRegistrationClass> CreateValuesProvider(
         IncrementalGeneratorInitializationContext context)
     =>
         context
@@ -36,7 +35,7 @@ internal static class DiscoveredRegistrationClassesFactory
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static DiscoveredRegistrationClass TransformSyntaxContext(
+    private static DeclaredRegistrationClass TransformSyntaxContext(
         GeneratorSyntaxContext context,
         CancellationToken cancellationToken)
     {
@@ -46,7 +45,7 @@ internal static class DiscoveredRegistrationClassesFactory
             .DescendantNodes()
             .OfType<AttributeSyntax>()
             .Select(x =>
-                RegisterAttributeMetaFactory.Create(
+                DeclaredRegisterAttributeFactory.Create(
                     attributeSyntax: x,
                     semanticModel: context.SemanticModel,
                     cancellationToken: cancellationToken
@@ -61,7 +60,7 @@ internal static class DiscoveredRegistrationClassesFactory
         if (namespaceAndName is null)
             return null!;
 
-        return new DiscoveredRegistrationClass(
+        return new DeclaredRegistrationClass(
             namespaceName: namespaceAndName.Value.Namespace,
             className: namespaceAndName.Value.Name,
             attributes: attributes);
