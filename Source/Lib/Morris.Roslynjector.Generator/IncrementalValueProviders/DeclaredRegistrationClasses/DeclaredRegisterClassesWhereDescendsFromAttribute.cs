@@ -30,6 +30,7 @@ internal class DeclaredRegisterClassesWhereDescendsFromAttribute : DeclaredRegis
 
     public override RegisterAttributeOutputBase CreateOutput(ImmutableArray<INamedTypeSymbol> classesToRegister) =>
         new RegisterClassesWhereDescendsFromAttributeOutput(
+            serviceLifetime: ServiceLifetime,
             baseClassType: BaseClassType,
             classesToRegister: classesToRegister);
 

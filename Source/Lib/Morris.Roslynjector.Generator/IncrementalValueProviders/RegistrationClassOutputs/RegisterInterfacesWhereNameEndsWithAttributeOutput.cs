@@ -2,4 +2,7 @@
 
 internal class RegisterInterfacesWhereNameEndsWithAttributeOutput : RegisterAttributeOutputBase
 {
+    public RegisterInterfacesWhereNameEndsWithAttributeOutput(ServiceLifetime serviceLifetime) : base(serviceLifetime)
+    {
+    }
 }

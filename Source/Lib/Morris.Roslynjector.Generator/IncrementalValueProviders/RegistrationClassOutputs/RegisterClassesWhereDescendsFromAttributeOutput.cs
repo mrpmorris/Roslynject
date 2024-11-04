@@ -10,7 +10,11 @@ internal class RegisterClassesWhereDescendsFromAttributeOutput :
     public readonly INamedTypeSymbol BaseClassType;
     public readonly ImmutableArray<INamedTypeSymbol> ClassesToRegister;
 
-    public RegisterClassesWhereDescendsFromAttributeOutput(INamedTypeSymbol baseClassType, ImmutableArray<INamedTypeSymbol> classesToRegister)
+    public RegisterClassesWhereDescendsFromAttributeOutput(
+        ServiceLifetime serviceLifetime,
+        INamedTypeSymbol baseClassType,
+        ImmutableArray<INamedTypeSymbol> classesToRegister)
+        : base(serviceLifetime)
     {
         BaseClassType = baseClassType;
         ClassesToRegister = classesToRegister;
