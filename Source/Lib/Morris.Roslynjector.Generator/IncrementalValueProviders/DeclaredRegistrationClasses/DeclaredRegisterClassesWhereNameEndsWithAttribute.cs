@@ -27,7 +27,7 @@ internal class DeclaredRegisterClassesWhereNameEndsWithAttribute : DeclaredRegis
     public static bool operator ==(DeclaredRegisterClassesWhereNameEndsWithAttribute left, DeclaredRegisterClassesWhereNameEndsWithAttribute right) => left.Equals(right);
     public static bool operator !=(DeclaredRegisterClassesWhereNameEndsWithAttribute left, DeclaredRegisterClassesWhereNameEndsWithAttribute right) => !(left == right);
 
-    public override RegisterAttributeOutputBase CreateOutput(ImmutableArray<INamedTypeSymbol> classesToRegister)
+    public override IEnumerable<RegisterAttributeOutputBase> CreateOutput(ImmutableArray<INamedTypeSymbol> classesToRegister)
     {
         throw new NotImplementedException();
     }

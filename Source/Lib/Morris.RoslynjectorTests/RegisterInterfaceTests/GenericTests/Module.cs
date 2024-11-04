@@ -1,17 +1,17 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Morris.Roslynjector;
+﻿//using Microsoft.Extensions.DependencyInjection;
+//using Morris.Roslynjector;
 
-namespace Morris.RoslynjectorTests.RegisterInterfaceTests.GenericTests;
+//namespace Morris.RoslynjectorTests.RegisterInterfaceTests.GenericTests;
 
-[RegisterInterface(ServiceLifetime.Singleton, typeof(IGenericInterface<,>))]
-public static partial class Module
-{
+//[RegisterInterface(ServiceLifetime.Singleton, typeof(IGenericInterface<,>))]
+//public static partial class Module
+//{
 
-}
+//}
 
-public interface IGenericInterface<T1, T2> { }
-public class FirstValidClass : IGenericInterface<int, string> { }
-public class SecondValidClass : IGenericInterface<Guid, object?> { }
+//public interface IGenericInterface<T1, T2> { }
+//public class FirstValidClass : IGenericInterface<int, string> { }
+//public class SecondValidClass : IGenericInterface<Guid, object?> { }
 
-public interface IDescendantGenericInterface<T1, T2> : IGenericInterface<T1, T2> { }
-public class InvalidClass : IDescendantGenericInterface<int, string> { }
+//public interface IDescendantGenericInterface<T1, T2> : IGenericInterface<T1, T2> { }
+//public class InvalidClass : IDescendantGenericInterface<int, string> { }

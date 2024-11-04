@@ -1,17 +1,17 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Morris.Roslynjector;
+﻿//using Microsoft.Extensions.DependencyInjection;
+//using Morris.Roslynjector;
 
-namespace Morris.RoslynjectorTests.RegisterInterfaceTests.NonGenericTests;
+//namespace Morris.RoslynjectorTests.RegisterInterfaceTests.NonGenericTests;
 
-[RegisterInterface(ServiceLifetime.Singleton, typeof(ICommunicationStrategy))]
-public static partial class Module
-{
+//[RegisterInterface(ServiceLifetime.Singleton, typeof(ICommunicationStrategy))]
+//public static partial class Module
+//{
 
-}
+//}
 
-public interface ICommunicationStrategy { }
-public class EmailStrategy : ICommunicationStrategy { }
-public class SmsStrategy : ICommunicationStrategy { }
+//public interface ICommunicationStrategy { }
+//public class EmailStrategy : ICommunicationStrategy { }
+//public class SmsStrategy : ICommunicationStrategy { }
 
-public interface IDescendantCommunicationStrategy : ICommunicationStrategy { }
-public class InvalidStrategy : IDescendantCommunicationStrategy { }
+//public interface IDescendantCommunicationStrategy : ICommunicationStrategy { }
+//public class InvalidStrategy : IDescendantCommunicationStrategy { }

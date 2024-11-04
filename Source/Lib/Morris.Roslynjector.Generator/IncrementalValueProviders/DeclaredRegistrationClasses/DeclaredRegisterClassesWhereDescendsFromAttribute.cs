@@ -28,7 +28,7 @@ internal class DeclaredRegisterClassesWhereDescendsFromAttribute : DeclaredRegis
     public static bool operator ==(DeclaredRegisterClassesWhereDescendsFromAttribute left, DeclaredRegisterClassesWhereDescendsFromAttribute right) => left.Equals(right);
     public static bool operator !=(DeclaredRegisterClassesWhereDescendsFromAttribute left, DeclaredRegisterClassesWhereDescendsFromAttribute right) => !(left == right);
 
-    public override RegisterAttributeOutputBase CreateOutput(ImmutableArray<INamedTypeSymbol> classesToRegister) =>
+    public override IEnumerable<RegisterAttributeOutputBase> CreateOutput(ImmutableArray<INamedTypeSymbol> classesToRegister) =>
         new RegisterClassesWhereDescendsFromAttributeOutput(
             baseClassType: BaseClassType,
             classesToRegister: classesToRegister);
