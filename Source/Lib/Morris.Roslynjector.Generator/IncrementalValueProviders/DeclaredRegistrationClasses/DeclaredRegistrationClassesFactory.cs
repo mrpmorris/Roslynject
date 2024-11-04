@@ -19,26 +19,32 @@ internal static class DeclaredRegistrationClassesFactory
         .Where(x => x is not null);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static bool SyntaxNodePredicate(SyntaxNode syntaxNode, CancellationToken cancellationToken)
-    {
-        if (syntaxNode is not ClassDeclarationSyntax classDeclarationSyntax)
-            return false;
-
-        return classDeclarationSyntax
-            .AttributeLists
-            .SelectMany(x => x.Attributes)
-            .Any(attr =>
-                AttributeNames.ShortNames.Any(
-                    name => attr.Name.ToFullString().Contains(name)
-                )
-             );
-    }
+    private static bool SyntaxNodePredicate(
+        SyntaxNode syntaxNode,
+        CancellationToken cancellationToken)
+    =>
+        syntaxNode is ClassDeclarationSyntax classDeclarationSyntax
+        && classDeclarationSyntax.IsConcrete();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static DeclaredRegistrationClass TransformSyntaxContext(
         GeneratorSyntaxContext context,
         CancellationToken cancellationToken)
     {
+        INamedTypeSymbol classSymbol =
+            (INamedTypeSymbol)context
+            .SemanticModel
+            .GetDeclaredSymbol(context.Node)!;
+
+        INamedTypeSymbol? roslynjectionModuleType = context
+            .SemanticModel
+            .Compilation
+            .GetTypesByMetadataName("Morris.Roslynjector.RoslynjectorModule")
+            .First();
+
+        if (!classSymbol.DescendsFrom(roslynjectionModuleType))
+            return null!;
+        
         var attributes =
             context
             .Node
@@ -53,8 +59,6 @@ internal static class DeclaredRegistrationClassesFactory
             )
             .Where(x => x is not null)
             .ToImmutableArray();
-        if (attributes.Length == 0)
-            return null!;
 
         (string? Namespace, string Name)? namespaceAndName = context.GetNamespaceAndName(cancellationToken);
         if (namespaceAndName is null)
