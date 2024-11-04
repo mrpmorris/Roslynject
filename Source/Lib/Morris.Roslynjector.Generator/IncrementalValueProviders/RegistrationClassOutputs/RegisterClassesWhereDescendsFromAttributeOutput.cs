@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Collections.Immutable;
 
 namespace Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationClassOutputs;
@@ -11,10 +12,13 @@ internal class RegisterClassesWhereDescendsFromAttributeOutput :
     public readonly ImmutableArray<INamedTypeSymbol> ClassesToRegister;
 
     public RegisterClassesWhereDescendsFromAttributeOutput(
+        AttributeSyntax attributeSyntax,
         ServiceLifetime serviceLifetime,
         INamedTypeSymbol baseClassType,
         ImmutableArray<INamedTypeSymbol> injectionCandidates)
-        : base(serviceLifetime)
+        : base(
+            attributeSyntax: attributeSyntax,
+            serviceLifetime: serviceLifetime)
     {
         BaseClassType = baseClassType;
         ClassesToRegister = injectionCandidates;

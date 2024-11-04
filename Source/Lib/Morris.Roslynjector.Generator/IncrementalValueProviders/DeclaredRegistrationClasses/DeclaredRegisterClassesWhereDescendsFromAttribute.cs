@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Morris.Roslynjector.Generator.Extensions;
 using Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationClassOutputs;
 using System.Collections.Immutable;
@@ -11,9 +12,12 @@ internal class DeclaredRegisterClassesWhereDescendsFromAttribute : DeclaredRegis
     private readonly Lazy<int> CachedHashCode;
 
     public DeclaredRegisterClassesWhereDescendsFromAttribute(
+        AttributeSyntax attributeSyntax,
         ServiceLifetime serviceLifetime,
         INamedTypeSymbol baseClassType)
-        : base(serviceLifetime)
+        : base(
+            attributeSyntax: attributeSyntax,
+            serviceLifetime: serviceLifetime)
     {
         BaseClassType = baseClassType;
         CachedHashCode = new Lazy<int>(() =>
@@ -30,6 +34,7 @@ internal class DeclaredRegisterClassesWhereDescendsFromAttribute : DeclaredRegis
 
     public override RegisterAttributeOutputBase? CreateOutput(ImmutableArray<INamedTypeSymbol> injectionCandidates) =>
         new RegisterClassesWhereDescendsFromAttributeOutput(
+            attributeSyntax: AttributeSyntax,
             serviceLifetime: ServiceLifetime,
             baseClassType: BaseClassType,
             injectionCandidates: injectionCandidates);

@@ -41,7 +41,7 @@ internal class DeclaredRegistrationClass : IEquatable<DeclaredRegistrationClass>
     {
         var attributes =
             Attributes
-            .Select(x => x.CreateOutput(injectionCandidates))
+            .Select(x => x.CreateOutput(injectionCandidates)!)
             .Where(x => x is not null)
             .ToImmutableArray();
 

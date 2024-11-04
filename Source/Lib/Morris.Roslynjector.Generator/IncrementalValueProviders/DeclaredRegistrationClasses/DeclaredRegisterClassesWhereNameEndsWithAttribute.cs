@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationClassOutputs;
 using System.Collections.Immutable;
 
@@ -10,9 +11,12 @@ internal class DeclaredRegisterClassesWhereNameEndsWithAttribute : DeclaredRegis
     private readonly Lazy<int> CachedHashCode;
 
     public DeclaredRegisterClassesWhereNameEndsWithAttribute(
+        AttributeSyntax attributeSyntax,
         ServiceLifetime serviceLifetime,
         string suffix)
-        : base(serviceLifetime)
+        : base(
+            attributeSyntax: attributeSyntax,
+            serviceLifetime: serviceLifetime)
     {
         Suffix = suffix;
         CachedHashCode = new Lazy<int>(() =>
@@ -36,9 +40,10 @@ internal class DeclaredRegisterClassesWhereNameEndsWithAttribute : DeclaredRegis
 
     public override RegisterAttributeOutputBase? CreateOutput(ImmutableArray<INamedTypeSymbol> injectionCandidates) =>
         RegisterClassesWhereNameEndsWithAttributeOutput.Create(
+            attributeSyntax: AttributeSyntax,
             serviceLifetime: ServiceLifetime,
             suffix: Suffix,
-            injectionCandidates);
+            injectionCandidates: injectionCandidates);
 
     public override bool Equals(object obj) => obj is DeclaredRegisterClassesWhereNameEndsWithAttribute other && Equals(other);
 

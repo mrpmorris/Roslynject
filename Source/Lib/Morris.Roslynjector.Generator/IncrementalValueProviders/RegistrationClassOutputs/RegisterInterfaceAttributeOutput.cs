@@ -1,9 +1,15 @@
-﻿namespace Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationClassOutputs;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+namespace Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationClassOutputs;
 
 internal class RegisterInterfaceAttributeOutput : RegisterAttributeOutputBase
 {
-    public RegisterInterfaceAttributeOutput(ServiceLifetime serviceLifetime)
-        : base(serviceLifetime)
+    public RegisterInterfaceAttributeOutput(
+        AttributeSyntax attributeSyntax,
+        ServiceLifetime serviceLifetime)
+        : base(
+            attributeSyntax: attributeSyntax,
+            serviceLifetime: serviceLifetime)
     {
     }
 

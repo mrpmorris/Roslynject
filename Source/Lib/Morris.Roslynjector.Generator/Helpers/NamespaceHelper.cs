@@ -21,5 +21,5 @@ internal static class NamespaceHelper
     =>
         namespaceSymbol.IsGlobalNamespace
         ? className
-        : $"{namespaceSymbol.Name}.{className}";
+        : $"{namespaceSymbol.ToDisplayString()}.{className}";
 }

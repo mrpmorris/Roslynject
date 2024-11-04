@@ -1,5 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
-using Morris.Roslynjector.Generator.Extensions;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationClassOutputs;
 using System.Collections.Immutable;
 
@@ -11,9 +11,12 @@ internal class DeclaredRegisterInterfacesWhereDescendsFromAttribute : DeclaredRe
     private readonly Lazy<int> CachedHashCode;
 
     public DeclaredRegisterInterfacesWhereDescendsFromAttribute(
+        AttributeSyntax attributeSyntax,
         ServiceLifetime serviceLifetime,
         INamedTypeSymbol baseInterfaceType)
-        : base(serviceLifetime)
+    : base(
+            attributeSyntax: attributeSyntax,
+            serviceLifetime: serviceLifetime)
     {
         BaseInterfaceType = baseInterfaceType;
         CachedHashCode = new Lazy<int>(() =>

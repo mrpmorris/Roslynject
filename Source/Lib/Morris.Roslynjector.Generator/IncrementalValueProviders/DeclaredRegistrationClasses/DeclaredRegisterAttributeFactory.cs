@@ -31,18 +31,21 @@ internal static class DeclaredRegisterAttributeFactory
             "RegisterClassesWhereDescendsFromAttribute" =>
                 CreateDeclaredRegisterClassesWhereDescendsFromAttribute(
                     semanticModel: semanticModel,
+                    attributeSyntax: attributeSyntax,
                     serviceLifetime: serviceLifetime,
                     baseClassTypeArgument: arguments[1],
                     cancellationToken: cancellationToken),
 
             "RegisterClassesWhereNameEndsWithAttribute" =>
                 CreateDeclaredRegisterClassesWhereNameEndsWithAttribute(
+                    attributeSyntax: attributeSyntax,
                     serviceLifetime: serviceLifetime,
                     suffixArgument: arguments[1]),
 
             "RegisterInterfaceAttribute" =>
                 CreateDeclaredRegisterInterfaceAttribute(
                     semanticModel: semanticModel,
+                    attributeSyntax: attributeSyntax,
                     serviceLifetime: serviceLifetime,
                     interfaceTypeArgument: arguments[1],
                     cancellationToken: cancellationToken),
@@ -50,12 +53,14 @@ internal static class DeclaredRegisterAttributeFactory
             "RegisterInterfacesWhereDescendsFromAttribute" =>
                 CreateDeclaredRegisterInterfacesWhereDescendsFromAttribute(
                     semanticModel: semanticModel,
+                    attributeSyntax: attributeSyntax,
                     serviceLifetime: serviceLifetime,
                     baseInterfaceTypeArgument: arguments[1],
                     cancellationToken: cancellationToken),
 
             "RegisterInterfacesWhereNameEndsWithAttribute" =>
                 CreateRegisterInterfacesWhereNameEndsWithAttribute(
+                    attributeSyntax: attributeSyntax,
                     serviceLifetime: serviceLifetime,
                     suffixArgument: arguments[1]),
 
@@ -65,6 +70,7 @@ internal static class DeclaredRegisterAttributeFactory
 
     private static DeclaredRegisterAttributeBase? CreateDeclaredRegisterClassesWhereDescendsFromAttribute(
         SemanticModel semanticModel,
+        AttributeSyntax attributeSyntax,
         ServiceLifetime serviceLifetime,
         AttributeArgumentSyntax baseClassTypeArgument,
         CancellationToken cancellationToken)
@@ -75,22 +81,26 @@ internal static class DeclaredRegisterAttributeFactory
         return baseClassType is null
             ? null
             : new DeclaredRegisterClassesWhereDescendsFromAttribute(
+                attributeSyntax: attributeSyntax,
                 serviceLifetime: serviceLifetime,
                 baseClassType: baseClassType);
     }
 
     private static DeclaredRegisterAttributeBase CreateDeclaredRegisterClassesWhereNameEndsWithAttribute(
+        AttributeSyntax attributeSyntax,
         ServiceLifetime serviceLifetime,
         AttributeArgumentSyntax suffixArgument)
     {
         string suffix = suffixArgument.Expression.ToString().Trim('"');
         return new DeclaredRegisterClassesWhereNameEndsWithAttribute(
+            attributeSyntax: attributeSyntax,
             serviceLifetime: serviceLifetime,
             suffix: suffix);
     }
 
     private static DeclaredRegisterAttributeBase? CreateDeclaredRegisterInterfaceAttribute(
         SemanticModel semanticModel,
+        AttributeSyntax attributeSyntax,
         ServiceLifetime serviceLifetime,
         AttributeArgumentSyntax interfaceTypeArgument,
         CancellationToken cancellationToken)
@@ -101,12 +111,14 @@ internal static class DeclaredRegisterAttributeFactory
         return interfaceType is null
             ? null
             : new DeclaredRegisterInterfaceAttribute(
+                attributeSyntax: attributeSyntax,
                 serviceLifetime: serviceLifetime,
                 interfaceType: interfaceType);
     }
 
     private static DeclaredRegisterAttributeBase? CreateDeclaredRegisterInterfacesWhereDescendsFromAttribute(
         SemanticModel semanticModel,
+        AttributeSyntax attributeSyntax,
         ServiceLifetime serviceLifetime,
         AttributeArgumentSyntax baseInterfaceTypeArgument,
         CancellationToken cancellationToken)
@@ -117,16 +129,19 @@ internal static class DeclaredRegisterAttributeFactory
         return baseInterfaceType is null
             ? null
             : new DeclaredRegisterInterfacesWhereDescendsFromAttribute(
+                attributeSyntax: attributeSyntax,
                 serviceLifetime: serviceLifetime,
                 baseInterfaceType: baseInterfaceType);
     }
 
     private static DeclaredRegisterAttributeBase CreateRegisterInterfacesWhereNameEndsWithAttribute(
+        AttributeSyntax attributeSyntax,
         ServiceLifetime serviceLifetime,
         AttributeArgumentSyntax suffixArgument)
     {
         string suffix = suffixArgument.Expression.ToString().Trim('"');
         return new DeclaredRegisterInterfacesWhereNameEndsWithAttribute(
+            attributeSyntax: attributeSyntax,
             serviceLifetime: serviceLifetime,
             suffix: suffix);
     }

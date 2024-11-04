@@ -1,5 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
-using Morris.Roslynjector.Generator.Extensions;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationClassOutputs;
 using System.Collections.Immutable;
 
@@ -11,9 +11,12 @@ internal class DeclaredRegisterInterfacesWhereNameEndsWithAttribute : DeclaredRe
     private readonly Lazy<int> CachedHashCode;
 
     public DeclaredRegisterInterfacesWhereNameEndsWithAttribute(
+        AttributeSyntax attributeSyntax,
         ServiceLifetime serviceLifetime,
         string suffix)
-        : base(serviceLifetime)
+    : base(
+            attributeSyntax: attributeSyntax,
+            serviceLifetime: serviceLifetime)
     {
         Suffix = suffix;
         CachedHashCode = new Lazy<int>(() =>

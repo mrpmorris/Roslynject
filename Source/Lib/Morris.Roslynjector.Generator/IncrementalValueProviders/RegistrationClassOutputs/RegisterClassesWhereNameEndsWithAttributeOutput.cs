@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Morris.Roslynjector.Generator.Extensions;
 using Morris.Roslynjector.Generator.Helpers;
 using Morris.Roslynjector.Generator.IncrementalValueProviders.DeclaredRegistrationClasses;
@@ -13,10 +14,20 @@ internal class RegisterClassesWhereNameEndsWithAttributeOutput :
     public readonly ImmutableArray<string> ClassesToRegister;
     private readonly Lazy<int> CachedHashCode;
 
-    public static bool operator ==(RegisterClassesWhereNameEndsWithAttributeOutput left, RegisterClassesWhereNameEndsWithAttributeOutput right) => left.Equals(right);
-    public static bool operator !=(RegisterClassesWhereNameEndsWithAttributeOutput left, RegisterClassesWhereNameEndsWithAttributeOutput right) => !(left == right);
+    public static bool operator ==(
+        RegisterClassesWhereNameEndsWithAttributeOutput left,
+        RegisterClassesWhereNameEndsWithAttributeOutput right)
+    =>
+        left.Equals(right);
+
+    public static bool operator !=(
+        RegisterClassesWhereNameEndsWithAttributeOutput left,
+        RegisterClassesWhereNameEndsWithAttributeOutput right)
+    =>
+        !(left == right);
 
     public static RegisterClassesWhereNameEndsWithAttributeOutput? Create(
+        AttributeSyntax attributeSyntax,
         ServiceLifetime serviceLifetime,
         string suffix,
         ImmutableArray<INamedTypeSymbol> injectionCandidates)
@@ -36,6 +47,7 @@ internal class RegisterClassesWhereNameEndsWithAttributeOutput :
             classesToRegister.Length == 0
             ? null
             : new RegisterClassesWhereNameEndsWithAttributeOutput(
+                attributeSyntax: attributeSyntax,
                 serviceLifetime: serviceLifetime,
                 classesToRegister: classesToRegister);
     }
@@ -53,16 +65,20 @@ internal class RegisterClassesWhereNameEndsWithAttributeOutput :
 
     public override void GenerateCode(Action<string> writeLine)
     {
+        writeLine($"//{AttributeSyntax}");
         foreach (string classToRegister in ClassesToRegister)
-            writeLine($"services.Add{ServiceLifetime}(global::{classToRegister});");
+            writeLine($"services.Add{ServiceLifetime}(typeof(global::{classToRegister}));");
     }
 
     public override int GetHashCode() => CachedHashCode.Value;
 
     private RegisterClassesWhereNameEndsWithAttributeOutput(
+        AttributeSyntax attributeSyntax,
         ServiceLifetime serviceLifetime,
         ImmutableArray<string> classesToRegister)
-        : base(serviceLifetime)
+        : base(
+            attributeSyntax: attributeSyntax,
+            serviceLifetime: serviceLifetime)
     {
         ClassesToRegister = classesToRegister;
         CachedHashCode = new Lazy<int>(() =>

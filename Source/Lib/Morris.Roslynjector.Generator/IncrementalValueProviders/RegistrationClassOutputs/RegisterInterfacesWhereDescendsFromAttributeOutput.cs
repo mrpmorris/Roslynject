@@ -1,8 +1,15 @@
-﻿namespace Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationClassOutputs;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+namespace Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationClassOutputs;
 
 internal class RegisterInterfacesWhereDescendsFromAttributeOutput : RegisterAttributeOutputBase
 {
-    public RegisterInterfacesWhereDescendsFromAttributeOutput(ServiceLifetime serviceLifetime) : base(serviceLifetime)
+    public RegisterInterfacesWhereDescendsFromAttributeOutput(
+        AttributeSyntax attributeSyntax,
+        ServiceLifetime serviceLifetime)
+        : base(
+            attributeSyntax: attributeSyntax,
+            serviceLifetime: serviceLifetime)
     {
     }
 
