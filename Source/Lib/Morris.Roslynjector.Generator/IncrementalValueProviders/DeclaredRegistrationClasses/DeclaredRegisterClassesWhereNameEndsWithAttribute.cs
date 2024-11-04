@@ -24,13 +24,21 @@ internal class DeclaredRegisterClassesWhereNameEndsWithAttribute : DeclaredRegis
         );
     }
 
-    public static bool operator ==(DeclaredRegisterClassesWhereNameEndsWithAttribute left, DeclaredRegisterClassesWhereNameEndsWithAttribute right) => left.Equals(right);
-    public static bool operator !=(DeclaredRegisterClassesWhereNameEndsWithAttribute left, DeclaredRegisterClassesWhereNameEndsWithAttribute right) => !(left == right);
+    public static bool operator ==(
+        DeclaredRegisterClassesWhereNameEndsWithAttribute left,
+        DeclaredRegisterClassesWhereNameEndsWithAttribute right)
+    => left.Equals(right);
 
-    public override RegisterAttributeOutputBase CreateOutput(ImmutableArray<INamedTypeSymbol> classesToRegister)
-    {
-        throw new NotImplementedException();
-    }
+    public static bool operator !=(
+        DeclaredRegisterClassesWhereNameEndsWithAttribute left,
+        DeclaredRegisterClassesWhereNameEndsWithAttribute right)
+    => !(left == right);
+
+    public override RegisterAttributeOutputBase? CreateOutput(ImmutableArray<INamedTypeSymbol> injectionCandidates) =>
+        RegisterClassesWhereNameEndsWithAttributeOutput.Create(
+            serviceLifetime: ServiceLifetime,
+            suffix: Suffix,
+            injectionCandidates);
 
     public override bool Equals(object obj) => obj is DeclaredRegisterClassesWhereNameEndsWithAttribute other && Equals(other);
 

@@ -16,7 +16,9 @@ internal static class InjectionCandidatesFactory
             predicate: SyntaxNodePredicate,
             transform: static (context, _) =>
             {
-                INamedTypeSymbol result = (INamedTypeSymbol)context.SemanticModel.GetDeclaredSymbol(context.Node)!;
+                INamedTypeSymbol result = (INamedTypeSymbol)context
+                    .SemanticModel
+                    .GetDeclaredSymbol(context.Node)!;
                 return result;
             }
         )

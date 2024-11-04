@@ -6,4 +6,10 @@ internal class RegisterInterfaceAttributeOutput : RegisterAttributeOutputBase
         : base(serviceLifetime)
     {
     }
+
+    public override void GenerateCode(Action<string> writeLine)
+    {
+        throw new NotImplementedException();
+    }
+
 }

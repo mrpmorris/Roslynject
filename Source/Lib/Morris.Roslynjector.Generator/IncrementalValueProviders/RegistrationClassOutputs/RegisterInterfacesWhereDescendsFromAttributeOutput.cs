@@ -5,4 +5,10 @@ internal class RegisterInterfacesWhereDescendsFromAttributeOutput : RegisterAttr
     public RegisterInterfacesWhereDescendsFromAttributeOutput(ServiceLifetime serviceLifetime) : base(serviceLifetime)
     {
     }
+
+    public override void GenerateCode(Action<string> writeLine)
+    {
+        throw new NotImplementedException();
+    }
+
 }

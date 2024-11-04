@@ -36,17 +36,24 @@ internal class DeclaredRegistrationClass : IEquatable<DeclaredRegistrationClass>
     public static bool operator ==(DeclaredRegistrationClass left, DeclaredRegistrationClass right) => left.Equals(right);
     public static bool operator !=(DeclaredRegistrationClass left, DeclaredRegistrationClass right) => !(left == right);
 
-    public RegistrationClassOutput CreateOutput(
+    public RegistrationClassOutput? CreateOutput(
         ImmutableArray<INamedTypeSymbol> injectionCandidates)
-    =>
-        new RegistrationClassOutput(
-            namespaceName: NamespaceName,
-            className: ClassName,
-            attributes: Attributes
-                .Select(x => x.CreateOutput(injectionCandidates))
-                .Where(x => x is not null)
-                .ToImmutableArray()
+    {
+        var attributes =
+            Attributes
+            .Select(x => x.CreateOutput(injectionCandidates))
+            .Where(x => x is not null)
+            .ToImmutableArray();
+
+        return
+            attributes.Length == 0
+            ? null
+            : new RegistrationClassOutput(
+                namespaceName: NamespaceName,
+                className: ClassName,
+                attributes: attributes
             );
+    }
 
     public override bool Equals(object obj) =>
         obj is DeclaredRegistrationClass other

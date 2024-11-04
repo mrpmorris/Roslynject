@@ -10,7 +10,7 @@ internal abstract class DeclaredRegisterAttributeBase
 
     public abstract bool Matches(INamedTypeSymbol typeSymbol);
 
-    public abstract RegisterAttributeOutputBase CreateOutput(ImmutableArray<INamedTypeSymbol> injectionCandidates);
+    public abstract RegisterAttributeOutputBase? CreateOutput(ImmutableArray<INamedTypeSymbol> injectionCandidates);
 
     protected DeclaredRegisterAttributeBase(ServiceLifetime serviceLifetime)
     {

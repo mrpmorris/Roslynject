@@ -21,7 +21,8 @@ internal class RegisterClassesWhereNameEndsWithAttributeOutput :
         string suffix,
         ImmutableArray<INamedTypeSymbol> injectionCandidates)
     {
-        var classesToRegister = injectionCandidates
+        ImmutableArray<string> classesToRegister =
+            injectionCandidates
             .Where(x => x.Name.EndsWith(suffix, StringComparison.Ordinal))
             .Select(x =>
                 NamespaceHelper.Combine(
@@ -49,6 +50,12 @@ internal class RegisterClassesWhereNameEndsWithAttributeOutput :
             ClassesToRegister,
             other.ClassesToRegister
         );
+
+    public override void GenerateCode(Action<string> writeLine)
+    {
+        foreach (string classToRegister in ClassesToRegister)
+            writeLine($"services.Add{ServiceLifetime}(global::{classToRegister});");
+    }
 
     public override int GetHashCode() => CachedHashCode.Value;
 

@@ -12,7 +12,7 @@ internal static class RegistrationClassOutputsFactory
         declaredRegistrationClasses
         .Combine(injectionCandidates.Collect())
         .Select((pair, cancellationToken) =>
-            pair.Left.CreateOutput(pair.Right)
+            pair.Left.CreateOutput(pair.Right)!
         )
         .Where(x => x is not null);
 }

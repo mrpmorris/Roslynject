@@ -28,7 +28,7 @@ internal class DeclaredRegisterInterfaceAttribute : DeclaredRegisterAttributeBas
     public static bool operator ==(DeclaredRegisterInterfaceAttribute left, DeclaredRegisterInterfaceAttribute right) => left.Equals(right);
     public static bool operator !=(DeclaredRegisterInterfaceAttribute left, DeclaredRegisterInterfaceAttribute right) => !(left == right);
 
-    public override RegisterAttributeOutputBase CreateOutput(ImmutableArray<INamedTypeSymbol> classesToRegister)
+    public override RegisterAttributeOutputBase? CreateOutput(ImmutableArray<INamedTypeSymbol> injectionCandidates)
     {
         throw new NotImplementedException();
     }

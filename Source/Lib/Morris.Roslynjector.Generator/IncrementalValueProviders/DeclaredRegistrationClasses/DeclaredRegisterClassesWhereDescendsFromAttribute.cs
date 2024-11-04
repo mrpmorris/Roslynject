@@ -28,11 +28,11 @@ internal class DeclaredRegisterClassesWhereDescendsFromAttribute : DeclaredRegis
     public static bool operator ==(DeclaredRegisterClassesWhereDescendsFromAttribute left, DeclaredRegisterClassesWhereDescendsFromAttribute right) => left.Equals(right);
     public static bool operator !=(DeclaredRegisterClassesWhereDescendsFromAttribute left, DeclaredRegisterClassesWhereDescendsFromAttribute right) => !(left == right);
 
-    public override RegisterAttributeOutputBase CreateOutput(ImmutableArray<INamedTypeSymbol> classesToRegister) =>
+    public override RegisterAttributeOutputBase? CreateOutput(ImmutableArray<INamedTypeSymbol> injectionCandidates) =>
         new RegisterClassesWhereDescendsFromAttributeOutput(
             serviceLifetime: ServiceLifetime,
             baseClassType: BaseClassType,
-            classesToRegister: classesToRegister);
+            injectionCandidates: injectionCandidates);
 
     public override bool Equals(object obj) => obj is DeclaredRegisterClassesWhereDescendsFromAttribute other && Equals(other);
 

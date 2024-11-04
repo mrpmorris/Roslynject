@@ -13,14 +13,19 @@ internal class RegisterClassesWhereDescendsFromAttributeOutput :
     public RegisterClassesWhereDescendsFromAttributeOutput(
         ServiceLifetime serviceLifetime,
         INamedTypeSymbol baseClassType,
-        ImmutableArray<INamedTypeSymbol> classesToRegister)
+        ImmutableArray<INamedTypeSymbol> injectionCandidates)
         : base(serviceLifetime)
     {
         BaseClassType = baseClassType;
-        ClassesToRegister = classesToRegister;
+        ClassesToRegister = injectionCandidates;
     }
 
     public bool Equals(RegisterClassesWhereDescendsFromAttributeOutput other)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void GenerateCode(Action<string> writeLine)
     {
         throw new NotImplementedException();
     }
