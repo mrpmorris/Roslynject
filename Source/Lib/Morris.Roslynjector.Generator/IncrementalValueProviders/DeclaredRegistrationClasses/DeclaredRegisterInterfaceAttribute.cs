@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Morris.Roslynjector.Generator.Extensions;
+using Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationClassOutputs;
 using System.Collections.Immutable;
 
 namespace Morris.Roslynjector.Generator.IncrementalValueProviders.DeclaredRegistrationClasses;
@@ -26,6 +27,12 @@ internal class DeclaredRegisterInterfaceAttribute : DeclaredRegisterAttributeBas
 
     public static bool operator ==(DeclaredRegisterInterfaceAttribute left, DeclaredRegisterInterfaceAttribute right) => left.Equals(right);
     public static bool operator !=(DeclaredRegisterInterfaceAttribute left, DeclaredRegisterInterfaceAttribute right) => !(left == right);
+
+    public override RegisterAttributeOutputBase CreateOutput(ImmutableArray<INamedTypeSymbol> classesToRegister)
+    {
+        throw new NotImplementedException();
+    }
+
     public override bool Equals(object obj) => obj is DeclaredRegisterInterfaceAttribute other && Equals(other);
 
     public bool Equals(DeclaredRegisterInterfaceAttribute other) =>

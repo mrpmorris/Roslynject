@@ -31,7 +31,7 @@ public class RegisterClassesWhereDescendsFromTests
     public RegisterClassesWhereDescendsFromTests()
     {
         Services = new ServiceCollection();
-        Module.Register(Services);
+        //Module.Register(Services);
     }
 
 

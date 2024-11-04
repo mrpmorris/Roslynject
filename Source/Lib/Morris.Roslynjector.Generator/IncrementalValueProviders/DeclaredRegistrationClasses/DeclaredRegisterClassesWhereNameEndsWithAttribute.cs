@@ -1,5 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
-using Morris.Roslynjector.Generator.Extensions;
+using Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationClassOutputs;
 using System.Collections.Immutable;
 
 namespace Morris.Roslynjector.Generator.IncrementalValueProviders.DeclaredRegistrationClasses;
@@ -26,6 +26,12 @@ internal class DeclaredRegisterClassesWhereNameEndsWithAttribute : DeclaredRegis
 
     public static bool operator ==(DeclaredRegisterClassesWhereNameEndsWithAttribute left, DeclaredRegisterClassesWhereNameEndsWithAttribute right) => left.Equals(right);
     public static bool operator !=(DeclaredRegisterClassesWhereNameEndsWithAttribute left, DeclaredRegisterClassesWhereNameEndsWithAttribute right) => !(left == right);
+
+    public override RegisterAttributeOutputBase CreateOutput(ImmutableArray<INamedTypeSymbol> classesToRegister)
+    {
+        throw new NotImplementedException();
+    }
+
     public override bool Equals(object obj) => obj is DeclaredRegisterClassesWhereNameEndsWithAttribute other && Equals(other);
 
     public bool Equals(DeclaredRegisterClassesWhereNameEndsWithAttribute other) =>

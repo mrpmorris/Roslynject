@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Morris.Roslynjector.Generator.Extensions;
+using Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationClassOutputs;
 using System.Collections.Immutable;
 
 namespace Morris.Roslynjector.Generator.IncrementalValueProviders.DeclaredRegistrationClasses;
@@ -26,6 +27,12 @@ internal class DeclaredRegisterClassesWhereDescendsFromAttribute : DeclaredRegis
 
     public static bool operator ==(DeclaredRegisterClassesWhereDescendsFromAttribute left, DeclaredRegisterClassesWhereDescendsFromAttribute right) => left.Equals(right);
     public static bool operator !=(DeclaredRegisterClassesWhereDescendsFromAttribute left, DeclaredRegisterClassesWhereDescendsFromAttribute right) => !(left == right);
+
+    public override RegisterAttributeOutputBase CreateOutput(ImmutableArray<INamedTypeSymbol> classesToRegister) =>
+        new RegisterClassesWhereDescendsFromAttributeOutput(
+            baseClassType: BaseClassType,
+            classesToRegister: classesToRegister);
+
     public override bool Equals(object obj) => obj is DeclaredRegisterClassesWhereDescendsFromAttribute other && Equals(other);
 
     public bool Equals(DeclaredRegisterClassesWhereDescendsFromAttribute other) =>

@@ -32,7 +32,7 @@ public class RegisterInterfaceTests
     public RegisterInterfaceTests()
     {
         Services = new ServiceCollection();
-        Module.Register(Services);
+        //Module.Register(Services);
     }
 
 
