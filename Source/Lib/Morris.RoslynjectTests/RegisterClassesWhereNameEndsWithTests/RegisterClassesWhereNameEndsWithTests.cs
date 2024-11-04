@@ -32,6 +32,4 @@ public class RegisterClassesWhereNameEndsWithTests
         Services = new ServiceCollection();
         Module.Register(Services);
     }
-
-
 }

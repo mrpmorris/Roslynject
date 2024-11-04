@@ -44,7 +44,7 @@ internal class DeclaredRegisterClassesWhereDescendsFromAttribute : DeclaredRegis
     public override RegisterAttributeOutputBase? CreateOutput(
         ImmutableArray<INamedTypeSymbol> injectionCandidates)
     =>
-        new RegisterClassesWhereDescendsFromAttributeOutput(
+        RegisterClassesWhereDescendsFromAttributeOutput.Create(
             attributeSourceCode: AttributeSourceCode,
             serviceLifetime: ServiceLifetime,
             baseClassType: BaseClassType,
