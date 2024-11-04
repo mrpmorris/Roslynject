@@ -1,9 +1,9 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Morris.Roslynjector.Generator.Extensions;
+using Morris.Roslynject.Generator.Extensions;
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
-namespace Morris.Roslynjector.Generator.IncrementalValueProviders.DeclaredRegistrationClasses;
+namespace Morris.Roslynject.Generator.IncrementalValueProviders.DeclaredRegistrationClasses;
 
 internal static class DeclaredRegistrationClassesFactory
 {
@@ -39,7 +39,7 @@ internal static class DeclaredRegistrationClassesFactory
         INamedTypeSymbol? roslynjectModuleType = context
             .SemanticModel
             .Compilation
-            .GetTypesByMetadataName("Morris.Roslynjector.RoslynjectorModule")
+            .GetTypesByMetadataName("Morris.Roslynject.RoslynjectModule")
             .First();
 
         if (!classSymbol.DescendsFrom(roslynjectModuleType))
