@@ -1,8 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Morris.Roslynjector.Generator.Extensions;
 using Morris.Roslynjector.Generator.Helpers;
-using Morris.Roslynjector.Generator.IncrementalValueProviders.DeclaredRegistrationClasses;
 using System.Collections.Immutable;
 
 namespace Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationClassOutputs;
@@ -27,7 +25,7 @@ internal class RegisterClassesWhereNameEndsWithAttributeOutput :
         !(left == right);
 
     public static RegisterClassesWhereNameEndsWithAttributeOutput? Create(
-        AttributeSyntax attributeSyntax,
+        string attributeSourceCode,
         ServiceLifetime serviceLifetime,
         string suffix,
         ImmutableArray<INamedTypeSymbol> injectionCandidates)
@@ -47,7 +45,7 @@ internal class RegisterClassesWhereNameEndsWithAttributeOutput :
             classesToRegister.Length == 0
             ? null
             : new RegisterClassesWhereNameEndsWithAttributeOutput(
-                attributeSyntax: attributeSyntax,
+                attributeSourceCode: attributeSourceCode,
                 serviceLifetime: serviceLifetime,
                 classesToRegister: classesToRegister);
     }
@@ -57,7 +55,7 @@ internal class RegisterClassesWhereNameEndsWithAttributeOutput :
         && Equals(other);
 
     public bool Equals(RegisterClassesWhereNameEndsWithAttributeOutput other) =>
-        ServiceLifetime == other.ServiceLifetime
+        base.Equals(other)
         && Enumerable.SequenceEqual(
             ClassesToRegister,
             other.ClassesToRegister
@@ -65,7 +63,6 @@ internal class RegisterClassesWhereNameEndsWithAttributeOutput :
 
     public override void GenerateCode(Action<string> writeLine)
     {
-        writeLine($"//{AttributeSyntax}");
         foreach (string classToRegister in ClassesToRegister)
             writeLine($"services.Add{ServiceLifetime}(typeof(global::{classToRegister}));");
     }
@@ -73,18 +70,18 @@ internal class RegisterClassesWhereNameEndsWithAttributeOutput :
     public override int GetHashCode() => CachedHashCode.Value;
 
     private RegisterClassesWhereNameEndsWithAttributeOutput(
-        AttributeSyntax attributeSyntax,
+        string attributeSourceCode,
         ServiceLifetime serviceLifetime,
         ImmutableArray<string> classesToRegister)
         : base(
-            attributeSyntax: attributeSyntax,
+            attributeSourceCode: attributeSourceCode,
             serviceLifetime: serviceLifetime)
     {
         ClassesToRegister = classesToRegister;
         CachedHashCode = new Lazy<int>(() =>
             HashCode
             .Combine(
-                ServiceLifetime,
+                base.GetHashCode(),
                 ClassesToRegister.GetContentsHashCode()
             )
         );

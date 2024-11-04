@@ -22,7 +22,7 @@ internal class DeclaredRegisterClassesWhereNameEndsWithAttribute : DeclaredRegis
         CachedHashCode = new Lazy<int>(() =>
             HashCode
             .Combine(
-                ServiceLifetime,
+                base.GetHashCode(),
                 Suffix
              )
         );
@@ -31,24 +31,30 @@ internal class DeclaredRegisterClassesWhereNameEndsWithAttribute : DeclaredRegis
     public static bool operator ==(
         DeclaredRegisterClassesWhereNameEndsWithAttribute left,
         DeclaredRegisterClassesWhereNameEndsWithAttribute right)
-    => left.Equals(right);
+    =>
+        left.Equals(right);
 
     public static bool operator !=(
         DeclaredRegisterClassesWhereNameEndsWithAttribute left,
         DeclaredRegisterClassesWhereNameEndsWithAttribute right)
-    => !(left == right);
+    =>
+        !(left == right);
 
-    public override RegisterAttributeOutputBase? CreateOutput(ImmutableArray<INamedTypeSymbol> injectionCandidates) =>
+    public override RegisterAttributeOutputBase? CreateOutput(
+        ImmutableArray<INamedTypeSymbol> injectionCandidates)
+    =>
         RegisterClassesWhereNameEndsWithAttributeOutput.Create(
-            attributeSyntax: AttributeSyntax,
+            attributeSourceCode: AttributeSourceCode,
             serviceLifetime: ServiceLifetime,
             suffix: Suffix,
             injectionCandidates: injectionCandidates);
 
-    public override bool Equals(object obj) => obj is DeclaredRegisterClassesWhereNameEndsWithAttribute other && Equals(other);
+    public override bool Equals(object obj) =>
+        obj is DeclaredRegisterClassesWhereNameEndsWithAttribute other
+        && Equals(other);
 
     public bool Equals(DeclaredRegisterClassesWhereNameEndsWithAttribute other) =>
-        ServiceLifetime == other.ServiceLifetime
+        base.Equals(other)
         && Suffix == other.Suffix;
 
     public override int GetHashCode() => CachedHashCode.Value;

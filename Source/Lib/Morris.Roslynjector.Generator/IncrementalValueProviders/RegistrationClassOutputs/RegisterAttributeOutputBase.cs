@@ -4,16 +4,34 @@ namespace Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationCl
 
 internal abstract class RegisterAttributeOutputBase
 {
-    public readonly AttributeSyntax AttributeSyntax;
+    public readonly string AttributeSourceCode;
     public readonly ServiceLifetime ServiceLifetime;
+    private readonly Lazy<int> CachedHashCode;
 
     public abstract void GenerateCode(Action<string> writeLine);
 
     protected RegisterAttributeOutputBase(
-        AttributeSyntax attributeSyntax,
+        string attributeSourceCode,
         ServiceLifetime serviceLifetime)
     {
-        AttributeSyntax = attributeSyntax;
+        AttributeSourceCode = attributeSourceCode;
         ServiceLifetime = serviceLifetime;
+        CachedHashCode = new Lazy<int>(() =>
+            HashCode
+            .Combine(
+                AttributeSourceCode,
+                ServiceLifetime
+            )
+        );
     }
+
+    public override bool Equals(object obj) =>
+        obj is RegisterAttributeOutputBase other
+        && ServiceLifetime == other.ServiceLifetime
+        && AttributeSourceCode.Equals(
+            other.AttributeSourceCode,
+            StringComparison.Ordinal
+        );
+
+    public override int GetHashCode() => CachedHashCode.Value;
 }

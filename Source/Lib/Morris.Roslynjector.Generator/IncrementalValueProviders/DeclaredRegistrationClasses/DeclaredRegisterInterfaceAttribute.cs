@@ -22,24 +22,35 @@ internal class DeclaredRegisterInterfaceAttribute : DeclaredRegisterAttributeBas
         CachedHashCode = new Lazy<int>(() =>
             HashCode
             .Combine(
-                ServiceLifetime,
+                base.GetHashCode(),
                 InterfaceType.ToDisplayString()
             )
         );
     }
 
-    public static bool operator ==(DeclaredRegisterInterfaceAttribute left, DeclaredRegisterInterfaceAttribute right) => left.Equals(right);
-    public static bool operator !=(DeclaredRegisterInterfaceAttribute left, DeclaredRegisterInterfaceAttribute right) => !(left == right);
+    public static bool operator ==(
+        DeclaredRegisterInterfaceAttribute left,
+        DeclaredRegisterInterfaceAttribute right) 
+    =>
+        left.Equals(right);
+
+    public static bool operator !=(
+        DeclaredRegisterInterfaceAttribute left,
+        DeclaredRegisterInterfaceAttribute right)
+    =>
+        !(left == right);
 
     public override RegisterAttributeOutputBase? CreateOutput(ImmutableArray<INamedTypeSymbol> injectionCandidates)
     {
         throw new NotImplementedException();
     }
 
-    public override bool Equals(object obj) => obj is DeclaredRegisterInterfaceAttribute other && Equals(other);
+    public override bool Equals(object obj) =>
+        obj is DeclaredRegisterInterfaceAttribute other
+        && Equals(other);
 
     public bool Equals(DeclaredRegisterInterfaceAttribute other) =>
-        ServiceLifetime == other.ServiceLifetime
+        base.Equals(other)
         && TypeIdentifyWithInheritanceComparer.Default.Equals(InterfaceType, other.InterfaceType);
 
     public override int GetHashCode() => CachedHashCode.Value;

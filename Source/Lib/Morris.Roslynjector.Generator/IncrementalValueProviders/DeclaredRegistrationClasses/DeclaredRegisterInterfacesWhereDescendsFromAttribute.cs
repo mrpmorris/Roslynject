@@ -22,28 +22,38 @@ internal class DeclaredRegisterInterfacesWhereDescendsFromAttribute : DeclaredRe
         CachedHashCode = new Lazy<int>(() =>
             HashCode
             .Combine(
-                ServiceLifetime,
+                base.GetHashCode(),
                 BaseInterfaceType.ToDisplayString()
              )
         );
     }
 
-    public static bool operator ==(DeclaredRegisterInterfacesWhereDescendsFromAttribute left, DeclaredRegisterInterfacesWhereDescendsFromAttribute right) => left.Equals(right);
-    public static bool operator !=(DeclaredRegisterInterfacesWhereDescendsFromAttribute left, DeclaredRegisterInterfacesWhereDescendsFromAttribute right) => !(left == right);
+    public static bool operator ==(
+        DeclaredRegisterInterfacesWhereDescendsFromAttribute left,
+        DeclaredRegisterInterfacesWhereDescendsFromAttribute right)
+    =>
+        left.Equals(right);
+
+    public static bool operator !=(
+        DeclaredRegisterInterfacesWhereDescendsFromAttribute left,
+        DeclaredRegisterInterfacesWhereDescendsFromAttribute right)
+    =>
+        !(left == right);
 
     public override RegisterAttributeOutputBase? CreateOutput(ImmutableArray<INamedTypeSymbol> injectionCandidates)
     {
         throw new NotImplementedException();
     }
 
-    public override bool Equals(object obj) => obj is DeclaredRegisterInterfacesWhereDescendsFromAttribute other && Equals(other);
+    public override bool Equals(object obj) =>
+        obj is DeclaredRegisterInterfacesWhereDescendsFromAttribute other
+        && Equals(other);
 
     public bool Equals(DeclaredRegisterInterfacesWhereDescendsFromAttribute other) =>
-        ServiceLifetime == other.ServiceLifetime
+        base.Equals(other)
         && TypeIdentifyWithInheritanceComparer.Default.Equals(BaseInterfaceType, other.BaseInterfaceType);
 
     public override int GetHashCode() => CachedHashCode.Value;
 
     public override bool Matches(INamedTypeSymbol typeSymbol) => false;
-
 }

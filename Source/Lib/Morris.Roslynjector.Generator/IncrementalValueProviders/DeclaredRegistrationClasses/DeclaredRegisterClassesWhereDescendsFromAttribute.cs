@@ -23,26 +23,39 @@ internal class DeclaredRegisterClassesWhereDescendsFromAttribute : DeclaredRegis
         CachedHashCode = new Lazy<int>(() =>
             HashCode
             .Combine(
-                ServiceLifetime,
+                base.GetHashCode(),
                 BaseClassType.ToDisplayString()
              )
         );
     }
 
-    public static bool operator ==(DeclaredRegisterClassesWhereDescendsFromAttribute left, DeclaredRegisterClassesWhereDescendsFromAttribute right) => left.Equals(right);
-    public static bool operator !=(DeclaredRegisterClassesWhereDescendsFromAttribute left, DeclaredRegisterClassesWhereDescendsFromAttribute right) => !(left == right);
+    public static bool operator ==(
+        DeclaredRegisterClassesWhereDescendsFromAttribute left,
+        DeclaredRegisterClassesWhereDescendsFromAttribute right)
+    =>
+        left.Equals(right);
 
-    public override RegisterAttributeOutputBase? CreateOutput(ImmutableArray<INamedTypeSymbol> injectionCandidates) =>
+    public static bool operator !=(
+        DeclaredRegisterClassesWhereDescendsFromAttribute left,
+        DeclaredRegisterClassesWhereDescendsFromAttribute right)
+    =>
+        !(left == right);
+
+    public override RegisterAttributeOutputBase? CreateOutput(
+        ImmutableArray<INamedTypeSymbol> injectionCandidates)
+    =>
         new RegisterClassesWhereDescendsFromAttributeOutput(
-            attributeSyntax: AttributeSyntax,
+            attributeSourceCode: AttributeSourceCode,
             serviceLifetime: ServiceLifetime,
             baseClassType: BaseClassType,
             injectionCandidates: injectionCandidates);
 
-    public override bool Equals(object obj) => obj is DeclaredRegisterClassesWhereDescendsFromAttribute other && Equals(other);
+    public override bool Equals(object obj) =>
+        obj is DeclaredRegisterClassesWhereDescendsFromAttribute other
+        && Equals(other);
 
     public bool Equals(DeclaredRegisterClassesWhereDescendsFromAttribute other) =>
-        ServiceLifetime == other.ServiceLifetime
+        base.Equals(other)
         && TypeIdentifyWithInheritanceComparer.Default.Equals(BaseClassType, other.BaseClassType);
 
     public override int GetHashCode() => CachedHashCode.Value;

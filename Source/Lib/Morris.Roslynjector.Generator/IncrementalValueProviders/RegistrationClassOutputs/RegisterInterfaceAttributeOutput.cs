@@ -5,10 +5,10 @@ namespace Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationCl
 internal class RegisterInterfaceAttributeOutput : RegisterAttributeOutputBase
 {
     public RegisterInterfaceAttributeOutput(
-        AttributeSyntax attributeSyntax,
+        string attributeSourceCode,
         ServiceLifetime serviceLifetime)
         : base(
-            attributeSyntax: attributeSyntax,
+            attributeSourceCode: attributeSourceCode,
             serviceLifetime: serviceLifetime)
     {
     }

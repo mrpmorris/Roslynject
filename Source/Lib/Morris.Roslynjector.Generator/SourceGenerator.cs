@@ -55,6 +55,12 @@ public class RoslynjectorGenerator : IIncrementalGenerator
                         {
                             foreach (RegisterAttributeOutputBase attr in registrationClass.Attributes)
                             {
+                                string attributeSourceCode = attr.AttributeSourceCode
+                                    .ToString()
+                                    .Replace("\r\n", " ")
+                                    .Replace('\n', ' ');
+                                writer.WriteLine($"// {attributeSourceCode}");
+
                                 attr.GenerateCode(writer.WriteLine);
                                 writer.WriteLine();
                             }

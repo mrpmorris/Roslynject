@@ -12,12 +12,12 @@ internal class RegisterClassesWhereDescendsFromAttributeOutput :
     public readonly ImmutableArray<INamedTypeSymbol> ClassesToRegister;
 
     public RegisterClassesWhereDescendsFromAttributeOutput(
-        AttributeSyntax attributeSyntax,
+        string attributeSourceCode,
         ServiceLifetime serviceLifetime,
         INamedTypeSymbol baseClassType,
         ImmutableArray<INamedTypeSymbol> injectionCandidates)
         : base(
-            attributeSyntax: attributeSyntax,
+            attributeSourceCode: attributeSourceCode,
             serviceLifetime: serviceLifetime)
     {
         BaseClassType = baseClassType;

@@ -22,24 +22,35 @@ internal class DeclaredRegisterInterfacesWhereNameEndsWithAttribute : DeclaredRe
         CachedHashCode = new Lazy<int>(() =>
             HashCode
             .Combine(
-                ServiceLifetime,
+                base.GetHashCode(),
                 Suffix
             )
         );
     }
 
-    public static bool operator ==(DeclaredRegisterInterfacesWhereNameEndsWithAttribute left, DeclaredRegisterInterfacesWhereNameEndsWithAttribute right) => left.Equals(right);
-    public static bool operator !=(DeclaredRegisterInterfacesWhereNameEndsWithAttribute left, DeclaredRegisterInterfacesWhereNameEndsWithAttribute right) => !(left == right);
+    public static bool operator ==(
+        DeclaredRegisterInterfacesWhereNameEndsWithAttribute left,
+        DeclaredRegisterInterfacesWhereNameEndsWithAttribute right)
+    =>
+        left.Equals(right);
+
+    public static bool operator !=(
+        DeclaredRegisterInterfacesWhereNameEndsWithAttribute left,
+        DeclaredRegisterInterfacesWhereNameEndsWithAttribute right)
+    =>
+        !(left == right);
 
     public override RegisterAttributeOutputBase? CreateOutput(ImmutableArray<INamedTypeSymbol> injectionCandidates)
     {
         throw new NotImplementedException();
     }
 
-    public override bool Equals(object obj) => obj is DeclaredRegisterInterfacesWhereNameEndsWithAttribute other && Equals(other);
+    public override bool Equals(object obj) =>
+        obj is DeclaredRegisterInterfacesWhereNameEndsWithAttribute other
+        && Equals(other);
 
     public bool Equals(DeclaredRegisterInterfacesWhereNameEndsWithAttribute other) =>
-        ServiceLifetime == other.ServiceLifetime
+        base.Equals(other)
         && Suffix == other.Suffix;
 
     public override int GetHashCode() => CachedHashCode.Value;

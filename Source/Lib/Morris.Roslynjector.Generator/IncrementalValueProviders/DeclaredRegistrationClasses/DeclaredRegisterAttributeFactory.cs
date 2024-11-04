@@ -1,6 +1,5 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis;
-using System.Collections.Immutable;
 using Morris.Roslynjector.Generator.Extensions;
 
 namespace Morris.Roslynjector.Generator.IncrementalValueProviders.DeclaredRegistrationClasses;
