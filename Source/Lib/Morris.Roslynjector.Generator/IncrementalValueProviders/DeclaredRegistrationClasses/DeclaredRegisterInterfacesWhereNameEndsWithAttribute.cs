@@ -28,7 +28,7 @@ internal class DeclaredRegisterInterfacesWhereNameEndsWithAttribute : DeclaredRe
     public static bool operator ==(DeclaredRegisterInterfacesWhereNameEndsWithAttribute left, DeclaredRegisterInterfacesWhereNameEndsWithAttribute right) => left.Equals(right);
     public static bool operator !=(DeclaredRegisterInterfacesWhereNameEndsWithAttribute left, DeclaredRegisterInterfacesWhereNameEndsWithAttribute right) => !(left == right);
 
-    public override IEnumerable<RegisterAttributeOutputBase> CreateOutput(ImmutableArray<INamedTypeSymbol> classesToRegister)
+    public override RegisterAttributeOutputBase CreateOutput(ImmutableArray<INamedTypeSymbol> classesToRegister)
     {
         throw new NotImplementedException();
     }
