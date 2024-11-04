@@ -35,7 +35,22 @@ internal class DeclaredRegistrationClass : IEquatable<DeclaredRegistrationClass>
 
     public static bool operator ==(DeclaredRegistrationClass left, DeclaredRegistrationClass right) => left.Equals(right);
     public static bool operator !=(DeclaredRegistrationClass left, DeclaredRegistrationClass right) => !(left == right);
-    public override bool Equals(object obj) => obj is DeclaredRegistrationClass other && Equals(other);
+
+    public RegistrationClassOutput CreateOutput(
+        ImmutableArray<INamedTypeSymbol> injectionCandidates)
+    =>
+        new RegistrationClassOutput(
+            namespaceName: NamespaceName,
+            className: ClassName,
+            attributes: Attributes
+                .Select(x => x.CreateOutput(injectionCandidates))
+                .Where(x => x is not null)
+                .ToImmutableArray()
+            );
+
+    public override bool Equals(object obj) =>
+        obj is DeclaredRegistrationClass other
+        && Equals(other);
 
     public bool Equals(DeclaredRegistrationClass other) =>
         ReferenceEquals(this, other)
@@ -48,9 +63,5 @@ internal class DeclaredRegistrationClass : IEquatable<DeclaredRegistrationClass>
 
     public override int GetHashCode() => CachedHashCode.Value;
 
-    internal RegistrationClassOutput CreateOutput(ImmutableArray<INamedTypeSymbol> right)
-    {
-        return null!;
-    }
 }
 

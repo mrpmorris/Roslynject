@@ -1,14 +1,22 @@
 ﻿using Microsoft.CodeAnalysis;
+using Morris.Roslynjector.Generator.Extensions;
 using Morris.Roslynjector.Generator.Helpers;
+using Morris.Roslynjector.Generator.IncrementalValueProviders.DeclaredRegistrationClasses;
 using System.Collections.Immutable;
 
 namespace Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationClassOutputs;
 
-internal class RegisterClassesWhereNameEndsWithAttributeOutput : RegisterAttributeOutputBase
+internal class RegisterClassesWhereNameEndsWithAttributeOutput :
+    RegisterAttributeOutputBase,
+    IEquatable<RegisterClassesWhereNameEndsWithAttributeOutput>
 {
     public readonly ImmutableArray<string> ClassesToRegister;
+    private readonly Lazy<int> CachedHashCode;
 
-    public RegisterClassesWhereNameEndsWithAttributeOutput? Create(
+    public static bool operator ==(RegisterClassesWhereNameEndsWithAttributeOutput left, RegisterClassesWhereNameEndsWithAttributeOutput right) => left.Equals(right);
+    public static bool operator !=(RegisterClassesWhereNameEndsWithAttributeOutput left, RegisterClassesWhereNameEndsWithAttributeOutput right) => !(left == right);
+
+    public static RegisterClassesWhereNameEndsWithAttributeOutput? Create(
         ServiceLifetime serviceLifetime,
         string suffix,
         ImmutableArray<INamedTypeSymbol> injectionCandidates)
@@ -29,8 +37,20 @@ internal class RegisterClassesWhereNameEndsWithAttributeOutput : RegisterAttribu
             : new RegisterClassesWhereNameEndsWithAttributeOutput(
                 serviceLifetime: serviceLifetime,
                 classesToRegister: classesToRegister);
-
     }
+
+    public override bool Equals(object obj) =>
+        obj is RegisterClassesWhereNameEndsWithAttributeOutput other
+        && Equals(other);
+
+    public bool Equals(RegisterClassesWhereNameEndsWithAttributeOutput other) =>
+        ServiceLifetime == other.ServiceLifetime
+        && Enumerable.SequenceEqual(
+            ClassesToRegister,
+            other.ClassesToRegister
+        );
+
+    public override int GetHashCode() => CachedHashCode.Value;
 
     private RegisterClassesWhereNameEndsWithAttributeOutput(
         ServiceLifetime serviceLifetime,
@@ -38,5 +58,12 @@ internal class RegisterClassesWhereNameEndsWithAttributeOutput : RegisterAttribu
         : base(serviceLifetime)
     {
         ClassesToRegister = classesToRegister;
+        CachedHashCode = new Lazy<int>(() =>
+            HashCode
+            .Combine(
+                ServiceLifetime,
+                ClassesToRegister.GetContentsHashCode()
+            )
+        );
     }
 }

@@ -6,11 +6,11 @@ namespace Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationCl
 internal static class RegistrationClassOutputsFactory
 {
     public static IncrementalValuesProvider<RegistrationClassOutput> CreateValuesProvider(
-        IncrementalValuesProvider<DeclaredRegistrationClass> registrationClasses,
-        IncrementalValuesProvider<INamedTypeSymbol> candidateClasses)
+        IncrementalValuesProvider<DeclaredRegistrationClass> declaredRegistrationClasses,
+        IncrementalValuesProvider<INamedTypeSymbol> injectionCandidates)
     =>
-        registrationClasses
-        .Combine(candidateClasses.Collect())
+        declaredRegistrationClasses
+        .Combine(injectionCandidates.Collect())
         .Select((pair, cancellationToken) =>
             pair.Left.CreateOutput(pair.Right)
         )

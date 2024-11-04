@@ -17,10 +17,10 @@ public class RoslynjectorGenerator : IIncrementalGenerator
         IncrementalValuesProvider<INamedTypeSymbol> injectionCandidates =
             InjectionCandidatesFactory.CreateValuesProvider(context);
 
-        //IncrementalValuesProvider<DeclaredRegistrationClass> outputRegistrationClasses =
-        //    RegistrationClassOutputsFactory.CreateValuesProvider(
-        //        registrationClasses: declaredRegistrationClasses,
-        //        candidateClasses: injectionCandidates);
+        IncrementalValuesProvider<RegistrationClassOutput> registrationClassOutputs =
+            RegistrationClassOutputsFactory.CreateValuesProvider(
+                declaredRegistrationClasses: declaredRegistrationClasses,
+                injectionCandidates: injectionCandidates);
 
         //context.RegisterSourceOutput(
         //    source: outputRegistrationClasses.Collect(),
