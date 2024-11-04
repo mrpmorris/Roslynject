@@ -7,7 +7,7 @@ namespace Morris.RoslynjectorTests.RegisterClassesWhereNameEndsWithTests.ValidCa
 [RegisterClassesWhereNameEndsWith(ServiceLifetime.Scoped, "Scoped")]
 [RegisterClassesWhereNameEndsWith(ServiceLifetime.Transient, "Transient")]
 [RegisterClassesWhereNameEndsWith(ServiceLifetime.Singleton, "Invalid")]
-public static partial class Module
+public partial class Module : RoslynjectorModule
 {
 
 }

@@ -11,7 +11,7 @@ internal static class INamedTypeSymbolExtensions
         INamedTypeSymbol? current = child.BaseType;
         while (current is not null)
         {
-            if (ClassIdentityComparer.Instance.Equals(current.ConstructedFrom, baseClass.ConstructedFrom))
+            if (TypeIdentityComparer.Default.Equals(current.ConstructedFrom, baseClass.ConstructedFrom))
                 return true;
             current = current.BaseType;
         }

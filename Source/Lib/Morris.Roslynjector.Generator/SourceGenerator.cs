@@ -1,7 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Morris.Roslynjector.Generator.Extensions;
-using Morris.Roslynjector.Generator.IncrementalValueProviders.AttributeMetas;
-using Morris.Roslynjector.Generator.IncrementalValueProviders.DiscoveredRegistrationClasses;
+using Morris.Roslynjector.Generator.IncrementalValueProviders.DeclaredRegistrationClasses;
 using Morris.Roslynjector.Generator.IncrementalValueProviders.InjectionCandidates;
 using Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationClassOutputs;
 using System.CodeDom.Compiler;
@@ -13,18 +12,19 @@ public class RoslynjectorGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        IncrementalValuesProvider<DiscoveredRegistrationClass> discoveredRegistrationClasses =
-            DiscoveredRegistrationClassesFactory.CreateValuesProvider(context);
+        IncrementalValuesProvider<DeclaredRegistrationClass> declaredRegistrationClasses =
+            DeclaredRegistrationClassesFactory.CreateValuesProvider(context);
+
         IncrementalValuesProvider<INamedTypeSymbol> injectionCandidates =
             InjectionCandidatesFactory.CreateValuesProvider(context);
 
-        IncrementalValuesProvider<DiscoveredRegistrationClass> outputRegistrationClasses =
+        IncrementalValuesProvider<RegistrationClassOutput> registrationClassOutputs =
             RegistrationClassOutputsFactory.CreateValuesProvider(
-                registrationClasses: discoveredRegistrationClasses,
-                candidateClasses: injectionCandidates);
+                declaredRegistrationClasses: declaredRegistrationClasses,
+                injectionCandidates: injectionCandidates);
 
         context.RegisterSourceOutput(
-            source: outputRegistrationClasses.Collect(),
+            source: registrationClassOutputs.Collect(),
             static (productionContext, input) =>
             {
                 using var sourceCodeBuilder = new StringWriter();
@@ -53,8 +53,14 @@ public class RoslynjectorGenerator : IIncrementalGenerator
                         writer.WriteLine("public static void Register(IServiceCollection services)");
                         using (writer.CodeBlock())
                         {
-                            foreach (RegisterAttributeMetaBase attr in registrationClass.Attributes)
+                            foreach (RegisterAttributeOutputBase attr in registrationClass.Attributes)
                             {
+                                string attributeSourceCode = attr.AttributeSourceCode
+                                    .ToString()
+                                    .Replace("\r\n", " ")
+                                    .Replace('\n', ' ');
+                                writer.WriteLine($"// {attributeSourceCode}");
+
                                 attr.GenerateCode(writer.WriteLine);
                                 writer.WriteLine();
                             }

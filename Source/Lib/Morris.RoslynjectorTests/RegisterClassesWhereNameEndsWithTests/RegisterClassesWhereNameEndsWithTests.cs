@@ -4,7 +4,7 @@ using Morris.RoslynjectorTests.RegisterClassesWhereNameEndsWithTests.ValidCandid
 namespace Morris.RoslynjectorTests.RegisterClassesWhereNameEndsWithTests;
 
 [TestClass]
-public class RegisterClassesWhereDescendsFromTests
+public class RegisterClassesWhereNameEndsWithTests
 {
     private readonly IServiceCollection Services;
 
@@ -27,7 +27,7 @@ public class RegisterClassesWhereDescendsFromTests
         Services.AssertIsRegistered(ServiceLifetime.Transient, typeof(Class2Transient));
     }
 
-    public RegisterClassesWhereDescendsFromTests()
+    public RegisterClassesWhereNameEndsWithTests()
     {
         Services = new ServiceCollection();
         Module.Register(Services);

@@ -22,7 +22,7 @@ internal static class AttributeSyntaxExtensions
         var attributeSymbol = semanticModel.GetSymbolInfo(source).Symbol?.ContainingType;
 
         // Retrieve constructor parameters if available
-        IMethodSymbol constructor = attributeSymbol?.Constructors.First();
+        IMethodSymbol constructor = attributeSymbol!.Constructors.First();
         ImmutableArray<IParameterSymbol> parameters = constructor.Parameters;
 
         for (int argumentIndex = 0; argumentIndex < arguments.Value.Count; argumentIndex++)
@@ -40,7 +40,7 @@ internal static class AttributeSyntaxExtensions
                 : $"arg{argumentIndex}";
 
             ExpressionSyntax argumentExpression = argument.Expression;
-            Optional<object> argumentValue = semanticModel.GetConstantValue(argumentExpression);
+            Optional<object?> argumentValue = semanticModel.GetConstantValue(argumentExpression);
             builder[argumentName] = argumentValue.HasValue ? argumentValue.Value : null;
         }
 

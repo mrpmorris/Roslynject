@@ -2,9 +2,9 @@
 
 namespace Morris.Roslynjector.Generator;
 
-internal class ClassIdentityComparer : IEqualityComparer<INamedTypeSymbol>
+internal class TypeIdentityComparer : IEqualityComparer<INamedTypeSymbol>
 {
-    public static readonly ClassSignatureComparer Instance = new();
+    public static readonly TypeIdentifyWithInheritanceComparer Default = new();
 
     public bool Equals(INamedTypeSymbol? x, INamedTypeSymbol? y) =>
         (x, y) switch

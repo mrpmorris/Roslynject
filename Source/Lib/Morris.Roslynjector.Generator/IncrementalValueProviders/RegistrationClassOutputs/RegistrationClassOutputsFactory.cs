@@ -1,17 +1,18 @@
 ﻿using Microsoft.CodeAnalysis;
-using Morris.Roslynjector.Generator.IncrementalValueProviders.DiscoveredRegistrationClasses;
+using Morris.Roslynjector.Generator.IncrementalValueProviders.DeclaredRegistrationClasses;
 
 namespace Morris.Roslynjector.Generator.IncrementalValueProviders.RegistrationClassOutputs;
 
 internal static class RegistrationClassOutputsFactory
 {
-    public static IncrementalValuesProvider<DiscoveredRegistrationClass> CreateValuesProvider(
-        IncrementalValuesProvider<DiscoveredRegistrationClass> registrationClasses,
-        IncrementalValuesProvider<INamedTypeSymbol> candidateClasses)
+    public static IncrementalValuesProvider<RegistrationClassOutput> CreateValuesProvider(
+        IncrementalValuesProvider<DeclaredRegistrationClass> declaredRegistrationClasses,
+        IncrementalValuesProvider<INamedTypeSymbol> injectionCandidates)
     =>
-        registrationClasses
-        .Combine(candidateClasses.Collect())
+        declaredRegistrationClasses
+        .Combine(injectionCandidates.Collect())
         .Select((pair, cancellationToken) =>
-            pair.Left.CloneWithCandidateClasses(pair.Right)
-        );
+            pair.Left.CreateOutput(pair.Right)!
+        )
+        .Where(x => x is not null);
 }

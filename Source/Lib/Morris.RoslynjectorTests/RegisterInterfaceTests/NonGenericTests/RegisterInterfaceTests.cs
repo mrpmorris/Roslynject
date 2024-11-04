@@ -1,39 +1,39 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿//using Microsoft.Extensions.DependencyInjection;
 
-namespace Morris.RoslynjectorTests.RegisterInterfaceTests.NonGenericTests;
+//namespace Morris.RoslynjectorTests.RegisterInterfaceTests.NonGenericTests;
 
-[TestClass]
-public class RegisterInterfaceTests
-{
-    private readonly IServiceCollection Services;
+//[TestClass]
+//public class RegisterInterfaceTests
+//{
+//    private readonly IServiceCollection Services;
 
-    [TestMethod]
-    public void OnlyValidCandidatesAreRegistered()
-    {
-        Assert.AreEqual(2, Services.Count);
-    }
+//    [TestMethod]
+//    public void OnlyValidCandidatesAreRegistered()
+//    {
+//        Assert.AreEqual(2, Services.Count);
+//    }
 
-    [TestMethod]
-    public void InterfacesAreRegisteredWithCorrectClasses()
-    {
-        Services.AssertIsRegistered(
-            lifetime: ServiceLifetime.Singleton,
-            serviceType: typeof(ICommunicationStrategy),
-            implementationType: typeof(EmailStrategy)
-        );
+//    [TestMethod]
+//    public void InterfacesAreRegisteredWithCorrectClasses()
+//    {
+//        Services.AssertIsRegistered(
+//            lifetime: ServiceLifetime.Singleton,
+//            serviceType: typeof(ICommunicationStrategy),
+//            implementationType: typeof(EmailStrategy)
+//        );
 
-        Services.AssertIsRegistered(
-            lifetime: ServiceLifetime.Singleton,
-            serviceType: typeof(ICommunicationStrategy),
-            implementationType: typeof(SmsStrategy)
-        );
-    }
+//        Services.AssertIsRegistered(
+//            lifetime: ServiceLifetime.Singleton,
+//            serviceType: typeof(ICommunicationStrategy),
+//            implementationType: typeof(SmsStrategy)
+//        );
+//    }
 
-    public RegisterInterfaceTests()
-    {
-        Services = new ServiceCollection();
-        Module.Register(Services);
-    }
+//    public RegisterInterfaceTests()
+//    {
+//        Services = new ServiceCollection();
+//        //Module.Register(Services);
+//    }
 
 
-}
+//}

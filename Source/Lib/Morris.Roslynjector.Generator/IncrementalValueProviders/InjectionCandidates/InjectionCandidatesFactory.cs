@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using System.Runtime.CompilerServices;
+using Morris.Roslynjector.Generator.Extensions;
 
 namespace Morris.Roslynjector.Generator.IncrementalValueProviders.InjectionCandidates;
 
@@ -16,11 +17,13 @@ internal static class InjectionCandidatesFactory
             predicate: SyntaxNodePredicate,
             transform: static (context, _) =>
             {
-                INamedTypeSymbol result = (INamedTypeSymbol)context.SemanticModel.GetDeclaredSymbol(context.Node)!;
+                INamedTypeSymbol result = (INamedTypeSymbol)context
+                    .SemanticModel
+                    .GetDeclaredSymbol(context.Node)!;
                 return result;
             }
         )
-        .WithComparer(new ClassSignatureComparer());
+        .WithComparer(new TypeIdentifyWithInheritanceComparer());
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static bool SyntaxNodePredicate(
@@ -29,6 +32,5 @@ internal static class InjectionCandidatesFactory
     =>
         syntaxNode is ClassDeclarationSyntax classNode
         && classNode.TypeParameterList is null
-        && !classNode.Modifiers.Any(SyntaxKind.AbstractKeyword)
-        && !classNode.Modifiers.Any(SyntaxKind.StaticKeyword);
+        && classNode.IsConcrete();
 }

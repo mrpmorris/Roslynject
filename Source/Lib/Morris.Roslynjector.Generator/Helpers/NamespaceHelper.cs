@@ -6,8 +6,20 @@ namespace Morris.Roslynjector.Generator.Helpers;
 internal static class NamespaceHelper
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string Combine(string? namespaceName, string className) =>
+    public static string Combine(
+        string? namespaceName,
+        string className)
+    =>
         namespaceName is null
         ? className
-        : namespaceName + "." + className;
+        : $"{namespaceName}.{className}";
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static string Combine(
+        INamespaceSymbol namespaceSymbol,
+        string className)
+    =>
+        namespaceSymbol.IsGlobalNamespace
+        ? className
+        : $"{namespaceSymbol.ToDisplayString()}.{className}";
 }
