@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Morris.RoslynjectTests.RegisterClassesWhereDescendsFromTests.NonGenericTests;
 
 namespace Morris.RoslynjectTests.RegisterClassesOfTypeTests.NonGenericTests;
 

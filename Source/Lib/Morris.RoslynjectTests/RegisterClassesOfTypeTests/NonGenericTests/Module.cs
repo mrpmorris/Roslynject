@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Morris.Roslynject;
 
-namespace Morris.RoslynjectTests.RegisterClassesWhereDescendsFromTests.NonGenericTests;
+namespace Morris.RoslynjectTests.RegisterClassesOfTypeTests.NonGenericTests;
 
 [RegisterClassesOfType(ServiceLifetime.Singleton, typeof(SingletonBase))]
 [RegisterClassesOfType(ServiceLifetime.Scoped, typeof(ScopedBase))]
