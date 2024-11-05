@@ -3,9 +3,9 @@ using Morris.Roslynject;
 
 namespace Morris.RoslynjectTests.RegisterClassesWhereDescendsFromTests.NonGenericTests;
 
-[RegisterClassesWhereDescendsFrom(ServiceLifetime.Singleton, typeof(SingletonBase))]
-[RegisterClassesWhereDescendsFrom(ServiceLifetime.Scoped, typeof(ScopedBase))]
-[RegisterClassesWhereDescendsFrom(ServiceLifetime.Transient, typeof(TransientBase))]
+[RegisterClassesOfType(ServiceLifetime.Singleton, typeof(SingletonBase))]
+[RegisterClassesOfType(ServiceLifetime.Scoped, typeof(ScopedBase))]
+[RegisterClassesOfType(ServiceLifetime.Transient, typeof(TransientBase))]
 public partial class Module : RoslynjectModule
 {
 

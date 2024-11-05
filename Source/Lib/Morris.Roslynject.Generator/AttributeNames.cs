@@ -7,7 +7,7 @@ internal static class AttributeNames
             "RegisterInterface",
             "RegisterInterfacesWhereDescendsFrom",
             "RegisterInterfacesWhereNameEndsWith",
-            "RegisterClassesWhereDescendsFrom",
+            "RegisterClassesOfType",
             "RegisterClassesWhereNameEndsWith"
         ];
 }

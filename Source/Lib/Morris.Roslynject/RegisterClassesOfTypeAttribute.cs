@@ -3,12 +3,12 @@
 namespace Morris.Roslynject;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public class RegisterClassesWhereDescendsFromAttribute : Attribute
+public class RegisterClassesOfTypeAttribute : Attribute
 {
     public ServiceLifetime ServiceLifetime { get; set; }
     public Type BaseType { get; set; }
 
-    public RegisterClassesWhereDescendsFromAttribute(
+    public RegisterClassesOfTypeAttribute(
         ServiceLifetime serviceLifetime,
         Type baseType)
     {

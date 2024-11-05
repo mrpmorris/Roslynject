@@ -6,12 +6,12 @@ using System.Collections.Immutable;
 
 namespace Morris.Roslynject.Generator.IncrementalValueProviders.DeclaredRegistrationClasses;
 
-internal class DeclaredRegisterClassesWhereDescendsFromAttribute : DeclaredRegisterAttributeBase, IEquatable<DeclaredRegisterClassesWhereDescendsFromAttribute>
+internal class DeclaredRegisterClassesOfTypeAttribute : DeclaredRegisterAttributeBase, IEquatable<DeclaredRegisterClassesOfTypeAttribute>
 {
     public readonly INamedTypeSymbol BaseClassType;
     private readonly Lazy<int> CachedHashCode;
 
-    public DeclaredRegisterClassesWhereDescendsFromAttribute(
+    public DeclaredRegisterClassesOfTypeAttribute(
         AttributeSyntax attributeSyntax,
         ServiceLifetime serviceLifetime,
         INamedTypeSymbol baseClassType)
@@ -30,31 +30,31 @@ internal class DeclaredRegisterClassesWhereDescendsFromAttribute : DeclaredRegis
     }
 
     public static bool operator ==(
-        DeclaredRegisterClassesWhereDescendsFromAttribute left,
-        DeclaredRegisterClassesWhereDescendsFromAttribute right)
+        DeclaredRegisterClassesOfTypeAttribute left,
+        DeclaredRegisterClassesOfTypeAttribute right)
     =>
         left.Equals(right);
 
     public static bool operator !=(
-        DeclaredRegisterClassesWhereDescendsFromAttribute left,
-        DeclaredRegisterClassesWhereDescendsFromAttribute right)
+        DeclaredRegisterClassesOfTypeAttribute left,
+        DeclaredRegisterClassesOfTypeAttribute right)
     =>
         !(left == right);
 
     public override RegisterAttributeOutputBase? CreateOutput(
         ImmutableArray<INamedTypeSymbol> injectionCandidates)
     =>
-        RegisterClassesWhereDescendsFromAttributeOutput.Create(
+        RegisterClassesOfTypeOutput.Create(
             attributeSourceCode: AttributeSourceCode,
             serviceLifetime: ServiceLifetime,
             baseClassType: BaseClassType,
             injectionCandidates: injectionCandidates);
 
     public override bool Equals(object obj) =>
-        obj is DeclaredRegisterClassesWhereDescendsFromAttribute other
+        obj is DeclaredRegisterClassesOfTypeAttribute other
         && Equals(other);
 
-    public bool Equals(DeclaredRegisterClassesWhereDescendsFromAttribute other) =>
+    public bool Equals(DeclaredRegisterClassesOfTypeAttribute other) =>
         base.Equals(other)
         && TypeIdentifyWithInheritanceComparer.Default.Equals(BaseClassType, other.BaseClassType);
 

@@ -27,8 +27,8 @@ internal static class DeclaredRegisterAttributeFactory
         string attributeName = attributeTypeSymbol.Name;
         return attributeName switch
         {
-            "RegisterClassesWhereDescendsFromAttribute" =>
-                CreateDeclaredRegisterClassesWhereDescendsFromAttribute(
+            "RegisterClassesOfTypeAttribute" =>
+                CreateDeclaredRegisterClassesOfTypeAttribute(
                     semanticModel: semanticModel,
                     attributeSyntax: attributeSyntax,
                     serviceLifetime: serviceLifetime,
@@ -67,7 +67,7 @@ internal static class DeclaredRegisterAttributeFactory
         };
     }
 
-    private static DeclaredRegisterAttributeBase? CreateDeclaredRegisterClassesWhereDescendsFromAttribute(
+    private static DeclaredRegisterAttributeBase? CreateDeclaredRegisterClassesOfTypeAttribute(
         SemanticModel semanticModel,
         AttributeSyntax attributeSyntax,
         ServiceLifetime serviceLifetime,
@@ -79,7 +79,7 @@ internal static class DeclaredRegisterAttributeFactory
 
         return baseClassType is null
             ? null
-            : new DeclaredRegisterClassesWhereDescendsFromAttribute(
+            : new DeclaredRegisterClassesOfTypeAttribute(
                 attributeSyntax: attributeSyntax,
                 serviceLifetime: serviceLifetime,
                 baseClassType: baseClassType);

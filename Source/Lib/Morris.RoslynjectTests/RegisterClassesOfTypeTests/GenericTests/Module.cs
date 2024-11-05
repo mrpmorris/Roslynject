@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Morris.Roslynject;
 
-namespace Morris.RoslynjectTests.RegisterClassesWhereDescendsFromTests.GenericTests;
+namespace Morris.RoslynjectTests.RegisterClassesOfTypeTests.GenericTests;
 
-[RegisterClassesWhereDescendsFrom(ServiceLifetime.Singleton, typeof(SingletonBase<>))]
-[RegisterClassesWhereDescendsFrom(ServiceLifetime.Scoped, typeof(ScopedBase<>))]
-[RegisterClassesWhereDescendsFrom(ServiceLifetime.Transient, typeof(TransientBase<>))]
-[RegisterClassesWhereDescendsFrom(ServiceLifetime.Scoped, typeof(GenericBase<>))]
+[RegisterClassesOfType(ServiceLifetime.Singleton, typeof(SingletonBase<>))]
+[RegisterClassesOfType(ServiceLifetime.Scoped, typeof(ScopedBase<>))]
+[RegisterClassesOfType(ServiceLifetime.Transient, typeof(TransientBase<>))]
+[RegisterClassesOfType(ServiceLifetime.Scoped, typeof(GenericBase<>))]
 public partial class Module : RoslynjectModule
 {
 

@@ -1,29 +1,27 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Morris.Roslynject.Generator.Extensions;
 using Morris.Roslynject.Generator.Helpers;
-using Morris.Roslynject.Generator.IncrementalValueProviders.DeclaredRegistrationClasses;
 using System.Collections.Immutable;
 
 namespace Morris.Roslynject.Generator.IncrementalValueProviders.RegistrationClassOutputs;
 
-internal class RegisterClassesWhereDescendsFromAttributeOutput : 
+internal class RegisterClassesOfTypeOutput : 
     RegisterAttributeOutputBase,
-    IEquatable<RegisterClassesWhereDescendsFromAttributeOutput>
+    IEquatable<RegisterClassesOfTypeOutput>
 {
     public readonly INamedTypeSymbol BaseClassType;
     public readonly ImmutableArray<string> ClassesToRegister;
     private readonly Lazy<int> CachedHashCode;
 
     public static bool operator ==(
-        RegisterClassesWhereDescendsFromAttributeOutput left,
-        RegisterClassesWhereDescendsFromAttributeOutput right)
+        RegisterClassesOfTypeOutput left,
+        RegisterClassesOfTypeOutput right)
     =>
         left.Equals(right);
 
     public static bool operator !=(
-        RegisterClassesWhereDescendsFromAttributeOutput left,
-        RegisterClassesWhereDescendsFromAttributeOutput right)
+        RegisterClassesOfTypeOutput left,
+        RegisterClassesOfTypeOutput right)
     =>
         !(left == right);
 
@@ -47,7 +45,7 @@ internal class RegisterClassesWhereDescendsFromAttributeOutput :
         return
             classesToRegister.Length == 0
             ? null
-            : new RegisterClassesWhereDescendsFromAttributeOutput(
+            : new RegisterClassesOfTypeOutput(
                 attributeSourceCode: attributeSourceCode,
                 serviceLifetime: serviceLifetime,
                 baseClassType: baseClassType,
@@ -57,10 +55,10 @@ internal class RegisterClassesWhereDescendsFromAttributeOutput :
     public override int GetHashCode() => CachedHashCode.Value;
 
     public override bool Equals(object obj) =>
-        obj is RegisterClassesWhereDescendsFromAttributeOutput other
+        obj is RegisterClassesOfTypeOutput other
         && Equals(other);
 
-    public bool Equals(RegisterClassesWhereDescendsFromAttributeOutput other) =>
+    public bool Equals(RegisterClassesOfTypeOutput other) =>
         base.Equals(other)
         && TypeIdentityComparer.Default.Equals(
             BaseClassType,
@@ -77,7 +75,7 @@ internal class RegisterClassesWhereDescendsFromAttributeOutput :
             writeLine($"services.Add{ServiceLifetime}(typeof(global::{classToRegister}));");
     }
 
-    private RegisterClassesWhereDescendsFromAttributeOutput(
+    private RegisterClassesOfTypeOutput(
         string attributeSourceCode,
         ServiceLifetime serviceLifetime,
         INamedTypeSymbol baseClassType,

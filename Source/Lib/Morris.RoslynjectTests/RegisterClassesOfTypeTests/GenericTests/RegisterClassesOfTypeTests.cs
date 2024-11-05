@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Morris.RoslynjectTests.RegisterClassesWhereDescendsFromTests.GenericTests;
+namespace Morris.RoslynjectTests.RegisterClassesOfTypeTests.GenericTests;
 
 [TestClass]
-public class RegisterClassesWhereDescendsFromTests
+public class RegisterClassesOfTypeTests
 {
     private readonly IServiceCollection Services;
 
@@ -28,7 +28,7 @@ public class RegisterClassesWhereDescendsFromTests
         Services.AssertIsRegistered(ServiceLifetime.Scoped, typeof(GrandchildOfGenericBase));
     }
 
-    public RegisterClassesWhereDescendsFromTests()
+    public RegisterClassesOfTypeTests()
     {
         Services = new ServiceCollection();
         Module.Register(Services);
