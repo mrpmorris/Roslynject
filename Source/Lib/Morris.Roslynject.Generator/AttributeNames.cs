@@ -4,8 +4,7 @@ internal static class AttributeNames
 {
     public static readonly string[] ShortNames =
         [
-            "RegisterInterface",
-            "RegisterInterfacesWhereDescendsFrom",
+            "RegisterInterfacesOfType",
             "RegisterInterfacesWhereNameEndsWith",
             "RegisterClassesOfType",
             "RegisterClassesWhereNameEndsWith"

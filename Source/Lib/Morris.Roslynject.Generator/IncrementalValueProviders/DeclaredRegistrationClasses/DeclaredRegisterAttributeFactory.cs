@@ -41,16 +41,8 @@ internal static class DeclaredRegisterAttributeFactory
                     serviceLifetime: serviceLifetime,
                     suffixArgument: arguments[1]),
 
-            "RegisterInterfaceAttribute" =>
-                CreateDeclaredRegisterInterfaceAttribute(
-                    semanticModel: semanticModel,
-                    attributeSyntax: attributeSyntax,
-                    serviceLifetime: serviceLifetime,
-                    interfaceTypeArgument: arguments[1],
-                    cancellationToken: cancellationToken),
-
-            "RegisterInterfacesWhereDescendsFromAttribute" =>
-                CreateDeclaredRegisterInterfacesWhereDescendsFromAttribute(
+            "RegisterInterfacesOfTypeAttribute" =>
+                CreateDeclaredRegisterInterfacesOfTypeAttribute(
                     semanticModel: semanticModel,
                     attributeSyntax: attributeSyntax,
                     serviceLifetime: serviceLifetime,
@@ -97,25 +89,7 @@ internal static class DeclaredRegisterAttributeFactory
             suffix: suffix);
     }
 
-    private static DeclaredRegisterAttributeBase? CreateDeclaredRegisterInterfaceAttribute(
-        SemanticModel semanticModel,
-        AttributeSyntax attributeSyntax,
-        ServiceLifetime serviceLifetime,
-        AttributeArgumentSyntax interfaceTypeArgument,
-        CancellationToken cancellationToken)
-    {
-        INamedTypeSymbol? interfaceType = interfaceTypeArgument
-            .GetNamedTypeSymbol(semanticModel, cancellationToken);
-
-        return interfaceType is null
-            ? null
-            : new DeclaredRegisterInterfaceAttribute(
-                attributeSyntax: attributeSyntax,
-                serviceLifetime: serviceLifetime,
-                interfaceType: interfaceType);
-    }
-
-    private static DeclaredRegisterAttributeBase? CreateDeclaredRegisterInterfacesWhereDescendsFromAttribute(
+    private static DeclaredRegisterAttributeBase? CreateDeclaredRegisterInterfacesOfTypeAttribute(
         SemanticModel semanticModel,
         AttributeSyntax attributeSyntax,
         ServiceLifetime serviceLifetime,
@@ -127,7 +101,7 @@ internal static class DeclaredRegisterAttributeFactory
 
         return baseInterfaceType is null
             ? null
-            : new DeclaredRegisterInterfacesWhereDescendsFromAttribute(
+            : new DeclaredRegisterInterfacesOfTypeAttribute(
                 attributeSyntax: attributeSyntax,
                 serviceLifetime: serviceLifetime,
                 baseInterfaceType: baseInterfaceType);

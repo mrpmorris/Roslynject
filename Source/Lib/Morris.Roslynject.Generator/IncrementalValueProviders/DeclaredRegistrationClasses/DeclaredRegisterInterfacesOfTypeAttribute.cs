@@ -5,12 +5,12 @@ using System.Collections.Immutable;
 
 namespace Morris.Roslynject.Generator.IncrementalValueProviders.DeclaredRegistrationClasses;
 
-internal class DeclaredRegisterInterfacesWhereDescendsFromAttribute : DeclaredRegisterAttributeBase, IEquatable<DeclaredRegisterInterfacesWhereDescendsFromAttribute>
+internal class DeclaredRegisterInterfacesOfTypeAttribute : DeclaredRegisterAttributeBase, IEquatable<DeclaredRegisterInterfacesOfTypeAttribute>
 {
     public readonly INamedTypeSymbol BaseInterfaceType;
     private readonly Lazy<int> CachedHashCode;
 
-    public DeclaredRegisterInterfacesWhereDescendsFromAttribute(
+    public DeclaredRegisterInterfacesOfTypeAttribute(
         AttributeSyntax attributeSyntax,
         ServiceLifetime serviceLifetime,
         INamedTypeSymbol baseInterfaceType)
@@ -29,14 +29,14 @@ internal class DeclaredRegisterInterfacesWhereDescendsFromAttribute : DeclaredRe
     }
 
     public static bool operator ==(
-        DeclaredRegisterInterfacesWhereDescendsFromAttribute left,
-        DeclaredRegisterInterfacesWhereDescendsFromAttribute right)
+        DeclaredRegisterInterfacesOfTypeAttribute left,
+        DeclaredRegisterInterfacesOfTypeAttribute right)
     =>
         left.Equals(right);
 
     public static bool operator !=(
-        DeclaredRegisterInterfacesWhereDescendsFromAttribute left,
-        DeclaredRegisterInterfacesWhereDescendsFromAttribute right)
+        DeclaredRegisterInterfacesOfTypeAttribute left,
+        DeclaredRegisterInterfacesOfTypeAttribute right)
     =>
         !(left == right);
 
@@ -46,10 +46,10 @@ internal class DeclaredRegisterInterfacesWhereDescendsFromAttribute : DeclaredRe
     }
 
     public override bool Equals(object obj) =>
-        obj is DeclaredRegisterInterfacesWhereDescendsFromAttribute other
+        obj is DeclaredRegisterInterfacesOfTypeAttribute other
         && Equals(other);
 
-    public bool Equals(DeclaredRegisterInterfacesWhereDescendsFromAttribute other) =>
+    public bool Equals(DeclaredRegisterInterfacesOfTypeAttribute other) =>
         base.Equals(other)
         && TypeIdentifyWithInheritanceComparer.Default.Equals(BaseInterfaceType, other.BaseInterfaceType);
 

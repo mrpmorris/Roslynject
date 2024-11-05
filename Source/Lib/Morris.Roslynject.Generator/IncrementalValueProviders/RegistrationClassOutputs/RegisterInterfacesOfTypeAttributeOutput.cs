@@ -2,9 +2,9 @@
 
 namespace Morris.Roslynject.Generator.IncrementalValueProviders.RegistrationClassOutputs;
 
-internal class RegisterInterfacesWhereDescendsFromAttributeOutput : RegisterAttributeOutputBase
+internal class RegisterInterfacesOfTypeAttributeOutput : RegisterAttributeOutputBase
 {
-    public RegisterInterfacesWhereDescendsFromAttributeOutput(
+    public RegisterInterfacesOfTypeAttributeOutput(
         string attributeSourceCode,
         ServiceLifetime serviceLifetime)
         : base(
