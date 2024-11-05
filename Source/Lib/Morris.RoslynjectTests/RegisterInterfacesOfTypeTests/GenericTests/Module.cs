@@ -14,4 +14,4 @@ public class FirstValidClass : IGenericInterface<int, string> { }
 public class SecondValidClass : IGenericInterface<Guid, object?> { }
 
 public interface IDescendantGenericInterface<T1, T2> : IGenericInterface<T1, T2> { }
-public class InvalidClass : IDescendantGenericInterface<int, string> { }
+public class DescendantClass : IDescendantGenericInterface<int, string> { }

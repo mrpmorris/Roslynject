@@ -14,4 +14,4 @@ public class EmailStrategy : ICommunicationStrategy { }
 public class SmsStrategy : ICommunicationStrategy { }
 
 public interface IDescendantCommunicationStrategy : ICommunicationStrategy { }
-public class InvalidStrategy : IDescendantCommunicationStrategy { }
+public class DescendantCommunicationStrategy : IDescendantCommunicationStrategy { }
