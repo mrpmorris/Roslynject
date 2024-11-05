@@ -32,8 +32,6 @@ public class RegisterInterfacesOfTypeTests
     public RegisterInterfacesOfTypeTests()
     {
         Services = new ServiceCollection();
-        //Module.Register(Services);
+        Module.Register(Services);
     }
-
-
 }

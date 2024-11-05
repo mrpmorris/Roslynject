@@ -4,7 +4,7 @@ using Morris.Roslynject;
 namespace Morris.RoslynjectTests.RegisterInterfacesOfTypeTests.GenericTests;
 
 [RegisterInterfacesOfType(ServiceLifetime.Singleton, typeof(IGenericInterface<,>))]
-public static partial class Module
+public partial class Module : RoslynjectModule
 {
 
 }

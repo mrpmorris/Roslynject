@@ -1,6 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-
-namespace Morris.Roslynject.Generator.IncrementalValueProviders.RegistrationClassOutputs;
+﻿namespace Morris.Roslynject.Generator.IncrementalValueProviders.RegistrationClassOutputs;
 
 internal abstract class RegisterAttributeOutputBase
 {
@@ -34,4 +32,5 @@ internal abstract class RegisterAttributeOutputBase
         );
 
     public override int GetHashCode() => CachedHashCode.Value;
+
 }

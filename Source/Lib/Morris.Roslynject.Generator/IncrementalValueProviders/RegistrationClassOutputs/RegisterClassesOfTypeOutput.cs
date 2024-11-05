@@ -52,7 +52,6 @@ internal class RegisterClassesOfTypeOutput :
                 classesToRegister: classesToRegister);
     }
 
-    public override int GetHashCode() => CachedHashCode.Value;
 
     public override bool Equals(object obj) =>
         obj is RegisterClassesOfTypeOutput other
@@ -74,6 +73,7 @@ internal class RegisterClassesOfTypeOutput :
         foreach (string classToRegister in ClassesToRegister)
             writeLine($"services.Add{ServiceLifetime}(typeof(global::{classToRegister}));");
     }
+    public override int GetHashCode() => CachedHashCode.Value;
 
     private RegisterClassesOfTypeOutput(
         string attributeSourceCode,

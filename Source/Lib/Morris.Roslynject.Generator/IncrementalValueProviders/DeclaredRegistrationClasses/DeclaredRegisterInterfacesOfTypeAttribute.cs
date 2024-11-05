@@ -41,9 +41,12 @@ internal class DeclaredRegisterInterfacesOfTypeAttribute : DeclaredRegisterAttri
         !(left == right);
 
     public override RegisterAttributeOutputBase? CreateOutput(ImmutableArray<INamedTypeSymbol> injectionCandidates)
-    {
-        throw new NotImplementedException();
-    }
+    =>
+        RegisterInterfacesOfTypeAttributeOutput.Create(
+            attributeSourceCode: AttributeSourceCode,
+            serviceLifetime: ServiceLifetime,
+            baseInterfaceType: BaseInterfaceType,
+            injectionCandidates: injectionCandidates);
 
     public override bool Equals(object obj) =>
         obj is DeclaredRegisterInterfacesOfTypeAttribute other

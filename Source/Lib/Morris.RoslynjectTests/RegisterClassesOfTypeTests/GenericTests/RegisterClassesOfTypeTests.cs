@@ -33,6 +33,4 @@ public class RegisterClassesOfTypeTests
         Services = new ServiceCollection();
         Module.Register(Services);
     }
-
-
 }
