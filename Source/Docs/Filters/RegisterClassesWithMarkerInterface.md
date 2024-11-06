@@ -7,6 +7,15 @@ specified `IMarker` and registers them.
 services.AddScoped(typeof(DiscoveredClass));
 ```
 
+## Restrictions
+The specified interface type may not be an open generic.
+
+| Type | Valid |
+|
+| IMarker&lt;&gt; | No |
+| IMarker | Yes |
+| IMarker&lt;User&gt; | Yes |
+
 ## Example
 ### Manually written code
 ```c#
