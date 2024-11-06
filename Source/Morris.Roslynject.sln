@@ -9,7 +9,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Morris.Roslynject", "Lib\Mo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Morris.RoslynjectTests", "Lib\Morris.RoslynjectTests\Morris.RoslynjectTests.csproj", "{124D2466-FF7B-4355-819B-19910A5A3A00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Morris.Roslynject.Generator", "Lib\Morris.Roslynject.Generator\Morris.Roslynject.Generator.csproj", "{C9D7143D-7E0E-4581-BAD3-B2A2ACCA5981}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Morris.Roslynject.Generator", "Lib\Morris.Roslynject.Generator\Morris.Roslynject.Generator.csproj", "{C9D7143D-7E0E-4581-BAD3-B2A2ACCA5981}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E3BF3370-084D-4FA0-8C05-6D9CCBACE316}"
+	ProjectSection(SolutionItems) = preProject
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{968DCD71-75C4-4A16-BD2A-3D9BE8DB053D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Filters", "Filters", "{B5388CB8-9570-4E70-89EC-C1B13A30F914}"
+	ProjectSection(SolutionItems) = preProject
+		Docs\Filters\RegisterClassesDescendedFrom.md = Docs\Filters\RegisterClassesDescendedFrom.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +49,7 @@ Global
 		{ED22EDA0-4D55-4571-9AF2-2413A1084DA5} = {218D71E2-3402-44A5-A1B0-87E354623BC1}
 		{124D2466-FF7B-4355-819B-19910A5A3A00} = {218D71E2-3402-44A5-A1B0-87E354623BC1}
 		{C9D7143D-7E0E-4581-BAD3-B2A2ACCA5981} = {218D71E2-3402-44A5-A1B0-87E354623BC1}
+		{B5388CB8-9570-4E70-89EC-C1B13A30F914} = {968DCD71-75C4-4A16-BD2A-3D9BE8DB053D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {15447A65-7BF5-4A77-A50B-0890396CC013}
