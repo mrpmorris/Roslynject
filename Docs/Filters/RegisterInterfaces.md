@@ -12,7 +12,7 @@ services.AddScoped(typeof(ICommunicationStrategy), typeof(DiscoveredClass));
 The specified interface type may not be an open generic.
 
 | Type | Valid |
-|
+| - | - |
 | IInterface&lt;&gt; | No |
 | IInterface | Yes |
 | IInterface&lt;User&gt; | Yes |
@@ -76,7 +76,7 @@ partial class Module
 
 ### Excluded classes
 | Class | Reason |
-|
+| - | - |
 | AbstractStrategy | Abstract |
 | GenericStrategy&lt;T&gt; | Open generic class |
 | PhoneAFriendStrategy | Implements descendent interface |
