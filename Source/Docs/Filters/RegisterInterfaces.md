@@ -9,13 +9,13 @@ services.AddScoped(typeof(ICommunicationStrategy), typeof(DiscoveredClass));
 ```
 
 ## Restrictions
-The specified interface type may not be an open generic
+The specified interface type may not be an open generic.
 
 | Type | Valid |
 |
 | IInterface | Yes |
 | IInterface&lt;User&gt; | Yes |
-| Interface&lt;&gt; | No |
+| IInterface&lt;&gt; | No |
 
 ## Example
 ### Manually written code
