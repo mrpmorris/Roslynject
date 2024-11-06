@@ -13,9 +13,9 @@ The specified interface type may not be an open generic.
 
 | Type | Valid |
 |
+| IInterface&lt;&gt; | No |
 | IInterface | Yes |
 | IInterface&lt;User&gt; | Yes |
-| IInterface&lt;&gt; | No |
 
 ## Example
 ### Manually written code
