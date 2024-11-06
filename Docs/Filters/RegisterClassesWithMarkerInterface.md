@@ -11,7 +11,7 @@ services.AddScoped(typeof(DiscoveredClass));
 The specified interface type may not be an open generic.
 
 | Type | Valid |
-|
+| - | - |
 | IMarker&lt;&gt; | No |
 | IMarker | Yes |
 | IMarker&lt;User&gt; | Yes |
@@ -61,6 +61,6 @@ partial class Module
 
 ## Excluded classes
 | Class | Reason |
-|
+| - | - |
 | AbstractBaseClass | Abstract |
 | GenericBaseClass&lt;T&gt; | Open generic class |
