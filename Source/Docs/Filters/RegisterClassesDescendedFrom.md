@@ -1,4 +1,4 @@
-# RegisterClassesDescendingFrom
+# RegisterClassesDescendedFrom
 
 ## Manually written code
 ```c#
