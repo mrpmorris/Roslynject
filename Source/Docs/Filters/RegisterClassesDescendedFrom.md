@@ -1,6 +1,14 @@
 # RegisterClassesDescendedFrom
 
-## Manually written code
+Finds all concrete classes descending from the
+specified `BaseClass` and registers them.
+
+```c#
+services.AddScoped(typeof(DiscoveredClass));
+```
+
+## Example
+### Manually written code
 ```c#
 [RegisterClassesDescendedFrom(ServiceLifetime.Scoped, typeof(BaseClass))]
 public partial class MyModule : RoslynjectModule
@@ -8,21 +16,25 @@ public partial class MyModule : RoslynjectModule
 }
 ```
 
-## Class diagram
+### Class diagram
 
 ```mermaid
 classDiagram
-   BaseClass <-- ChildClass
-   BaseClass <-- GenericChildClass~T~
-   ChildClass <-- GrandchildClass
-   GenericChildClass <-- OtherGrandchildClass~int~
+   BaseClass <|-- ChildClass
+   BaseClass <|-- GenericChildClass~T~
+   ChildClass <|-- GrandchildClass
+   GenericChildClass <|-- OtherGrandchildClass~int~
 
    class ChildClass {
        <<abstract>>
    }
+
+   class GenericChildClass {
+      <<open generic class>>
+   }
 ```
 
-## Generated code
+### Generated code
 ```c#
 partial class Module
 {
