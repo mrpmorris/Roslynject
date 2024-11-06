@@ -1,4 +1,4 @@
-# RegisterInterfaces
+# RegisterInterface
 
 Finds all concrete classes that implement the exact
 interface specified and registers them using the
@@ -20,7 +20,7 @@ The specified interface type may not be an open generic.
 ## Example
 ### Manually written code
 ```c#
-[RegisterInterfaces(ServiceLifetime.Scoped, typeof(ICommunicationStrategy))]
+[RegisterInterface(ServiceLifetime.Scoped, typeof(ICommunicationStrategy))]
 public partial class MyModule : RoslynjectModule
 {
 }

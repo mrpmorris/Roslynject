@@ -22,7 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Filters", "Filters", "{B538
 	ProjectSection(SolutionItems) = preProject
 		..\Docs\Filters\RegisterClassesDescendedFrom.md = ..\Docs\Filters\RegisterClassesDescendedFrom.md
 		..\Docs\Filters\RegisterClassesWithMarkerInterface.md = ..\Docs\Filters\RegisterClassesWithMarkerInterface.md
-		..\Docs\Filters\RegisterInterfaces.md = ..\Docs\Filters\RegisterInterfaces.md
+		..\Docs\Filters\RegisterInterface.md = ..\Docs\Filters\RegisterInterface.md
 	EndProjectSection
 EndProject
 Global
