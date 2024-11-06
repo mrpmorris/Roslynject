@@ -4,23 +4,23 @@ using System.Collections.Immutable;
 
 namespace Morris.Roslynject.Generator.IncrementalValueProviders.RegistrationClassOutputs;
 
-internal class RegisterInterfacesOfTypeAttributeOutput :
+internal class RegisterInterfacesDescendedFromAttributeOutput :
     RegisterAttributeOutputBase,
-    IEquatable<RegisterInterfacesOfTypeAttributeOutput>
+    IEquatable<RegisterInterfacesDescendedFromAttributeOutput>
 {
     public readonly INamedTypeSymbol BaseInterfaceType;
     public readonly ImmutableArray<(string interfaceName, string className)> ClassesToRegister;
     private readonly Lazy<int> CachedHashCode;
 
     public static bool operator ==(
-        RegisterInterfacesOfTypeAttributeOutput left,
-        RegisterInterfacesOfTypeAttributeOutput right)
+        RegisterInterfacesDescendedFromAttributeOutput left,
+        RegisterInterfacesDescendedFromAttributeOutput right)
     =>
         left.Equals(right);
 
     public static bool operator !=(
-        RegisterInterfacesOfTypeAttributeOutput left,
-        RegisterInterfacesOfTypeAttributeOutput right)
+        RegisterInterfacesDescendedFromAttributeOutput left,
+        RegisterInterfacesDescendedFromAttributeOutput right)
     =>
         !left.Equals(right);
 
@@ -36,7 +36,7 @@ internal class RegisterInterfacesOfTypeAttributeOutput :
                 x => x.Interfaces,
                 (injectionCandidate, interfaceType) => (injectionCandidate, interfaceType)
             )
-            .Where(x => x.interfaceType.IsOfType(baseInterfaceType))
+            .Where(x => x.interfaceType.IsDescendedFrom(baseInterfaceType))
             .Select(x =>
                 (
                     x.interfaceType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
@@ -48,7 +48,7 @@ internal class RegisterInterfacesOfTypeAttributeOutput :
         return
             classesToRegister.Length == 0
             ? null
-            : new RegisterInterfacesOfTypeAttributeOutput(
+            : new RegisterInterfacesDescendedFromAttributeOutput(
                 attributeSourceCode: attributeSourceCode,
                 serviceLifetime: serviceLifetime,
                 baseInterfaceType: baseInterfaceType,
@@ -56,10 +56,10 @@ internal class RegisterInterfacesOfTypeAttributeOutput :
     }
 
     public override bool Equals(object obj) =>
-        obj is RegisterInterfacesOfTypeAttributeOutput other
+        obj is RegisterInterfacesDescendedFromAttributeOutput other
         && Equals(other);
 
-    public bool Equals(RegisterInterfacesOfTypeAttributeOutput other) =>
+    public bool Equals(RegisterInterfacesDescendedFromAttributeOutput other) =>
         base.Equals(other)
         && TypeIdentityComparer.Default.Equals(
             BaseInterfaceType,
@@ -78,7 +78,7 @@ internal class RegisterInterfacesOfTypeAttributeOutput :
 
     public override int GetHashCode() => CachedHashCode.Value;
 
-    private RegisterInterfacesOfTypeAttributeOutput(
+    private RegisterInterfacesDescendedFromAttributeOutput(
         string attributeSourceCode,
         ServiceLifetime serviceLifetime,
         INamedTypeSymbol baseInterfaceType,

@@ -49,7 +49,7 @@ internal static class DeclaredRegistrationClassesFactory
             context
             .Node
             .DescendantNodes()
-            .OfType<AttributeSyntax>()
+            .DescendedFrom<AttributeSyntax>()
             .Select(x =>
                 DeclaredRegisterAttributeFactory.Create(
                     attributeSyntax: x,

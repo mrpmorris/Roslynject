@@ -1,16 +1,16 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Morris.RoslynjectTests.RegisterClassesOfTypeTests.NonGenericTests;
+namespace Morris.RoslynjectTests.RegisterClassesDescendedFromTests.GenericTests;
 
 [TestClass]
-public class RegisterClassesOfTypeTests
+public class RegisterClassesDescendedFromTests
 {
     private readonly IServiceCollection Services;
 
     [TestMethod]
     public void OnlyValidCandidatesAreRegistered()
     {
-        Assert.AreEqual(9, Services.Count);
+        Assert.AreEqual(7, Services.Count);
     }
 
     [TestMethod]
@@ -18,18 +18,17 @@ public class RegisterClassesOfTypeTests
     {
         Services.AssertIsRegistered(ServiceLifetime.Singleton, typeof(SingletonDescendant1));
         Services.AssertIsRegistered(ServiceLifetime.Singleton, typeof(SingletonDescendant2));
-        Services.AssertIsRegistered(ServiceLifetime.Singleton, typeof(SingletonGrandchild));
 
         Services.AssertIsRegistered(ServiceLifetime.Scoped, typeof(ScopedDescendant1));
         Services.AssertIsRegistered(ServiceLifetime.Scoped, typeof(ScopedDescendant2));
-        Services.AssertIsRegistered(ServiceLifetime.Scoped, typeof(ScopedGrandchild));
 
         Services.AssertIsRegistered(ServiceLifetime.Transient, typeof(TransientDescendant1));
         Services.AssertIsRegistered(ServiceLifetime.Transient, typeof(TransientDescendant2));
-        Services.AssertIsRegistered(ServiceLifetime.Transient, typeof(TransientGrandchild));
+
+        Services.AssertIsRegistered(ServiceLifetime.Scoped, typeof(GrandchildOfGenericBase));
     }
 
-    public RegisterClassesOfTypeTests()
+    public RegisterClassesDescendedFromTests()
     {
         Services = new ServiceCollection();
         Module.Register(Services);

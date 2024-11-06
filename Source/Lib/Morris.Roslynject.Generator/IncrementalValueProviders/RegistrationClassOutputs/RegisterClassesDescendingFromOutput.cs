@@ -5,23 +5,23 @@ using System.Collections.Immutable;
 
 namespace Morris.Roslynject.Generator.IncrementalValueProviders.RegistrationClassOutputs;
 
-internal class RegisterClassesOfTypeOutput : 
+internal class RegisterClassesDescendedFromOutput : 
     RegisterAttributeOutputBase,
-    IEquatable<RegisterClassesOfTypeOutput>
+    IEquatable<RegisterClassesDescendedFromOutput>
 {
     public readonly INamedTypeSymbol BaseClassType;
     public readonly ImmutableArray<string> ClassesToRegister;
     private readonly Lazy<int> CachedHashCode;
 
     public static bool operator ==(
-        RegisterClassesOfTypeOutput left,
-        RegisterClassesOfTypeOutput right)
+        RegisterClassesDescendedFromOutput left,
+        RegisterClassesDescendedFromOutput right)
     =>
         left.Equals(right);
 
     public static bool operator !=(
-        RegisterClassesOfTypeOutput left,
-        RegisterClassesOfTypeOutput right)
+        RegisterClassesDescendedFromOutput left,
+        RegisterClassesDescendedFromOutput right)
     =>
         !(left == right);
 
@@ -45,7 +45,7 @@ internal class RegisterClassesOfTypeOutput :
         return
             classesToRegister.Length == 0
             ? null
-            : new RegisterClassesOfTypeOutput(
+            : new RegisterClassesDescendedFromOutput(
                 attributeSourceCode: attributeSourceCode,
                 serviceLifetime: serviceLifetime,
                 baseClassType: baseClassType,
@@ -54,10 +54,10 @@ internal class RegisterClassesOfTypeOutput :
 
 
     public override bool Equals(object obj) =>
-        obj is RegisterClassesOfTypeOutput other
+        obj is RegisterClassesDescendedFromOutput other
         && Equals(other);
 
-    public bool Equals(RegisterClassesOfTypeOutput other) =>
+    public bool Equals(RegisterClassesDescendedFromOutput other) =>
         base.Equals(other)
         && TypeIdentityComparer.Default.Equals(
             BaseClassType,
@@ -75,7 +75,7 @@ internal class RegisterClassesOfTypeOutput :
     }
     public override int GetHashCode() => CachedHashCode.Value;
 
-    private RegisterClassesOfTypeOutput(
+    private RegisterClassesDescendedFromOutput(
         string attributeSourceCode,
         ServiceLifetime serviceLifetime,
         INamedTypeSymbol baseClassType,

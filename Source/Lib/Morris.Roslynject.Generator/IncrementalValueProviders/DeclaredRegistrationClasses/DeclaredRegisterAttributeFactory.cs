@@ -27,39 +27,27 @@ internal static class DeclaredRegisterAttributeFactory
         string attributeName = attributeTypeSymbol.Name;
         return attributeName switch
         {
-            "RegisterClassesOfTypeAttribute" =>
-                CreateDeclaredRegisterClassesOfTypeAttribute(
+            "RegisterClassesDescendedFromAttribute" =>
+                CreateDeclaredRegisterClassesDescendedFromAttribute(
                     semanticModel: semanticModel,
                     attributeSyntax: attributeSyntax,
                     serviceLifetime: serviceLifetime,
                     baseClassTypeArgument: arguments[1],
                     cancellationToken: cancellationToken),
 
-            "RegisterClassesWhereNameEndsWithAttribute" =>
-                CreateDeclaredRegisterClassesWhereNameEndsWithAttribute(
-                    attributeSyntax: attributeSyntax,
-                    serviceLifetime: serviceLifetime,
-                    suffixArgument: arguments[1]),
-
-            "RegisterInterfacesOfTypeAttribute" =>
-                CreateDeclaredRegisterInterfacesOfTypeAttribute(
+            "RegisterInterfacesDescendedFromAttribute" =>
+                CreateDeclaredRegisterInterfacesDescendedFromAttribute(
                     semanticModel: semanticModel,
                     attributeSyntax: attributeSyntax,
                     serviceLifetime: serviceLifetime,
                     baseInterfaceTypeArgument: arguments[1],
                     cancellationToken: cancellationToken),
 
-            "RegisterInterfacesWhereNameEndsWithAttribute" =>
-                CreateRegisterInterfacesWhereNameEndsWithAttribute(
-                    attributeSyntax: attributeSyntax,
-                    serviceLifetime: serviceLifetime,
-                    suffixArgument: arguments[1]),
-
             _ => null
         };
     }
 
-    private static DeclaredRegisterAttributeBase? CreateDeclaredRegisterClassesOfTypeAttribute(
+    private static DeclaredRegisterAttributeBase? CreateDeclaredRegisterClassesDescendedFromAttribute(
         SemanticModel semanticModel,
         AttributeSyntax attributeSyntax,
         ServiceLifetime serviceLifetime,
@@ -71,25 +59,13 @@ internal static class DeclaredRegisterAttributeFactory
 
         return baseClassType is null
             ? null
-            : new DeclaredRegisterClassesOfTypeAttribute(
+            : new DeclaredRegisterClassesDescendedFromAttribute(
                 attributeSyntax: attributeSyntax,
                 serviceLifetime: serviceLifetime,
                 baseClassType: baseClassType);
     }
 
-    private static DeclaredRegisterAttributeBase CreateDeclaredRegisterClassesWhereNameEndsWithAttribute(
-        AttributeSyntax attributeSyntax,
-        ServiceLifetime serviceLifetime,
-        AttributeArgumentSyntax suffixArgument)
-    {
-        string suffix = suffixArgument.Expression.ToString().Trim('"');
-        return new DeclaredRegisterClassesWhereNameEndsWithAttribute(
-            attributeSyntax: attributeSyntax,
-            serviceLifetime: serviceLifetime,
-            suffix: suffix);
-    }
-
-    private static DeclaredRegisterAttributeBase? CreateDeclaredRegisterInterfacesOfTypeAttribute(
+    private static DeclaredRegisterAttributeBase? CreateDeclaredRegisterInterfacesDescendedFromAttribute(
         SemanticModel semanticModel,
         AttributeSyntax attributeSyntax,
         ServiceLifetime serviceLifetime,
@@ -101,22 +77,10 @@ internal static class DeclaredRegisterAttributeFactory
 
         return baseInterfaceType is null
             ? null
-            : new DeclaredRegisterInterfacesOfTypeAttribute(
+            : new DeclaredRegisterInterfacesDescendedFromAttribute(
                 attributeSyntax: attributeSyntax,
                 serviceLifetime: serviceLifetime,
                 baseInterfaceType: baseInterfaceType);
-    }
-
-    private static DeclaredRegisterAttributeBase CreateRegisterInterfacesWhereNameEndsWithAttribute(
-        AttributeSyntax attributeSyntax,
-        ServiceLifetime serviceLifetime,
-        AttributeArgumentSyntax suffixArgument)
-    {
-        string suffix = suffixArgument.Expression.ToString().Trim('"');
-        return new DeclaredRegisterInterfacesWhereNameEndsWithAttribute(
-            attributeSyntax: attributeSyntax,
-            serviceLifetime: serviceLifetime,
-            suffix: suffix);
     }
 }
 

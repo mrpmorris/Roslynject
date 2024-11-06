@@ -1,64 +1,65 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Morris.Roslynject.Generator.Extensions;
 using Morris.Roslynject.Generator.IncrementalValueProviders.RegistrationClassOutputs;
 using System.Collections.Immutable;
 
 namespace Morris.Roslynject.Generator.IncrementalValueProviders.DeclaredRegistrationClasses;
 
-internal class DeclaredRegisterClassesWhereNameEndsWithAttribute : DeclaredRegisterAttributeBase, IEquatable<DeclaredRegisterClassesWhereNameEndsWithAttribute>
+internal class DeclaredRegisterClassesDescendedFromAttribute : DeclaredRegisterAttributeBase, IEquatable<DeclaredRegisterClassesDescendedFromAttribute>
 {
-    public readonly string Suffix;
+    public readonly INamedTypeSymbol BaseClassType;
     private readonly Lazy<int> CachedHashCode;
 
-    public DeclaredRegisterClassesWhereNameEndsWithAttribute(
+    public DeclaredRegisterClassesDescendedFromAttribute(
         AttributeSyntax attributeSyntax,
         ServiceLifetime serviceLifetime,
-        string suffix)
+        INamedTypeSymbol baseClassType)
         : base(
             attributeSyntax: attributeSyntax,
             serviceLifetime: serviceLifetime)
     {
-        Suffix = suffix;
+        BaseClassType = baseClassType;
         CachedHashCode = new Lazy<int>(() =>
             HashCode
             .Combine(
                 base.GetHashCode(),
-                Suffix
+                BaseClassType.ToDisplayString()
              )
         );
     }
 
     public static bool operator ==(
-        DeclaredRegisterClassesWhereNameEndsWithAttribute left,
-        DeclaredRegisterClassesWhereNameEndsWithAttribute right)
+        DeclaredRegisterClassesDescendedFromAttribute left,
+        DeclaredRegisterClassesDescendedFromAttribute right)
     =>
         left.Equals(right);
 
     public static bool operator !=(
-        DeclaredRegisterClassesWhereNameEndsWithAttribute left,
-        DeclaredRegisterClassesWhereNameEndsWithAttribute right)
+        DeclaredRegisterClassesDescendedFromAttribute left,
+        DeclaredRegisterClassesDescendedFromAttribute right)
     =>
         !(left == right);
 
     public override RegisterAttributeOutputBase? CreateOutput(
         ImmutableArray<INamedTypeSymbol> injectionCandidates)
     =>
-        RegisterClassesWhereNameEndsWithAttributeOutput.Create(
+        RegisterClassesDescendedFromOutput.Create(
             attributeSourceCode: AttributeSourceCode,
             serviceLifetime: ServiceLifetime,
-            suffix: Suffix,
+            baseClassType: BaseClassType,
             injectionCandidates: injectionCandidates);
 
     public override bool Equals(object obj) =>
-        obj is DeclaredRegisterClassesWhereNameEndsWithAttribute other
+        obj is DeclaredRegisterClassesDescendedFromAttribute other
         && Equals(other);
 
-    public bool Equals(DeclaredRegisterClassesWhereNameEndsWithAttribute other) =>
+    public bool Equals(DeclaredRegisterClassesDescendedFromAttribute other) =>
         base.Equals(other)
-        && Suffix == other.Suffix;
+        && TypeIdentifyWithInheritanceComparer.Default.Equals(BaseClassType, other.BaseClassType);
 
     public override int GetHashCode() => CachedHashCode.Value;
 
     public override bool Matches(INamedTypeSymbol typeSymbol) =>
-        typeSymbol.Name.EndsWith(Suffix, StringComparison.OrdinalIgnoreCase);
+        typeSymbol.DescendsFrom(BaseClassType);
 }

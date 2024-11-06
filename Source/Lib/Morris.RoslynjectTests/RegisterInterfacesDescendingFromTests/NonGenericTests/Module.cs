@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Morris.Roslynject;
 
-namespace Morris.RoslynjectTests.RegisterInterfacesOfTypeTests.NonGenericTests;
+namespace Morris.RoslynjectTests.RegisterInterfacesDescendedFromTests.NonGenericTests;
 
-[RegisterInterfacesOfType(ServiceLifetime.Singleton, typeof(ICommunicationStrategy))]
+[RegisterInterfacesDescendedFrom(ServiceLifetime.Singleton, typeof(ICommunicationStrategy))]
 public partial class Module : RoslynjectModule
 {
 

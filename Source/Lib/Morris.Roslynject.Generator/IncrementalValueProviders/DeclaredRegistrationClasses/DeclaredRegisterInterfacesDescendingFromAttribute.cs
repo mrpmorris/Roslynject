@@ -5,12 +5,12 @@ using System.Collections.Immutable;
 
 namespace Morris.Roslynject.Generator.IncrementalValueProviders.DeclaredRegistrationClasses;
 
-internal class DeclaredRegisterInterfacesOfTypeAttribute : DeclaredRegisterAttributeBase, IEquatable<DeclaredRegisterInterfacesOfTypeAttribute>
+internal class DeclaredRegisterInterfacesDescendedFromAttribute : DeclaredRegisterAttributeBase, IEquatable<DeclaredRegisterInterfacesDescendedFromAttribute>
 {
     public readonly INamedTypeSymbol BaseInterfaceType;
     private readonly Lazy<int> CachedHashCode;
 
-    public DeclaredRegisterInterfacesOfTypeAttribute(
+    public DeclaredRegisterInterfacesDescendedFromAttribute(
         AttributeSyntax attributeSyntax,
         ServiceLifetime serviceLifetime,
         INamedTypeSymbol baseInterfaceType)
@@ -29,30 +29,30 @@ internal class DeclaredRegisterInterfacesOfTypeAttribute : DeclaredRegisterAttri
     }
 
     public static bool operator ==(
-        DeclaredRegisterInterfacesOfTypeAttribute left,
-        DeclaredRegisterInterfacesOfTypeAttribute right)
+        DeclaredRegisterInterfacesDescendedFromAttribute left,
+        DeclaredRegisterInterfacesDescendedFromAttribute right)
     =>
         left.Equals(right);
 
     public static bool operator !=(
-        DeclaredRegisterInterfacesOfTypeAttribute left,
-        DeclaredRegisterInterfacesOfTypeAttribute right)
+        DeclaredRegisterInterfacesDescendedFromAttribute left,
+        DeclaredRegisterInterfacesDescendedFromAttribute right)
     =>
         !(left == right);
 
     public override RegisterAttributeOutputBase? CreateOutput(ImmutableArray<INamedTypeSymbol> injectionCandidates)
     =>
-        RegisterInterfacesOfTypeAttributeOutput.Create(
+        RegisterInterfacesDescendedFromAttributeOutput.Create(
             attributeSourceCode: AttributeSourceCode,
             serviceLifetime: ServiceLifetime,
             baseInterfaceType: BaseInterfaceType,
             injectionCandidates: injectionCandidates);
 
     public override bool Equals(object obj) =>
-        obj is DeclaredRegisterInterfacesOfTypeAttribute other
+        obj is DeclaredRegisterInterfacesDescendedFromAttribute other
         && Equals(other);
 
-    public bool Equals(DeclaredRegisterInterfacesOfTypeAttribute other) =>
+    public bool Equals(DeclaredRegisterInterfacesDescendedFromAttribute other) =>
         base.Equals(other)
         && TypeIdentifyWithInheritanceComparer.Default.Equals(BaseInterfaceType, other.BaseInterfaceType);
 

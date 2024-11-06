@@ -3,16 +3,16 @@
 namespace Morris.Roslynject;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public class RegisterInterfacesWhereNameEndsWithAttribute : Attribute
+public class RegisterClassesDescendedFromAttribute : Attribute
 {
     public ServiceLifetime ServiceLifetime { get; set; }
-    public string Suffix { get; set; } = string.Empty;
+    public Type BaseType { get; set; }
 
-    public RegisterInterfacesWhereNameEndsWithAttribute(
+    public RegisterClassesDescendedFromAttribute(
         ServiceLifetime serviceLifetime,
-        string suffix)
+        Type baseType)
     {
-        Suffix = suffix ?? throw new ArgumentNullException(nameof(suffix));
+        BaseType = baseType ?? throw new ArgumentNullException(nameof(baseType));
         ServiceLifetime = serviceLifetime;
     }
 }

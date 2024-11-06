@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Morris.RoslynjectTests.RegisterInterfacesOfTypeTests.GenericTests;
+namespace Morris.RoslynjectTests.RegisterInterfacesDescendedFromTests.NonGenericTests;
 
 [TestClass]
-public class RegisterInterfacesOfTypeTests
+public class RegisterInterfacesDescendedFromTests
 {
     private readonly IServiceCollection Services;
 
@@ -18,18 +18,18 @@ public class RegisterInterfacesOfTypeTests
     {
         Services.AssertIsRegistered(
             lifetime: ServiceLifetime.Singleton,
-            serviceType: typeof(IGenericInterface<int, string>),
-            implementationType: typeof(FirstValidClass)
+            serviceType: typeof(ICommunicationStrategy),
+            implementationType: typeof(EmailStrategy)
         );
 
         Services.AssertIsRegistered(
             lifetime: ServiceLifetime.Singleton,
-            serviceType: typeof(IGenericInterface<Guid, object?>),
-            implementationType: typeof(SecondValidClass)
+            serviceType: typeof(ICommunicationStrategy),
+            implementationType: typeof(SmsStrategy)
         );
     }
 
-    public RegisterInterfacesOfTypeTests()
+    public RegisterInterfacesDescendedFromTests()
     {
         Services = new ServiceCollection();
         Module.Register(Services);
