@@ -20,12 +20,12 @@ public partial class MyModule : RoslynjectModule
 
 ```mermaid
 classDiagram
-   BaseClass <|-- ChildClass
-   BaseClass <|-- GenericChildClass~T~
-   ChildClass <|-- GrandchildClass
-   GenericChildClass <|-- OtherGrandchildClass~int~
+   BaseClass <|-- AbstractChildClass : inherits
+   BaseClass <|-- GenericChildClass~T~ : inherits
+   AbstractChildClass <|-- GrandchildClass : inherits
+   GenericChildClass <|-- OtherGrandchildClass~int~ : inherits
 
-   class ChildClass {
+   class AbstractChildClass {
        <<abstract>>
    }
 
@@ -53,5 +53,5 @@ partial class Module
 ## Excluded classes
 | Class | Reason |
 |
-| ChildClass | Abstract |
+| AbstractChildClass | Abstract |
 | GenericChildClass&lt;T&gt; | Open generic class |
