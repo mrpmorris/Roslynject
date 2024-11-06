@@ -52,6 +52,6 @@ partial class Module
 
 ## Excluded classes
 | Class | Reason |
-|
+| - | - |
 | AbstractChildClass | Abstract |
 | GenericChildClass&lt;T&gt; | Open generic class |
