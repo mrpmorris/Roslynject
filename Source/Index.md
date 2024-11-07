@@ -7,6 +7,11 @@ public enum InterfaceAs
 	OpenGenericOrBaseInterface
 }
 
+public enum InterfaceOptions
+{
+	SharedClassInstance
+}
+
 public enum ClassAs
 {
 	BaseClass,

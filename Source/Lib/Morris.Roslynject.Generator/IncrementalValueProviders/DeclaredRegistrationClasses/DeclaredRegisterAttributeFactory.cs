@@ -35,14 +35,6 @@ internal static class DeclaredRegisterAttributeFactory
                     baseClassTypeArgument: arguments[1],
                     cancellationToken: cancellationToken),
 
-            "RegisterInterfacesDescendedFromAttribute" =>
-                CreateDeclaredRegisterInterfacesDescendedFromAttribute(
-                    semanticModel: semanticModel,
-                    attributeSyntax: attributeSyntax,
-                    serviceLifetime: serviceLifetime,
-                    baseInterfaceTypeArgument: arguments[1],
-                    cancellationToken: cancellationToken),
-
             _ => null
         };
     }
@@ -63,24 +55,6 @@ internal static class DeclaredRegisterAttributeFactory
                 attributeSyntax: attributeSyntax,
                 serviceLifetime: serviceLifetime,
                 baseClassType: baseClassType);
-    }
-
-    private static DeclaredRegisterAttributeBase? CreateDeclaredRegisterInterfacesDescendedFromAttribute(
-        SemanticModel semanticModel,
-        AttributeSyntax attributeSyntax,
-        ServiceLifetime serviceLifetime,
-        AttributeArgumentSyntax baseInterfaceTypeArgument,
-        CancellationToken cancellationToken)
-    {
-        INamedTypeSymbol? baseInterfaceType = baseInterfaceTypeArgument
-            .GetNamedTypeSymbol(semanticModel, cancellationToken);
-
-        return baseInterfaceType is null
-            ? null
-            : new DeclaredRegisterInterfacesDescendedFromAttribute(
-                attributeSyntax: attributeSyntax,
-                serviceLifetime: serviceLifetime,
-                baseInterfaceType: baseInterfaceType);
     }
 }
 
