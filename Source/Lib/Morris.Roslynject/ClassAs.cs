@@ -3,6 +3,5 @@
 public enum ClassAs
 {
     BaseClass,
-    DescendantClass,
-    OpenGenericOrBaseClass
+    DescendantClass
 }

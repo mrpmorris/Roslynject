@@ -2,7 +2,7 @@
 
 public enum InterfaceAs
 {
-    BaseInterface,
     ImplementedInterface,
-    OpenGenericOrBaseInterface
+    BaseInterface,
+    BaseClosedGenericInterface
 }
