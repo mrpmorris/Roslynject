@@ -10,7 +10,7 @@ services.AddScoped(typeof(DiscoveredClass));
 ## Example
 ### Manually written code
 ```c#
-[RegisterClassesDescendedFrom(ServiceLifetime.Scoped, typeof(BaseClass))]
+[RegisterClassesDescendedFrom(typeof(BaseClass), ServiceLifetime.Scoped)]
 public partial class MyModule : RoslynjectModule
 {
 }

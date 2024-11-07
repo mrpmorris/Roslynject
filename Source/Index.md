@@ -1,22 +1,29 @@
 Filters
 
-public enum As
+public enum InterfaceAs
 {
 	BaseInterface
 	ImplementedInterface
 	OpenGenericOrBaseInterface
 }
 
+public enum ClassAs
+{
+	BaseClass,
+	DescendantClass,
+	OpenGenericOrBaseClass
+}
+
 RegisterClassesDescendedFrom(
 	Type baseClass,
 	ServiceLifetime serviceLifetime,
-	As as,
+	ClassAs as,
 	string classRegex);
 
 RegisterInterfacesOfType(
 	Type baseInterface,
 	ServiceLifetime serviceLifetime,
-	As as,
+	InterfaceAs as,
 	string interfaceRegex);
 
 RegisterInterfacesOnClassesDescendedFrom(
