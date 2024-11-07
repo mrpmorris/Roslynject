@@ -1,47 +1,43 @@
 # RegisterClassesWithMarkerInterface
 
-Finds all concrete classes descending from the
-specified `IMarker` and registers them.
+Finds all concrete classes that implement the
+specified `IMarker` interface and registers the
+class using the class type as the service
+key.
 
-```c#
-services.AddScoped(typeof(DiscoveredClass));
-```
+* Interfaces descending from `IMarker` do <u>not</u> qualify.
+* Open-generic interfaces are not permitted.
 
-## Restrictions
-The specified interface type may not be an open generic.
+## Scenario 1: Register all classes implementing IRepository
 
-| Type | Valid |
-| - | - |
-| IMarker&lt;&gt; | No |
-| IMarker | Yes |
-| IMarker&lt;User&gt; | Yes |
-
-## Example
 ### Manually written code
 ```c#
-[RegisterClassesWithMarkerInterface(ServiceLifetime.Scoped, typeof(IMarker))]
+[RegisterClassesDescendedFrom(typeof(IRepository), ServiceLifetime.Scoped)]
 public partial class MyModule : RoslynjectModule
 {
 }
-```
 
-### Class diagram
+public interface IRepository {}
+public class CustomerRepository : IRepository {}
+public abstract class AbstractRepository : IRepository {}
+public class UserRepository : AbstractRepository {}
+```
 
 ```mermaid
 classDiagram
-   IMarker <|.. AbstractBaseClass : implements
-   IMarker <|-- GenericBaseClass~T~ : inherits
-   AbstractBaseClass <|-- ChildClass : inherits
-   GenericBaseClass <|-- OtherChildClass~int~ : inherits
+    IRepository <|.. CustomerRepository
+    IRepository <|.. AbstractRepository
+    AbstractRepository <|-- UserRepository
 
-   class AbstractBaseClass {
-       <<abstract>>
-   }
+    class IRepository {
+        <<interface>>
+    }
 
-   class GenericBaseClass {
-      <<open generic class>>
-   }
+    class AbstractRepository {
+        <<abstract>>
+    }
 ```
+
 
 ### Generated code
 ```c#
@@ -51,16 +47,11 @@ partial class Module
         
    public static void Register(IServiceCollection services)
    {
-      services.AddScoped(typeof(ChildClass));
-      services.AddScoped(typeof(OtherChildClass));
+      services.AddScoped(typeof(CustomerRepository));
+      services.AddScoped(typeof(UserRepository));
 
       AfterRegister(services);
    }
 }
 ```
 
-## Excluded classes
-| Class | Reason |
-| - | - |
-| AbstractBaseClass | Abstract |
-| GenericBaseClass&lt;T&gt; | Open generic class |

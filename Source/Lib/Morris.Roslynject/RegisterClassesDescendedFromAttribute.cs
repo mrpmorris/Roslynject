@@ -5,14 +5,18 @@ namespace Morris.Roslynject;
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class RegisterClassesDescendedFromAttribute : Attribute
 {
+    public Type BaseClass { get; set; }
     public ServiceLifetime ServiceLifetime { get; set; }
-    public Type BaseType { get; set; }
+    public ClassAs As {  get; set; }
+    public string? ClassRegex { get; set; }
 
     public RegisterClassesDescendedFromAttribute(
+        Type baseType,
         ServiceLifetime serviceLifetime,
-        Type baseType)
+        ClassAs @as)
     {
-        BaseType = baseType ?? throw new ArgumentNullException(nameof(baseType));
+        BaseClass = baseType ?? throw new ArgumentNullException(nameof(baseType));
         ServiceLifetime = serviceLifetime;
+        As = @as;
     }
 }

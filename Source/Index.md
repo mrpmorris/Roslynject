@@ -2,9 +2,9 @@ Filters
 
 public enum InterfaceAs
 {
-	BaseInterface
-	ImplementedInterface
-	OpenGenericOrBaseInterface
+    ImplementedInterface,
+    BaseInterface,
+    BaseOrClosedGenericInterface
 }
 
 public enum InterfaceOptions
@@ -14,9 +14,9 @@ public enum InterfaceOptions
 
 public enum ClassAs
 {
-	BaseClass,
-	DescendantClass,
-	OpenGenericOrBaseClass
+    DescendantClass,
+    BaseClass,
+    BaseOrClosedGenericClass
 }
 
 RegisterClassesDescendedFrom(
@@ -24,6 +24,12 @@ RegisterClassesDescendedFrom(
 	ServiceLifetime serviceLifetime,
 	ClassAs as,
 	string classRegex);
+
+RegisterClassesWithMarkerInterface(
+	Type baseInterface,
+	ServiceLifetime serviceLifetime,
+	string classRegex);
+
 
 RegisterInterfacesOfType(
 	Type baseInterface,
@@ -36,7 +42,3 @@ RegisterInterfacesOnClassesDescendedFrom(
 	ServiceLifetime serviceLifetime,
 	string interfaceRegex);
 
-RegisterClassesWithMarkerInterfaceOfType(
-	Type baseInterface,
-	ServiceLifetime serviceLifetime,
-	string classRegex);

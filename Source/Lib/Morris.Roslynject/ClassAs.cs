@@ -4,5 +4,5 @@ public enum ClassAs
 {
     DescendantClass,
     BaseClass,
-    BaseOrClosedGenericClass,
+    BaseOrClosedGenericClass
 }
