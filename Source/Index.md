@@ -1,5 +1,30 @@
 Filters
 
-RegisterInterfacesOfType(typeof(IBase<>), ServiceLifetime.Scoped, As.OpenGeneric());
-RegisterInterfacesOfType(typeof(IBase<>), ServiceLifetime.Scoped, As.BaseInterface());
-RegisterInterfacesOfType(typeof(IBase<>), ServiceLifetime.Scoped, As.DescendantInterface());
+public enum As
+{
+	BaseInterface
+	ImplementedInterface
+	OpenGenericOrBaseInterface
+}
+
+RegisterClassesDescendedFrom(
+	Type baseClass,
+	ServiceLifetime serviceLifetime,
+	As as,
+	string classRegex);
+
+RegisterInterfacesOfType(
+	Type baseInterface,
+	ServiceLifetime serviceLifetime,
+	As as,
+	string interfaceRegex);
+
+RegisterInterfacesOnClassesDescendedFrom(
+	Type baseClass,
+	ServiceLifetime serviceLifetime,
+	string interfaceRegex);
+
+RegisterClassesWithMarkerInterfaceOfType(
+	Type baseInterface,
+	ServiceLifetime serviceLifetime,
+	string classRegex);
