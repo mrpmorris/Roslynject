@@ -34,8 +34,6 @@ class TelephoneStrategy {
 }
 ```
 
-
-
 ### Generated code
 ```c#
 partial class Module
@@ -73,7 +71,46 @@ classDiagram
     RepositoryBase <|-- UserRepository
 ```
 
+### Generated code
+```c#
+partial class Module
+{
+   static partial void AfterRegister(IServiceCollection services);
+        
+   public static void Register(IServiceCollection services)
+   {
+      services.AddScoped(typeof(CustomerRepository));
+      services.AddScoped(typeof(UserRepository));
 
+      AfterRegister(services);
+   }
+}
+```
+
+## Scenario 3: Register using open generic base class as the service key
+
+### Manually written code
+```c#
+[RegisterClassesDescendedFrom(typeof(RepositoryBase), ServiceLifetime.Scoped, ClassAs.BaseClass)]
+public partial class MyModule : RoslynjectModule
+{
+}
+
+public abstract class RequestHandler<TRequest, TResponse> {}
+public class DeleteCustomerHandler : RequestHandler<DeleteCustomerCommand, DeleteCustomerResponse> {}
+public class DeleteUserHandler : RequestHandler<DeleteUserCommand, DeleteUserResponse> {}
+```
+
+```mermaid
+classDiagram
+    RequestHandler~TRequest, TResponse~ <|-- DeleteCustomerHandler
+    RequestHandler~TRequest, TResponse~ <|-- DeleteUserHandler
+
+
+   class RequestHandler~TRequest, TResponse~ {
+      <<open generic>>
+   }
+```
 
 ### Generated code
 ```c#
@@ -83,8 +120,48 @@ partial class Module
         
    public static void Register(IServiceCollection services)
    {
-      services.AddScoped(typeof(CustomerRepository
-      services.AddScoped(typeof(UserRepository));
+      services.AddScoped(typeof(RequestHandler<,>), typeof(DeleteCustomerHandler));
+      services.AddScoped(typeof(RequestHandler<,>), typeof(DeleteUserHandler));
+
+      AfterRegister(services);
+   }
+}
+```
+
+## Scenario 4: Register using first non open-generic base class as the service key
+
+### Manually written code
+```c#
+[RegisterClassesDescendedFrom(typeof(EventHandler<>), ServiceLifetime.Scoped, ClassAs.BaseOrClosedGenericClass)]
+public partial class MyModule : RoslynjectModule
+{
+}
+
+public abstract class EventHandler<TEvent> {}
+public class CustomerDeletedEventHandler : EventHandler<CustomerDeletedEvent> {}
+public class UserDeletedEventHandler : EventHandler<UserDeletedEvent> {}
+```
+
+```mermaid
+classDiagram
+    class EventHandler~TEvent~ {
+        <<abstract>>
+    }
+
+    EventHandler <|-- CustomerDeletedEventHandler
+    EventHandler <|-- UserDeletedEventHandler
+```
+
+### Generated code
+```c#
+partial class Module
+{
+   static partial void AfterRegister(IServiceCollection services);
+        
+   public static void Register(IServiceCollection services)
+   {
+      services.AddScoped(typeof(EventHandler<CustomerDeletedEvent>), typeof(DeleteCustomerHandler));
+      services.AddScoped(typeof(EventHandler<UserDeletedEvent>), typeof(DeleteCustomerHandler));
 
       AfterRegister(services);
    }

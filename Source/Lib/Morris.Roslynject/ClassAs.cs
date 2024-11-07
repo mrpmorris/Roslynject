@@ -2,6 +2,7 @@
 
 public enum ClassAs
 {
+    DescendantClass,
     BaseClass,
-    DescendantClass
+    BaseOrClosedGenericClass,
 }
