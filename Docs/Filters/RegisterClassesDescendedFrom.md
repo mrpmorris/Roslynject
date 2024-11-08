@@ -7,14 +7,14 @@ specified `BaseClass` and registers them.
 
 ### Manually written code
 ```c#
-[RegisterClassesDescendedFrom(typeof(BaseClass), ServiceLifetime.Scoped, ClassAs.BaseClass)]
+[RegisterClassesDescendedFrom(typeof(CommunicationStrategy), ServiceLifetime.Scoped, ClassAs.BaseClass)]
 public partial class MyModule : RoslynjectModule
 {
 }
 
 public abstract class CommunicationStrategy {}
-public class EmailStrategy : BaseClass {}
-public abstract class TelephoneStrategy : BaseClass {}
+public class EmailStrategy : CommunicationStrategy {}
+public abstract class TelephoneStrategy : CommunicationStrategy {}
 public class SmsStrategy : TelephoneStrategy {}
 public class AutomatedCallStrategy : TelephoneStrategy {}
 ```
