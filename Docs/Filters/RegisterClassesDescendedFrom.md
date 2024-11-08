@@ -29,10 +29,10 @@ public class AutomatedCallStrategy : TelephoneStrategy {}
 
 ```mermaid
 classDiagram
-    CommunicationStrategy <|-- EmailStrategy
-    CommunicationStrategy <|-- TelephoneStrategy
-    TelephoneStrategy <|-- SmsStrategy
-    TelephoneStrategy <|-- AutomatedCallStrategy
+    CommunicationStrategy <|-- EmailStrategy : inherits
+    CommunicationStrategy <|-- TelephoneStrategy : inherits
+    TelephoneStrategy <|-- SmsStrategy : inherits
+    TelephoneStrategy <|-- AutomatedCallStrategy : inherits
 
 class CommunicationStrategy {
    <<abstract>>

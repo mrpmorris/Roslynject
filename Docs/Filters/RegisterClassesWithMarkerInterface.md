@@ -32,9 +32,9 @@ public class UserRepository : AbstractRepository {}
 
 ```mermaid
 classDiagram
-    IRepository <|.. CustomerRepository
-    IRepository <|.. AbstractRepository
-    AbstractRepository <|-- UserRepository
+    IRepository <|.. CustomerRepository : implements
+    IRepository <|.. AbstractRepository : implement
+    AbstractRepository <|-- UserRepository : inherits
 
     class IRepository {
         <<interface>>

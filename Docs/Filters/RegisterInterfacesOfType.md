@@ -1,8 +1,9 @@
-# RegisterInterface
+# RegisterInterfacesOfType
 
-Finds all concrete classes that implement the exact
-interface specified and registers them using the
-specified interfaces as the service key.
+Finds all concrete classes that implement the
+specified interface (or descendants)
+and registers them using the
+interface as the service key.
 
 ## Signature
 ```c#
@@ -12,19 +13,10 @@ required InterfaceAs As,
 optional string? InterfaceRegex
 ```
 
-## Restrictions
-The specified interface type may not be an open generic.
-
-| Type | Valid |
-| - | - |
-| IInterface&lt;&gt; | No |
-| IInterface | Yes |
-| IInterface&lt;User&gt; | Yes |
-
 ## Example
 ### Manually written code
 ```c#
-[RegisterInterface(ServiceLifetime.Scoped, typeof(ICommunicationStrategy))]
+[RegisterInterface(typeof(ICommunicationStrategy), ServiceLifetime.Scoped, typeof(ICommunicationStrategy), InterfaceAs.BaseInterface)]
 public partial class MyModule : RoslynjectModule
 {
 }
