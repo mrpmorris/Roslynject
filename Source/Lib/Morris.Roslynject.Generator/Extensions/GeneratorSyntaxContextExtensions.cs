@@ -7,21 +7,23 @@ namespace Morris.Roslynject.Generator.Extensions;
 
 internal static class GeneratorSyntaxContextExtensions
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static (string? Namespace, string Name)? GetNamespaceAndName(
-        this GeneratorSyntaxContext context, CancellationToken cancellationToken)
-    {
-        var typeDeclarationSyntax = (TypeDeclarationSyntax)context.Node;
-        var typeSymbol = (INamedTypeSymbol?)context.SemanticModel.GetDeclaredSymbol(typeDeclarationSyntax, cancellationToken);
-        if (typeSymbol is null)
-            return null;
-        return
-            (
-                Namespace: typeSymbol.ContainingNamespace.IsGlobalNamespace == false
-                    ? typeSymbol.ContainingNamespace.ToDisplayString()
-                    : null,
-                Name: typeSymbol.Name
-            );
-    }
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static (string? Namespace, string Name)? GetNamespaceAndName(
+		this GeneratorSyntaxContext context, CancellationToken cancellationToken)
+	{
+		var typeDeclarationSyntax = (TypeDeclarationSyntax)context.Node;
+		var typeSymbol = (INamedTypeSymbol?)context.SemanticModel.GetDeclaredSymbol(typeDeclarationSyntax, cancellationToken);
+
+		if (typeSymbol is null)
+			return null;
+
+		return
+			(
+				Namespace: typeSymbol.ContainingNamespace.IsGlobalNamespace == false
+					? typeSymbol.ContainingNamespace.ToDisplayString()
+					: null,
+				Name: typeSymbol.Name
+			);
+	}
 
 }

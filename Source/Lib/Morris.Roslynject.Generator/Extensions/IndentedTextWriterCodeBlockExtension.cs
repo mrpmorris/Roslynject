@@ -5,15 +5,15 @@ namespace Morris.Roslynject.Generator.Extensions;
 
 internal static class IndentedTextWriterCodeBlockExtension
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IDisposable CodeBlock(this IndentedTextWriter writer)
-    {
-        writer.WriteLine("{");
-        writer.Indent++;
-        return new DisposableAction(() =>
-        {
-            writer.Indent--;
-            writer.WriteLine("}");
-        });
-    }
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static IDisposable CodeBlock(this IndentedTextWriter writer)
+	{
+		writer.WriteLine("{");
+		writer.Indent++;
+		return new DisposableAction(() =>
+		{
+			writer.Indent--;
+			writer.WriteLine("}");
+		});
+	}
 }

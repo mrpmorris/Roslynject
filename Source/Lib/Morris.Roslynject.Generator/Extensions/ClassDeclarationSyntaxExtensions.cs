@@ -6,9 +6,9 @@ namespace Morris.Roslynject.Generator.Extensions;
 
 internal static class ClassDeclarationSyntaxExtensions
 {
-    public static bool IsConcrete(
-        this ClassDeclarationSyntax source)
-    =>
-        !source.Modifiers.Any(SyntaxKind.AbstractKeyword)
-        && !source.Modifiers.Any(SyntaxKind.StaticKeyword);
+	public static bool IsConcrete(
+		this ClassDeclarationSyntax source)
+	=>
+		!source.Modifiers.Any(SyntaxKind.AbstractKeyword)
+		&& !source.Modifiers.Any(SyntaxKind.StaticKeyword);
 }

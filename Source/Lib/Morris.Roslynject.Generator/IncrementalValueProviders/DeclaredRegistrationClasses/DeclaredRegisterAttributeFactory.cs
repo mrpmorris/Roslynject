@@ -6,55 +6,54 @@ namespace Morris.Roslynject.Generator.IncrementalValueProviders.DeclaredRegistra
 
 internal static class DeclaredRegisterAttributeFactory
 {
-    public static DeclaredRegisterAttributeBase? Create(
-        AttributeSyntax attributeSyntax,
-        SemanticModel semanticModel,
-        CancellationToken cancellationToken)
-    {
-        if (semanticModel.GetTypeInfo(attributeSyntax, cancellationToken).Type is not INamedTypeSymbol attributeTypeSymbol)
-            return null;
+	public static DeclaredRegisterAttributeBase? Create(
+		AttributeSyntax attributeSyntax,
+		SemanticModel semanticModel,
+		CancellationToken cancellationToken)
+	{
+		if (semanticModel.GetTypeInfo(attributeSyntax, cancellationToken).Type is not INamedTypeSymbol attributeTypeSymbol)
+			return null;
 
-        if (attributeSyntax.ArgumentList?.Arguments is not { Count: > 0 } arguments)
-            return null;
+		if (attributeSyntax.ArgumentList?.Arguments is not { Count: > 0 } arguments)
+			return null;
 
-        Optional<object?> lifetimeArgument =
-            semanticModel.GetConstantValue(arguments[0].Expression, cancellationToken);
-        if (!lifetimeArgument.HasValue || lifetimeArgument.Value is not int lifetimeValue)
-            return null;
+		Optional<object?> lifetimeArgument =
+			semanticModel.GetConstantValue(arguments[0].Expression, cancellationToken);
+		if (!lifetimeArgument.HasValue || lifetimeArgument.Value is not int lifetimeValue)
+			return null;
 
-        var serviceLifetime = (ServiceLifetime)lifetimeValue;
-        // Determine the specific attribute type and create the corresponding meta object
-        string attributeName = attributeTypeSymbol.Name;
-        return attributeName switch
-        {
-            "RegisterClassesDescendedFromAttribute" =>
-                CreateDeclaredRegisterClassesDescendedFromAttribute(
-                    semanticModel: semanticModel,
-                    attributeSyntax: attributeSyntax,
-                    serviceLifetime: serviceLifetime,
-                    baseClassTypeArgument: arguments[1],
-                    cancellationToken: cancellationToken),
+		var serviceLifetime = (ServiceLifetime)lifetimeValue;
+		// Determine the specific attribute type and create the corresponding meta object
+		string attributeName = attributeTypeSymbol.Name;
+		return attributeName switch {
+			"RegisterClassesDescendedFromAttribute" =>
+				CreateDeclaredRegisterClassesDescendedFromAttribute(
+					semanticModel: semanticModel,
+					attributeSyntax: attributeSyntax,
+					serviceLifetime: serviceLifetime,
+					baseClassTypeArgument: arguments[1],
+					cancellationToken: cancellationToken),
 
-            _ => null
-        };
-    }
+			_ => null
+		};
+	}
 
-    private static DeclaredRegisterAttributeBase? CreateDeclaredRegisterClassesDescendedFromAttribute(
-        SemanticModel semanticModel,
-        AttributeSyntax attributeSyntax,
-        ServiceLifetime serviceLifetime,
-        AttributeArgumentSyntax baseClassTypeArgument,
-        CancellationToken cancellationToken)
-    {
-        INamedTypeSymbol? baseClassType = baseClassTypeArgument
-            .GetNamedTypeSymbol(semanticModel, cancellationToken);
+	private static DeclaredRegisterAttributeBase? CreateDeclaredRegisterClassesDescendedFromAttribute(
+		SemanticModel semanticModel,
+		AttributeSyntax attributeSyntax,
+		ServiceLifetime serviceLifetime,
+		AttributeArgumentSyntax baseClassTypeArgument,
+		CancellationToken cancellationToken)
+	{
+		INamedTypeSymbol? baseClassType = baseClassTypeArgument
+			.GetNamedTypeSymbol(semanticModel, cancellationToken);
 
-        return baseClassType is null
-            ? null
-            : new DeclaredRegisterClassesDescendedFromAttribute(
-                attributeSyntax: attributeSyntax,
-                serviceLifetime: serviceLifetime,
-                baseClassType: baseClassType);
-    }
+		return baseClassType is null
+			? null
+			: new DeclaredRegisterClassesDescendedFromAttribute(
+				attributeSyntax: attributeSyntax,
+				serviceLifetime: serviceLifetime,
+				baseClassType: baseClassType);
+	}
 }
 
