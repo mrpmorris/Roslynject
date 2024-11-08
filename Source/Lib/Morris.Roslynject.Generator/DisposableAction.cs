@@ -2,15 +2,15 @@
 
 internal class DisposableAction : IDisposable
 {
-    private readonly Action Action;
+	private readonly Action Action;
 
-    public DisposableAction(Action action)
-    {
-        Action = action ?? throw new ArgumentNullException(nameof(action));
-    }
+	public DisposableAction(Action action)
+	{
+		Action = action;
+	}
 
-    void IDisposable.Dispose()
-    {
-        Action();
-    }
+	void IDisposable.Dispose()
+	{
+		Action();
+	}
 }

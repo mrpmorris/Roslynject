@@ -4,21 +4,21 @@ using System.Diagnostics.CodeAnalysis;
 namespace Morris.Roslynject;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public class RegisterInterfacesOfTypeAttribute : Attribute
+public class RegisterClassesDescendedFromAttribute : Attribute
 {
-	public required Type BaseInterface { get; set; }
+	public required Type BaseClass { get; set; }
 	public required ServiceLifetime ServiceLifetime { get; set; }
-	public required InterfaceAs As { get; set; }
+	public required ClassAs As { get; set; }
 
 	[StringSyntax(StringSyntaxAttribute.Regex)]
-	public string? InterfaceRegex { get; set; }
+	public string? ClassRegex { get; set; }
 
-	public RegisterInterfacesOfTypeAttribute(
-		Type baseInterface,
+	public RegisterClassesDescendedFromAttribute(
+		Type baseType,
 		ServiceLifetime serviceLifetime,
-		InterfaceAs @as)
+		ClassAs @as)
 	{
-		BaseInterface = baseInterface ?? throw new ArgumentNullException(nameof(baseInterface));
+		BaseClass = baseType ?? throw new ArgumentNullException(nameof(baseType));
 		ServiceLifetime = serviceLifetime;
 		As = @as;
 	}

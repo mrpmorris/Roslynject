@@ -5,10 +5,10 @@ namespace Morris.Roslynject.Generator.Extensions;
 
 internal static class IndentedTextWriterIndentExtensions
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IDisposable IndentedBlock(this IndentedTextWriter writer)
-    {
-        writer.Indent++;
-        return new DisposableAction(() => writer.Indent--);
-    }
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static IDisposable IndentedBlock(this IndentedTextWriter writer)
+	{
+		writer.Indent++;
+		return new DisposableAction(() => writer.Indent--);
+	}
 }

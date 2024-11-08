@@ -1,8 +1,8 @@
 {
-  "profiles": {
-    "Profile 1": {
-      "commandName": "DebugRoslynComponent",
-      "targetProject": "..\\Morris.RoslynjectTests\\Morris.RoslynjectTests.csproj"
-    }
-  }
+	"profiles": {
+		"Profile 1": {
+			"commandName": "DebugRoslynComponent",
+			"targetProject": "..\\Morris.RoslynjectTests\\Morris.RoslynjectTests.csproj"
+		}
+	}
 }

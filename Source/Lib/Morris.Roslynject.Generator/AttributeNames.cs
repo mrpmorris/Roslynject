@@ -2,11 +2,11 @@
 
 internal static class AttributeNames
 {
-    public static readonly string[] ShortNames =
-        [
-            "RegisterInterfacesOfType",
-            "RegisterInterfacesWhereNameEndsWith",
-            "RegisterClassesOfType",
-            "RegisterClassesWhereNameEndsWith"
-        ];
+	public static readonly string[] ShortNames =
+	[
+		"RegisterClassesDescendedFrom",
+		"RegisterClassesWithMarkerInterface",
+		"RegisterInterfacesOfType",
+		"RegisterInterfacesOnClassesDescendedFrom"
+	];
 }

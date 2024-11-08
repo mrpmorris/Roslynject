@@ -29,4 +29,8 @@
 		<Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="RegisterClassesDescendedFromAttributeTests\NonGenericTests\" />
+	</ItemGroup>
+
 </Project>
