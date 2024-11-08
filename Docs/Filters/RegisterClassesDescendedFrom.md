@@ -23,16 +23,16 @@ public partial class MyModule : RoslynjectModule
 public abstract class CommunicationStrategy {}
 public class EmailStrategy : CommunicationStrategy {}
 public abstract class TelephoneStrategy : CommunicationStrategy {}
-public class SmsStrategy : TelephoneStrategy {}
 public class AutomatedCallStrategy : TelephoneStrategy {}
+public class SmsStrategy : TelephoneStrategy {}
 ```
 
 ```mermaid
 classDiagram
     CommunicationStrategy <|-- EmailStrategy : inherits
     CommunicationStrategy <|-- TelephoneStrategy : inherits
-    TelephoneStrategy <|-- SmsStrategy : inherits
     TelephoneStrategy <|-- AutomatedCallStrategy : inherits
+    TelephoneStrategy <|-- SmsStrategy : inherits
 
 class CommunicationStrategy {
    <<abstract>>

@@ -13,43 +13,87 @@ required InterfaceAs As,
 optional string? InterfaceRegex
 ```
 
-## Example
-### Manually written code
+## Scenario 1: Register implemented interfaces
 ```c#
-[RegisterInterface(typeof(ICommunicationStrategy), ServiceLifetime.Scoped, typeof(ICommunicationStrategy), InterfaceAs.BaseInterface)]
+[RegisterInterface(typeof(ICommunicationStrategy), ServiceLifetime.Scoped, typeof(ICommunicationStrategy), InterfaceAs.ImplementedInterface)]
 public partial class MyModule : RoslynjectModule
 {
 }
+
+public interface IRepository {}
+public interface ICustomerRepository : IRepository {}
+public interface IUserRepository : IRepository {}
+
+public class CustomerRepository : ICustomerRepository {}
+public class UserRepository : IUserRepository {}
 ```
 
 ### Class diagram
 ```mermaid
 classDiagram
+    IRepository <|.. ICustomerRepository : implements
+    IRepository <|.. IUserRepository : implements
+    ICustomerRepository <|-- CustomerRepository : implements
+    IUserRepository <|-- UserRepository : implements
 
-   ICommunicationStrategy <|.. EmailStrategy : implements
-   ICommunicationStrategy <|.. SmsStrategy : implements
-   ICommunicationStrategy <|.. AbstractStrategy : implements
-   AbstractStrategy <|-- AutomatedPhoneCallStrategy : inherits
-   ICommunicationStrategy <|.. GenericStrategy~T~ : implements
-   GenericStrategy~T~ <|-- ManualPhoneCallStrategy : inherits
-   ICommunicationStrategy <|-- IMoreSpecificCommunicationStrategy : inherits
-   IMoreSpecificCommunicationStrategy <|.. PhoneAFriendStrategy : implements
+class IRepository {
+   <<interface>>
+}
 
-   class ICommunicationStrategy {
-      <<interface>>
+class ICustomerRepository {
+   <<interface>>
+}
+
+class IUserRepository {
+   <<interface>>
+}
+```
+
+### Generated code
+```c#
+partial class Module
+{
+   static partial void AfterRegister(IServiceCollection services);
+        
+   public static void Register(IServiceCollection services)
+   {
+      services.AddScoped(typeof(ICustomerRepository), typeof(CustomerRepository));
+      services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
+
+      AfterRegister(services);
    }
+}
+```
 
-   class IMoreSpecificCommunicationStrategy {
-      <<interface>>
-   }
+## Scenario 2: Register base interface
+```c#
+[RegisterInterface(typeof(ICommunicationStrategy), ServiceLifetime.Scoped, typeof(ICommunicationStrategy), InterfaceAs.BaseInterface)]
+public partial class MyModule : RoslynjectModule
+{
+}
 
-   class AbstractStrategy {
-      <<abstract>>
-   }
+public interface ICommunicationStrategy {}
+public interface ITelephoneStrategy : ICommunicationStrategy {}
 
-   class GenericStrategy {
-      <<open generic class>>
-   }
+public class EmailStrategy : ICommunicationStrategy {}
+public class AutomatedCallStrategy : ITelephoneStrategy {}
+public class SmsStrategy : ITelephoneStrategy {}
+```
+
+### Class diagram
+```mermaid
+classDiagram
+    ICommunicationStrategy <|.. EmailStrategy : implements
+    ICommunicationStrategy <|-- ITelephoneStrategy : inherits
+    ITelephoneStrategy <|-- AutomatedCallStrategy : implements
+    ITelephoneStrategy <|-- SmsStrategy : implements
+
+class ICommunicationStrategy {
+   <<interface>>
+}
+class ITelephoneStrategy {
+   <<interface>>
+}
 ```
 
 ### Generated code
@@ -61,18 +105,66 @@ partial class Module
    public static void Register(IServiceCollection services)
    {
       services.AddScoped(typeof(ICommunicationStrategy), typeof(EmailStrategy));
+      services.AddScoped(typeof(ICommunicationStrategy), typeof(AutomatedCallStrategy));
       services.AddScoped(typeof(ICommunicationStrategy), typeof(SmsStrategy));
-      services.AddScoped(typeof(ICommunicationStrategy), typeof(AutomatedPhoneCallStrategy));
-      services.AddScoped(typeof(ICommunicationStrategy), typeof(ManualPhoneCallStrategy));
 
       AfterRegister(services);
    }
 }
 ```
 
-### Excluded classes
-| Class | Reason |
-| - | - |
-| AbstractStrategy | Abstract |
-| GenericStrategy&lt;T&gt; | Open generic class |
-| PhoneAFriendStrategy | Implements descendent interface |
+## Scenario 3: Register base or closed-generic interface
+The same as registering as the `BaseInterface` except when the
+base interface is an open-generic it will instead
+register as a closed generic interface.
+
+```c#
+[RegisterInterface(typeof(ICommunicationStrategy<>), ServiceLifetime.Scoped, InterfaceAs.BaseOrClosedGenericInterface)]
+public partial class MyModule : RoslynjectModule
+{
+}
+
+public interface ICommunicationStrategy<T> {}
+public interface ITelephoneStrategy : ICommunicationStrategy<User> {}
+
+public class EmailStrategy : ICommunicationStrategy<Customer> {}
+public class AutomatedCallStrategy : ITelephoneStrategy {}
+public class SmsStrategy : ITelephoneStrategy {}
+```
+
+### Class diagram
+```mermaid
+classDiagram
+    ICommunicationStrategy~T~ <|.. EmailStrategy : implements
+    ICommunicationStrategy~T~ <|-- ITelephoneStrategy : inherits
+    ITelephoneStrategy <|-- AutomatedCallStrategy : implements
+    ITelephoneStrategy <|-- SmsStrategy : implements
+
+class ICommunicationStrategy {
+   <<interface>>
+}
+class ITelephoneStrategy {
+   <<interface : T=User>>
+}
+
+class EmailStrategy {
+   <<T=Customer>>
+}
+```
+
+### Generated code
+```c#
+partial class Module
+{
+   static partial void AfterRegister(IServiceCollection services);
+        
+   public static void Register(IServiceCollection services)
+   {
+      services.AddScoped(typeof(ICommunicationStrategy<Customer>), typeof(EmailStrategy));
+      services.AddScoped(typeof(ICommunicationStrategy<User>), typeof(AutomatedCallStrategy));
+      services.AddScoped(typeof(ICommunicationStrategy<User>), typeof(SmsStrategy));
+
+      AfterRegister(services);
+   }
+}
+```
