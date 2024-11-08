@@ -3,6 +3,14 @@
 Finds all concrete classes descending from the
 specified `BaseClass` and registers them.
 
+## Signature
+```c#
+required Type BaseClass,
+required ServiceLifetime ServiceLifetime,
+required ClassAs As,
+optional string? ClassRegex
+```
+
 ## Scenario 1: Register using the base class as the service key
 
 ### Manually written code

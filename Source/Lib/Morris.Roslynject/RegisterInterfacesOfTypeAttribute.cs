@@ -6,9 +6,9 @@ namespace Morris.Roslynject;
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class RegisterInterfacesOfTypeAttribute : Attribute
 {
-	public Type BaseInterface { get; set; }
-	public ServiceLifetime ServiceLifetime { get; set; }
-	public InterfaceAs As { get; set; }
+	public required Type BaseInterface { get; set; }
+	public required ServiceLifetime ServiceLifetime { get; set; }
+	public required InterfaceAs As { get; set; }
 
 	[StringSyntax(StringSyntaxAttribute.Regex)]
 	public string? InterfaceRegex { get; set; }

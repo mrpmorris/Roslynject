@@ -8,6 +8,13 @@ key.
 * Interfaces descending from `IMarker` do <u>not</u> qualify.
 * Open-generic interfaces are not permitted.
 
+## Signature
+```c#
+required Type BaseInterface,
+required ServiceLifetime ServiceLifetime,
+optional string? ClassRegex
+```
+
 ## Scenario 1: Register all classes implementing IRepository
 
 ### Manually written code
