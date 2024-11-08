@@ -4,8 +4,12 @@ Finds all concrete classes that implement the exact
 interface specified and registers them using the
 specified interfaces as the service key.
 
+## Signature
 ```c#
-services.AddScoped(typeof(ICommunicationStrategy), typeof(DiscoveredClass));
+required Type BaseInterface,
+required ServiceLifetime ServiceLifetime,
+required InterfaceAs As,
+optional string? InterfaceRegex
 ```
 
 ## Restrictions
