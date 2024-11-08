@@ -23,7 +23,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{968DCD71-7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Filters", "Filters", "{B5388CB8-9570-4E70-89EC-C1B13A30F914}"
 	ProjectSection(SolutionItems) = preProject
-		..\Docs\Index.md = ..\Docs\Index.md
 		..\Docs\Filters\RegisterClassesDescendedFrom.md = ..\Docs\Filters\RegisterClassesDescendedFrom.md
 		..\Docs\Filters\RegisterClassesWithMarkerInterface.md = ..\Docs\Filters\RegisterClassesWithMarkerInterface.md
 	EndProjectSection
