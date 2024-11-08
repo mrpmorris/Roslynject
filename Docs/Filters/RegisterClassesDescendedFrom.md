@@ -11,6 +11,9 @@ required ClassAs As,
 optional string? ClassRegex
 ```
 
+**Note** : If not null, only classes with a fullname matching
+`ClassRegex` will be registered.
+
 ## Scenario 1: Register using the base class as the service key
 
 ### Manually written code

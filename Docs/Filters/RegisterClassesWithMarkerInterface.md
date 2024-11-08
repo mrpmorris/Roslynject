@@ -8,6 +8,9 @@ key.
 * Interfaces descending from `IMarker` do <u>not</u> qualify.
 * Open-generic interfaces are not permitted.
 
+**Note** : If not null, only classes with a fullname matching
+`ClassRegex` will be registered.
+
 ## Signature
 ```c#
 required Type BaseInterface,

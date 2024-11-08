@@ -5,6 +5,9 @@ specified interface (or descendants)
 and registers them using the
 interface as the service key.
 
+**Note** : If not null, only interfaces with a fullname matching
+`InterfaceRegex` will be registered.
+
 ## Signature
 ```c#
 required Type BaseInterface,
