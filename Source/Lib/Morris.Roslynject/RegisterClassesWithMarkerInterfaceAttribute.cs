@@ -6,8 +6,8 @@ namespace Morris.Roslynject;
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class RegisterClassesWithMarkerInterfaceAttribute : Attribute
 {
-	public required Type BaseInterface { get; set; }
-	public required ServiceLifetime ServiceLifetime { get; set; }
+	public Type BaseInterface { get; set; }
+	public ServiceLifetime ServiceLifetime { get; set; }
 
 	[StringSyntax(StringSyntaxAttribute.Regex)]
 	public string? ClassRegex { get; set; }

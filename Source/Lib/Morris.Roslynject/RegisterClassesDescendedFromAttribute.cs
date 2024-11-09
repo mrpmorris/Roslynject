@@ -6,9 +6,9 @@ namespace Morris.Roslynject;
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class RegisterClassesDescendedFromAttribute : Attribute
 {
-	public required Type BaseClass { get; set; }
-	public required ServiceLifetime ServiceLifetime { get; set; }
-	public required ClassRegistration RegisterAs { get; set; }
+	public Type BaseClass { get; set; }
+	public ServiceLifetime ServiceLifetime { get; set; }
+	public ClassRegistration RegisterAs { get; set; }
 
 	[StringSyntax(StringSyntaxAttribute.Regex)]
 	public string? ClassRegex { get; set; }
