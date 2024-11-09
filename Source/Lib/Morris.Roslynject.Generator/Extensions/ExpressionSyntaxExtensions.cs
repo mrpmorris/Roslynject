@@ -12,7 +12,7 @@ internal static class ExpressionSyntaxExtensions
 	=>
 		source switch {
 			TypeOfExpressionSyntax typeofExpression =>
-				(INamedTypeSymbol)semanticModel.GetTypeInfo(typeofExpression, cancellationToken).Type!,
+				(INamedTypeSymbol)semanticModel.GetTypeInfo(typeofExpression.Type, cancellationToken).Type!,
 
 			LiteralExpressionSyntax literalExpression =>
 				literalExpression.Token.Value,
