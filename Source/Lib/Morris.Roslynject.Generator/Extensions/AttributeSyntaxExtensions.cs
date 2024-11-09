@@ -24,6 +24,8 @@ internal static class AttributeSyntaxExtensions
 		IMethodSymbol constructor = attributeSymbol!.Constructors.First();
 		ImmutableArray<IParameterSymbol> parameters = constructor.Parameters;
 
+		var xxx = source.
+
 		for (int argumentIndex = 0; argumentIndex < arguments.Value.Count; argumentIndex++)
 		{
 			AttributeArgumentSyntax argument = arguments.Value[argumentIndex];
