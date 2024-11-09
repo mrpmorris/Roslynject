@@ -30,8 +30,10 @@ internal static class DeclaredRegisterAttributeFactory
 				CreateDeclaredRegisterClassesDescendedFromAttribute(
 					semanticModel: semanticModel,
 					attributeSyntax: attributeSyntax,
-					serviceLifetime: serviceLifetime,
 					baseClassTypeArgument: arguments[1],
+					serviceLifetime: serviceLifetime,
+					registerAs: ClassRegistration.BaseClass, // TODO: PeteM - Don't hard-code
+					classRegex: null, // TODO: PeteM - Don't hard-code
 					cancellationToken: cancellationToken),
 
 			_ => null
@@ -41,8 +43,10 @@ internal static class DeclaredRegisterAttributeFactory
 	private static DeclaredRegisterAttributeBase? CreateDeclaredRegisterClassesDescendedFromAttribute(
 		SemanticModel semanticModel,
 		AttributeSyntax attributeSyntax,
-		ServiceLifetime serviceLifetime,
 		AttributeArgumentSyntax baseClassTypeArgument,
+		ServiceLifetime serviceLifetime,
+		ClassRegistration registerAs,
+		string? classRegex,
 		CancellationToken cancellationToken)
 	{
 		INamedTypeSymbol? baseClassType = baseClassTypeArgument
@@ -52,8 +56,10 @@ internal static class DeclaredRegisterAttributeFactory
 			? null
 			: new DeclaredRegisterClassesDescendedFromAttribute(
 				attributeSyntax: attributeSyntax,
+				baseClassType: baseClassType,
 				serviceLifetime: serviceLifetime,
-				baseClassType: baseClassType);
+				registerAs: registerAs,
+				classRegex: classRegex);
 	}
 }
 

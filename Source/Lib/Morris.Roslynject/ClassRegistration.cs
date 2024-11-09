@@ -1,6 +1,6 @@
 ﻿namespace Morris.Roslynject;
 
-public enum ClassAs
+public enum ClassRegistration
 {
 	DescendantClass,
 	BaseClass,

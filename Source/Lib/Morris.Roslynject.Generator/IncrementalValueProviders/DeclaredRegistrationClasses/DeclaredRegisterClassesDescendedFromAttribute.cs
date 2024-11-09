@@ -9,22 +9,30 @@ namespace Morris.Roslynject.Generator.IncrementalValueProviders.DeclaredRegistra
 internal class DeclaredRegisterClassesDescendedFromAttribute : DeclaredRegisterAttributeBase, IEquatable<DeclaredRegisterClassesDescendedFromAttribute>
 {
 	public readonly INamedTypeSymbol BaseClassType;
+	public readonly ClassRegistration RegisterAs;
+	public readonly string? ClassRegex;
 	private readonly Lazy<int> CachedHashCode;
 
 	public DeclaredRegisterClassesDescendedFromAttribute(
 		AttributeSyntax attributeSyntax,
+		INamedTypeSymbol baseClassType,
 		ServiceLifetime serviceLifetime,
-		INamedTypeSymbol baseClassType)
+		ClassRegistration registerAs,
+		string? classRegex)
 		: base(
 			attributeSyntax: attributeSyntax,
 			serviceLifetime: serviceLifetime)
 	{
 		BaseClassType = baseClassType;
+		RegisterAs = registerAs;
+		ClassRegex = classRegex;
 		CachedHashCode = new Lazy<int>(() =>
 			HashCode
 			.Combine(
 				base.GetHashCode(),
-				BaseClassType.ToDisplayString()
+				SymbolEqualityComparer.Default.GetHashCode(baseClassType),
+				RegisterAs,
+				ClassRegex
 			 )
 		);
 	}
@@ -34,8 +42,10 @@ internal class DeclaredRegisterClassesDescendedFromAttribute : DeclaredRegisterA
 	=>
 		RegisterClassesDescendedFromOutput.Create(
 			attributeSourceCode: AttributeSourceCode,
-			serviceLifetime: ServiceLifetime,
 			baseClassType: BaseClassType,
+			serviceLifetime: ServiceLifetime,
+			registerAs: RegisterAs,
+			classRegex: ClassRegex,
 			injectionCandidates: injectionCandidates);
 
 	public override bool Equals(object obj) =>
@@ -44,7 +54,9 @@ internal class DeclaredRegisterClassesDescendedFromAttribute : DeclaredRegisterA
 
 	public bool Equals(DeclaredRegisterClassesDescendedFromAttribute other) =>
 		base.Equals(other)
-		&& TypeIdentifyWithInheritanceComparer.Default.Equals(BaseClassType, other.BaseClassType);
+		&& RegisterAs == other.RegisterAs
+		&& ClassRegex == other.ClassRegex
+		&& SymbolEqualityComparer.Default.Equals(BaseClassType, other.BaseClassType);
 
 	public override int GetHashCode() => CachedHashCode.Value;
 

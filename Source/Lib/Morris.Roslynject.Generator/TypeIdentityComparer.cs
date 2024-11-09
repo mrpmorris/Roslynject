@@ -4,7 +4,7 @@ namespace Morris.Roslynject.Generator;
 
 internal class TypeIdentityComparer : IEqualityComparer<INamedTypeSymbol>
 {
-	public static readonly TypeIdentifyWithInheritanceComparer Default = new();
+	public static readonly TypeIdentityComparer Default = new();
 
 	public bool Equals(INamedTypeSymbol? x, INamedTypeSymbol? y) =>
 		(x, y) switch {

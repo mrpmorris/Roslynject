@@ -10,13 +10,17 @@ internal class RegisterClassesDescendedFromOutput :
 	IEquatable<RegisterClassesDescendedFromOutput>
 {
 	public readonly INamedTypeSymbol BaseClassType;
+	public readonly ClassRegistration RegisterAs;
+	public readonly string? ClassRegex;
 	public readonly ImmutableArray<string> ClassesToRegister;
 	private readonly Lazy<int> CachedHashCode;
 
 	public static RegisterAttributeOutputBase? Create(
 		string attributeSourceCode,
-		ServiceLifetime serviceLifetime,
 		INamedTypeSymbol baseClassType,
+		ServiceLifetime serviceLifetime,
+		ClassRegistration registerAs,
+		string? classRegex,
 		ImmutableArray<INamedTypeSymbol> injectionCandidates)
 	{
 		ImmutableArray<string> classesToRegister =
@@ -35,8 +39,10 @@ internal class RegisterClassesDescendedFromOutput :
 			? null
 			: new RegisterClassesDescendedFromOutput(
 				attributeSourceCode: attributeSourceCode,
-				serviceLifetime: serviceLifetime,
 				baseClassType: baseClassType,
+				serviceLifetime: serviceLifetime,
+				@as: registerAs,
+				classRegex: classRegex,
 				classesToRegister: classesToRegister);
 	}
 
@@ -65,8 +71,10 @@ internal class RegisterClassesDescendedFromOutput :
 
 	private RegisterClassesDescendedFromOutput(
 		string attributeSourceCode,
-		ServiceLifetime serviceLifetime,
 		INamedTypeSymbol baseClassType,
+		ServiceLifetime serviceLifetime,
+		ClassRegistration @as,
+		string? classRegex,
 		ImmutableArray<string> classesToRegister)
 		: base(
 			attributeSourceCode: attributeSourceCode,
@@ -74,11 +82,15 @@ internal class RegisterClassesDescendedFromOutput :
 	{
 		BaseClassType = baseClassType;
 		ClassesToRegister = classesToRegister;
+		RegisterAs = @as;
+		ClassRegex = classRegex;
 		CachedHashCode = new Lazy<int>(() =>
 			HashCode
 			.Combine(
 				base.GetHashCode(),
 				TypeIdentityComparer.Default.GetHashCode(BaseClassType),
+				RegisterAs,
+				ClassRegex,
 				ClassesToRegister.GetContentsHashCode()
 			)
 		);

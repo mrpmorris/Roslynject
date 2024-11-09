@@ -22,8 +22,7 @@ internal static class InjectionCandidatesFactory
 					.GetDeclaredSymbol(context.Node)!;
 				return result;
 			}
-		)
-		.WithComparer(new TypeIdentifyWithInheritanceComparer());
+		);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private static bool SyntaxNodePredicate(

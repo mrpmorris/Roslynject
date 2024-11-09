@@ -1,6 +1,6 @@
 ﻿namespace Morris.Roslynject;
 
-public enum InterfaceAs
+public enum InterfaceRegistration
 {
 	ImplementedInterface,
 	BaseInterface,

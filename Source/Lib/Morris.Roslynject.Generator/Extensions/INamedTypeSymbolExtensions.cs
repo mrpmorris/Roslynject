@@ -19,7 +19,7 @@ internal static class INamedTypeSymbolExtensions
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static bool IsDescendedFrom(this INamedTypeSymbol child, INamedTypeSymbol baseClass)
+	public static bool IsOfType(this INamedTypeSymbol child, INamedTypeSymbol baseClass)
 	=>
 		TypeIdentityComparer.Default.Equals(child.ConstructedFrom, baseClass.ConstructedFrom)
 		|| child.DescendsFrom(baseClass);
