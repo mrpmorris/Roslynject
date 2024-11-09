@@ -57,7 +57,7 @@ internal static class DeclaredRegistrationClassesFactory
 					cancellationToken: cancellationToken
 				)!
 			)
-			.OfType<DeclaredRegisterAttributeBase>()
+			.Where(x => x is not null)
 			.ToImmutableArray();
 
 		(string? Namespace, string Name)? namespaceAndName = context.GetNamespaceAndName(cancellationToken);
