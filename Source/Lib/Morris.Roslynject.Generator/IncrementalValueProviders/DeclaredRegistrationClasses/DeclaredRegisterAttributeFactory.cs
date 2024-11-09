@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis;
 using Morris.Roslynject.Generator.Extensions;
+using System.Collections.Immutable;
 
 namespace Morris.Roslynject.Generator.IncrementalValueProviders.DeclaredRegistrationClasses;
 
@@ -14,23 +15,19 @@ internal static class DeclaredRegisterAttributeFactory
 		if (semanticModel.GetTypeInfo(attributeSyntax, cancellationToken).Type is not INamedTypeSymbol attributeTypeSymbol)
 			return null;
 
-		if (attributeSyntax.ArgumentList?.Arguments is not { Count: > 0 } arguments)
-			return null;
+		ImmutableDictionary<string, object?> arguments =
+			attributeSyntax.GetArguments(semanticModel, cancellationToken);
 
-		Optional<object?> lifetimeArgument =
-			semanticModel.GetConstantValue(arguments[0].Expression, cancellationToken);
-		if (!lifetimeArgument.HasValue || lifetimeArgument.Value is not int lifetimeValue)
-			return null;
+		var baseClass = arguments.GetValue<INamedTypeSymbol>("baseClass");
+		var serviceLifetime = arguments.GetValue<ServiceLifetime>("serviceLifetime");
 
-		var serviceLifetime = (ServiceLifetime)lifetimeValue;
 		// Determine the specific attribute type and create the corresponding meta object
 		string attributeName = attributeTypeSymbol.Name;
 		return attributeName switch {
 			"RegisterClassesDescendedFromAttribute" =>
 				CreateDeclaredRegisterClassesDescendedFromAttribute(
-					semanticModel: semanticModel,
 					attributeSyntax: attributeSyntax,
-					baseClassTypeArgument: arguments[1],
+					baseClass: baseClass,
 					serviceLifetime: serviceLifetime,
 					registerAs: ClassRegistration.BaseClass, // TODO: PeteM - Don't hard-code
 					classRegex: null, // TODO: PeteM - Don't hard-code
@@ -41,25 +38,18 @@ internal static class DeclaredRegisterAttributeFactory
 	}
 
 	private static DeclaredRegisterAttributeBase? CreateDeclaredRegisterClassesDescendedFromAttribute(
-		SemanticModel semanticModel,
 		AttributeSyntax attributeSyntax,
-		AttributeArgumentSyntax baseClassTypeArgument,
+		INamedTypeSymbol baseClass,
 		ServiceLifetime serviceLifetime,
 		ClassRegistration registerAs,
 		string? classRegex,
 		CancellationToken cancellationToken)
-	{
-		INamedTypeSymbol? baseClassType = baseClassTypeArgument
-			.GetNamedTypeSymbol(semanticModel, cancellationToken);
-
-		return baseClassType is null
-			? null
-			: new DeclaredRegisterClassesDescendedFromAttribute(
-				attributeSyntax: attributeSyntax,
-				baseClassType: baseClassType,
-				serviceLifetime: serviceLifetime,
-				registerAs: registerAs,
-				classRegex: classRegex);
-	}
+	=>
+		new DeclaredRegisterClassesDescendedFromAttribute(
+			attributeSyntax: attributeSyntax,
+			baseClassType: baseClass,
+			serviceLifetime: serviceLifetime,
+			registerAs: registerAs,
+			classRegex: classRegex);
 }
 

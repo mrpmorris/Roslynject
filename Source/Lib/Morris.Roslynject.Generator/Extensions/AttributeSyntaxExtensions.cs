@@ -8,13 +8,12 @@ internal static class AttributeSyntaxExtensions
 {
 	public static ImmutableDictionary<string, object?> GetArguments(
 		this AttributeSyntax source,
-		GeneratorSyntaxContext context)
+		SemanticModel semanticModel,
+		CancellationToken cancellationToken)
 	{
 		SeparatedSyntaxList<AttributeArgumentSyntax>? arguments = source.ArgumentList?.Arguments;
 		if (arguments is null)
 			return ImmutableDictionary<string, object?>.Empty;
-
-		SemanticModel semanticModel = context.SemanticModel;
 
 		var builder = ImmutableDictionary.CreateBuilder<string, object?>();
 
@@ -40,7 +39,7 @@ internal static class AttributeSyntaxExtensions
 				: $"arg{argumentIndex}";
 
 			ExpressionSyntax argumentExpression = argument.Expression;
-			Optional<object?> argumentValue = semanticModel.GetConstantValue(argumentExpression);
+			Optional<object?> argumentValue = argumentExpression.GetValue(semanticModel, cancellationToken);
 			builder[argumentName] = argumentValue.HasValue ? argumentValue.Value : null;
 		}
 
