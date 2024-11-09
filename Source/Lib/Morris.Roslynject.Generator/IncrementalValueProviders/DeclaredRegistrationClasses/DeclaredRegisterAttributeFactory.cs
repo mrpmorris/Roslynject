@@ -18,8 +18,10 @@ internal static class DeclaredRegisterAttributeFactory
 		ImmutableDictionary<string, object?> arguments =
 			attributeSyntax.GetArguments(semanticModel, cancellationToken);
 
-		var baseClass = arguments.GetValue<INamedTypeSymbol>("baseClass");
-		var serviceLifetime = arguments.GetValue<ServiceLifetime>("serviceLifetime");
+		var baseClass = arguments.GetValue<INamedTypeSymbol>("BaseClass");
+		var serviceLifetime = arguments.GetValue<ServiceLifetime>("ServiceLifetime");
+		var registerAs = arguments.GetValue<ClassRegistration>("RegisterAs");
+		var classRegex = arguments.GetValue<string?>("ClassRegex");
 
 		// Determine the specific attribute type and create the corresponding meta object
 		string attributeName = attributeTypeSymbol.Name;
@@ -29,8 +31,8 @@ internal static class DeclaredRegisterAttributeFactory
 					attributeSyntax: attributeSyntax,
 					baseClass: baseClass,
 					serviceLifetime: serviceLifetime,
-					registerAs: ClassRegistration.BaseClass, // TODO: PeteM - Don't hard-code
-					classRegex: null, // TODO: PeteM - Don't hard-code
+					registerAs: registerAs,
+					classRegex: classRegex,
 					cancellationToken: cancellationToken),
 
 			_ => null

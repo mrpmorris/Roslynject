@@ -16,7 +16,7 @@ public class RegisterInterfacesOnClassesDescendedFromAttribute : Attribute
 		Type baseClass,
 		ServiceLifetime serviceLifetime)
 	{
-		BaseClass = baseClass ?? throw new ArgumentNullException(nameof(baseClass));
+		BaseClass = baseClass;
 		ServiceLifetime = serviceLifetime;
 	}
 }

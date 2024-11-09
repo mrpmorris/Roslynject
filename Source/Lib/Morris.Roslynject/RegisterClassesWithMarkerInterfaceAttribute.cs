@@ -16,7 +16,7 @@ public class RegisterClassesWithMarkerInterfaceAttribute : Attribute
 		Type baseInterface,
 		ServiceLifetime serviceLifetime)
 	{
-		BaseInterface = baseInterface ?? throw new ArgumentNullException(nameof(baseInterface));
+		BaseInterface = baseInterface;
 		ServiceLifetime = serviceLifetime;
 	}
 }

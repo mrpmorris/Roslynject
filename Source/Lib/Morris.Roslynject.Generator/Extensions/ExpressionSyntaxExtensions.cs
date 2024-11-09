@@ -18,8 +18,13 @@ internal static class ExpressionSyntaxExtensions
 				literalExpression.Token.Value,
 
 			MemberAccessExpressionSyntax memberAccessExpression =>
-				semanticModel.GetSymbolInfo(memberAccessExpression, cancellationToken).Symbol,
+				semanticModel.GetSymbolInfo(memberAccessExpression, cancellationToken).Symbol switch {
+					IFieldSymbol field when field.ContainingType.TypeKind == TypeKind.Enum =>
+						field.ConstantValue,
 
+					_ => throw new NotImplementedException()
+				},
+			
 			_ => throw new NotImplementedException()
 		};
 }

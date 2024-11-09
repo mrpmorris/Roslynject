@@ -15,7 +15,7 @@ internal static class AttributeSyntaxExtensions
 		if (arguments is null)
 			return ImmutableDictionary<string, object?>.Empty;
 
-		var builder = ImmutableDictionary.CreateBuilder<string, object?>();
+		var builder = ImmutableDictionary.CreateBuilder<string, object?>(StringComparer.CurrentCultureIgnoreCase);
 
 		// Get the symbol for the attribute type
 		var attributeSymbol = semanticModel.GetSymbolInfo(source).Symbol?.ContainingType;
@@ -39,8 +39,8 @@ internal static class AttributeSyntaxExtensions
 				: $"arg{argumentIndex}";
 
 			ExpressionSyntax argumentExpression = argument.Expression;
-			Optional<object?> argumentValue = argumentExpression.GetValue(semanticModel, cancellationToken);
-			builder[argumentName] = argumentValue.HasValue ? argumentValue.Value : null;
+			object? argumentValue = argumentExpression.GetValue(semanticModel, cancellationToken);
+			builder[argumentName] = argumentValue;
 		}
 
 		return builder.ToImmutable();

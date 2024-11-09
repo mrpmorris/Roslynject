@@ -14,11 +14,11 @@ public class RegisterClassesDescendedFromAttribute : Attribute
 	public string? ClassRegex { get; set; }
 
 	public RegisterClassesDescendedFromAttribute(
-		Type baseType,
+		Type baseClass,
 		ServiceLifetime serviceLifetime,
 		ClassRegistration registerAs)
 	{
-		BaseClass = baseType ?? throw new ArgumentNullException(nameof(baseType));
+		BaseClass = baseClass;
 		ServiceLifetime = serviceLifetime;
 		RegisterAs = registerAs;
 	}

@@ -18,7 +18,7 @@ public class RegisterInterfacesOfTypeAttribute : Attribute
 		ServiceLifetime serviceLifetime,
 		InterfaceRegistration @as)
 	{
-		BaseInterface = baseInterface ?? throw new ArgumentNullException(nameof(baseInterface));
+		BaseInterface = baseInterface;
 		ServiceLifetime = serviceLifetime;
 		As = @as;
 	}
