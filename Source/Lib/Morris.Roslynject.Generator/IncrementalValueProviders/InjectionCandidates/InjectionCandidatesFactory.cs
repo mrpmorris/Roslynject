@@ -22,7 +22,8 @@ internal static class InjectionCandidatesFactory
 					.GetDeclaredSymbol(context.Node)!;
 				return result;
 			}
-		);
+		)
+		.WithTrackingName(nameof(InjectionCandidatesFactory));
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private static bool SyntaxNodePredicate(

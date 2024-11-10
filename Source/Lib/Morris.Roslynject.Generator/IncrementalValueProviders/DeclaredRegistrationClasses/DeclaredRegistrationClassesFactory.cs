@@ -16,7 +16,8 @@ internal static class DeclaredRegistrationClassesFactory
 			predicate: SyntaxNodePredicate,
 			transform: TransformSyntaxContext
 		 )
-		.Where(x => x is not null);
+		.Where(x => x is not null)
+		.WithTrackingName(nameof(DeclaredRegistrationClassesFactory));
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private static bool SyntaxNodePredicate(

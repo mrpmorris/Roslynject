@@ -14,5 +14,6 @@ internal static class RegistrationClassOutputsFactory
 		.Select((pair, cancellationToken) =>
 			pair.Left.CreateOutput(pair.Right)!
 		)
-		.Where(x => x is not null);
+		.Where(x => x is not null)
+		.WithTrackingName(nameof(RegistrationClassOutputsFactory));
 }
