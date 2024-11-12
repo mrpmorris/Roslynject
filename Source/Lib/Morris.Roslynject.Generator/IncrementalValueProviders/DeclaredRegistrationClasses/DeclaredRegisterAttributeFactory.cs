@@ -22,7 +22,7 @@ internal static class DeclaredRegisterAttributeFactory
 		var baseClass = arguments.GetValue<INamedTypeSymbol>("BaseClass");
 		var serviceLifetime = arguments.GetValue<ServiceLifetime>("ServiceLifetime");
 		var registerAs = arguments.GetValue<ClassRegistration>("RegisterAs");
-		var classRegex = arguments.GetValue<string?>("ClassRegex");
+		var classRegex = arguments.GetValueOrDefault<string?>("ClassRegex");
 
 		// Determine the specific attribute type and create the corresponding meta object
 		string attributeName = attributeTypeSymbol.Name;

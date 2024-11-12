@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Collections.Immutable;
 
 namespace Morris.Roslynject.Generator.Extensions;
 
@@ -9,6 +10,15 @@ internal static class ImmutableDictionaryStringObjectExtensions
 		string key)
 	=>
 		(TValue)dictionary[key!]!;
+
+	public static TValue GetValueOrDefault<TValue>(
+		this ImmutableDictionary<string, object?> dictionary,
+		string key,
+		TValue? defaultValue = default!)
+	=>
+		dictionary.TryGetValue(key, out TValue? value)
+		? value!
+		: defaultValue!;
 
 	public static bool TryGetValue<TValue>(
 		this ImmutableDictionary<string, object?> dictionary,

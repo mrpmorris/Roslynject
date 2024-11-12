@@ -19,7 +19,7 @@ internal static class AttributeSyntaxExtensions
 
 		// Get the symbol for the attribute type
 		SymbolInfo attributeSymbolInfo = semanticModel.GetSymbolInfo(source);
-		var attributeSymbol = attributeSymbolInfo.CandidateSymbols.FirstOrDefault()?.ContainingType;
+		var attributeSymbol = attributeSymbolInfo.Symbol?.ContainingType;
 
 		// Retrieve constructor parameters if available
 		IMethodSymbol constructor = attributeSymbol!.Constructors.First();

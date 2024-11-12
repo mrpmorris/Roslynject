@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.Extensions.DependencyInjection;
 using Morris.Roslynject.Generator;
 using static Basic.Reference.Assemblies.Net80;
 
@@ -32,12 +33,15 @@ public class WhenRegisteringNonGenericBaseType
 		var morrisRoslynjectAssembly = typeof(Morris.Roslynject.RegisterClassesDescendedFromAttribute).Assembly;
 		var morrisRoslynjectMetadataReference = MetadataReference.CreateFromFile(morrisRoslynjectAssembly.Location);
 
+		var injectionAssembly = typeof(ServiceLifetime).Assembly;
+		var injectionMetadataReference = MetadataReference.CreateFromFile(injectionAssembly.Location);
+
 		var compilation = CSharpCompilation.Create(
 			assemblyName: "Test",
 			syntaxTrees: [syntaxTree],
 			references: Basic.Reference.Assemblies.Net80.References
 				.All
-				.Union([morrisRoslynjectMetadataReference]),
+				.Union([morrisRoslynjectMetadataReference, injectionMetadataReference]),
 			options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
 		);
 
