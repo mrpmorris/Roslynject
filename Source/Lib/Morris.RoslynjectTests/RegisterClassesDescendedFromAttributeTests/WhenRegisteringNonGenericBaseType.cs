@@ -10,7 +10,7 @@ namespace Morris.RoslynjectTests.RegisterClassesDescendedFromAttributeTests;
 public class WhenRegisteringNonGenericBaseType
 {
 	[TestMethod]
-	public async Task ThenRegistersBaseClassForEachDescendantClass()
+	public void ThenRegistersBaseClassForEachDescendantClass()
 	{
 		var syntaxTree = CSharpSyntaxTree.ParseText(
 			$$$"""
@@ -45,7 +45,7 @@ public class WhenRegisteringNonGenericBaseType
 			options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
 		);
 
-		var subject = new RoslynjectGenerator();
+		var subject = new SourceGenerator();
 		ISourceGenerator sourceGenerator = subject.AsSourceGenerator();
 		var driver = CSharpGeneratorDriver
 			.Create(sourceGenerator)
@@ -56,9 +56,32 @@ public class WhenRegisteringNonGenericBaseType
 
 		GeneratedSourceResult generatedSource = result.GeneratedSources.Single();
 		Assert.AreEqual("Morris.Roslynject.g.cs", generatedSource.HintName);
-		string generatedCode = generatedSource.SyntaxTree.ToString();
+		string generatedCode = generatedSource.SyntaxTree.ToString().Replace("\r", "");
+		string expectedGeneratedCode =
+"""
+using Microsoft.Extensions.DependencyInjection;
 
-		await Task.Yield();
+namespace MyNamespace
+{
+    partial class MyModule
+    {
+        static partial void AfterRegister(IServiceCollection services);
+
+        public static void Register(IServiceCollection services)
+        {
+            // RegisterClassesDescendedFrom(typeof(BaseClass), ServiceLifetime.Scoped, ClassRegistration.BaseClass)
+            services.AddScoped(typeof(global::MyNamespace.Child1));
+            services.AddScoped(typeof(global::MyNamespace.Child2));
+            services.AddScoped(typeof(global::MyNamespace.Child1Child1));
+
+            AfterRegister(services);
+        }
+    }
+}
+
+""".Replace("\r", "");
+
+		Assert.AreEqual(expectedGeneratedCode, generatedCode);
 	}
 
 }

@@ -8,7 +8,7 @@ using System.CodeDom.Compiler;
 namespace Morris.Roslynject.Generator;
 
 [Generator]
-public class RoslynjectGenerator : IIncrementalGenerator
+public class SourceGenerator : IIncrementalGenerator
 {
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
@@ -34,7 +34,7 @@ public class RoslynjectGenerator : IIncrementalGenerator
 
 				foreach (var registrationClass in input)
 				{
-					writer.WriteLine();
+					writer.AddBlankLine();
 
 					IDisposable? namespaceCodeBlock = null;
 					if (!string.IsNullOrEmpty(registrationClass.NamespaceName))
@@ -47,7 +47,7 @@ public class RoslynjectGenerator : IIncrementalGenerator
 					using (writer.CodeBlock())
 					{
 						writer.WriteLine("static partial void AfterRegister(IServiceCollection services);");
-						writer.WriteLine();
+						writer.AddBlankLine();
 						writer.WriteLine("public static void Register(IServiceCollection services)");
 						using (writer.CodeBlock())
 						{
@@ -60,7 +60,7 @@ public class RoslynjectGenerator : IIncrementalGenerator
 								writer.WriteLine($"// {attributeSourceCode}");
 
 								attr.GenerateCode(writer.WriteLine);
-								writer.WriteLine();
+								writer.AddBlankLine();
 							}
 							writer.WriteLine("AfterRegister(services);");
 						}
