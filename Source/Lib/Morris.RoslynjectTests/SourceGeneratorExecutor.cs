@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Morris.Roslynject.Generator;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Morris.RoslynjectTests;
 internal static class SourceGeneratorExecutor

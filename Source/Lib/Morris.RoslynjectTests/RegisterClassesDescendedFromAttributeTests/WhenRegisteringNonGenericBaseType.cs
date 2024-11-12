@@ -1,23 +1,19 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.Extensions.DependencyInjection;
-using Morris.Roslynject.Generator;
-
-namespace Morris.RoslynjectTests.RegisterClassesDescendedFromAttributeTests;
+﻿namespace Morris.RoslynjectTests.RegisterClassesDescendedFromAttributeTests;
 
 [TestClass]
 public class WhenRegisteringNonGenericBaseType
 {
 	[TestMethod]
-	public void ThenRegistersBaseClassForEachDescendantClass()
+	public void ThenRegistersDescendantClasses()
 	{
 		const string sourceCode =
+/* langauage=c# */
 """
 using Microsoft.Extensions.DependencyInjection;
 using Morris.Roslynject;
 namespace MyNamespace;
 
-[RegisterClassesDescendedFrom(typeof(BaseClass), ServiceLifetime.Scoped, ClassRegistration.BaseClass)]
+[RegisterClassesDescendedFrom(typeof(BaseClass), ServiceLifetime.Scoped, ClassRegistration.DescendantClass)]
 internal class MyModule : RoslynjectModule
 {
 }
@@ -27,7 +23,7 @@ public class Child1 : BaseClass {}
 public class Child2 : BaseClass {}
 public class Child1Child1 : Child1 {}
 """;
-
+		
 		const string expectedGeneratedCode =
 """
 using Microsoft.Extensions.DependencyInjection;
