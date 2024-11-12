@@ -10,7 +10,9 @@ public class RegisterInterfacesOfTypeAttribute : Attribute
 	public ServiceLifetime ServiceLifetime { get; set; }
 	public InterfaceRegistration As { get; set; }
 
+#if NET8_0_OR_GREATER
 	[StringSyntax(StringSyntaxAttribute.Regex)]
+#endif
 	public string? InterfaceRegex { get; set; }
 
 	public RegisterInterfacesOfTypeAttribute(

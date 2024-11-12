@@ -33,15 +33,15 @@ internal class RegistrationClassOutput : IEquatable<RegistrationClassOutput>
 				Attributes.GetContentsHashCode()));
 	}
 
-	public override bool Equals(object obj) =>
+	public override bool Equals(object? obj) =>
 		obj is RegistrationClassOutput other
 		&& Equals(other);
 
-	public bool Equals(RegistrationClassOutput other) =>
+	public bool Equals(RegistrationClassOutput? other) =>
 		ReferenceEquals(this, other)
 		||
-
-			ClassName == other.ClassName
+			other is not null
+			&& ClassName == other.ClassName
 			&& NamespaceName == other.NamespaceName
 			&& Attributes.SequenceEqual(other.Attributes)
 		;

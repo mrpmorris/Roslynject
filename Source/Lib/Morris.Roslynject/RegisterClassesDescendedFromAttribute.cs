@@ -10,7 +10,9 @@ public class RegisterClassesDescendedFromAttribute : Attribute
 	public ServiceLifetime ServiceLifetime { get; set; }
 	public ClassRegistration RegisterAs { get; set; }
 
+#if NET8_0_OR_GREATER
 	[StringSyntax(StringSyntaxAttribute.Regex)]
+#endif
 	public string? ClassRegex { get; set; }
 
 	public RegisterClassesDescendedFromAttribute(

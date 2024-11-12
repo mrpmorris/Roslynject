@@ -49,15 +49,15 @@ internal class DeclaredRegistrationClass : IEquatable<DeclaredRegistrationClass>
 		);
 	}
 
-	public override bool Equals(object obj) =>
+	public override bool Equals(object? obj) =>
 		obj is DeclaredRegistrationClass other
 		&& Equals(other);
 
-	public bool Equals(DeclaredRegistrationClass other) =>
+	public bool Equals(DeclaredRegistrationClass? other) =>
 		ReferenceEquals(this, other)
 		||
-
-			ClassName == other.ClassName
+			other is not null
+			&& ClassName == other.ClassName
 			&& NamespaceName == other.NamespaceName
 			&& Attributes.SequenceEqual(other.Attributes)
 		;

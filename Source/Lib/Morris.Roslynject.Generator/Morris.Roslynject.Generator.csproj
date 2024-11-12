@@ -10,15 +10,23 @@
 		<IsRoslynComponent>true</IsRoslynComponent>
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-		<PackageId>Morris.Roslynject.Generator</PackageId>
-		<Version>1.0.0</Version>
-		<Authors>Your Name</Authors>
-		<Company>Your Company</Company>
-		<RepositoryUrl>https://your.repository.url</RepositoryUrl>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Title>Roslynject</Title>
+		<PackageId>Morris.Roslynject</PackageId>
+		<Description>Roslyn code-gen library for dependency injection registration</Description>
+		<Version>0.1.0</Version>
+		<RepositoryUrl>https://github.com/mrpmorris/Morris.Roslyninject</RepositoryUrl>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0" PrivateAssets="all" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Morris.Roslynject\Morris.Roslynject.csproj" />
 	</ItemGroup>
 </Project>
