@@ -23,7 +23,7 @@ internal abstract class RegisterAttributeOutputBase
 		);
 	}
 
-	public override bool Equals(object obj) =>
+	public override bool Equals(object? obj) =>
 		obj is RegisterAttributeOutputBase other
 		&& ServiceLifetime == other.ServiceLifetime
 		&& AttributeSourceCode.Equals(

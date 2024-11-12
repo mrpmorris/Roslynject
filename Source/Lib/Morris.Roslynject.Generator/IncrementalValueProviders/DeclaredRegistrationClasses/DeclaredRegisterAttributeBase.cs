@@ -15,7 +15,7 @@ internal abstract class DeclaredRegisterAttributeBase
 
 	public abstract RegisterAttributeOutputBase? CreateOutput(ImmutableArray<INamedTypeSymbol> injectionCandidates);
 
-	public override bool Equals(object obj) =>
+	public override bool Equals(object? obj) =>
 		obj is RegisterAttributeOutputBase other
 		&& ServiceLifetime == other.ServiceLifetime
 		&& AttributeSourceCode.Equals(

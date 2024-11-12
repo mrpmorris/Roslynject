@@ -48,11 +48,11 @@ internal class RegisterClassesDescendedFromOutput :
 	}
 
 
-	public override bool Equals(object obj) =>
+	public override bool Equals(object? obj) =>
 		obj is RegisterClassesDescendedFromOutput other
 		&& Equals(other);
 
-	public bool Equals(RegisterClassesDescendedFromOutput other) =>
+	public bool Equals(RegisterClassesDescendedFromOutput? other) =>
 		base.Equals(other)
 		&& TypeIdentityComparer.Default.Equals(
 			BaseClassType,

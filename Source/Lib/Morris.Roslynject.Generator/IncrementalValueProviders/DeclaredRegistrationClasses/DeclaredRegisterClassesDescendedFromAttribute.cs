@@ -49,11 +49,11 @@ internal class DeclaredRegisterClassesDescendedFromAttribute : DeclaredRegisterA
 			classRegex: ClassRegex,
 			injectionCandidates: injectionCandidates);
 
-	public override bool Equals(object obj) =>
+	public override bool Equals(object? obj) =>
 		obj is DeclaredRegisterClassesDescendedFromAttribute other
 		&& Equals(other);
 
-	public bool Equals(DeclaredRegisterClassesDescendedFromAttribute other) =>
+	public bool Equals(DeclaredRegisterClassesDescendedFromAttribute? other) =>
 		base.Equals(other)
 		&& RegisterAs == other.RegisterAs
 		&& ClassRegex == other.ClassRegex
