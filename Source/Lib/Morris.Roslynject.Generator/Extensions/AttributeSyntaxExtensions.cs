@@ -18,7 +18,8 @@ internal static class AttributeSyntaxExtensions
 		var builder = ImmutableDictionary.CreateBuilder<string, object?>(StringComparer.CurrentCultureIgnoreCase);
 
 		// Get the symbol for the attribute type
-		var attributeSymbol = semanticModel.GetSymbolInfo(source).Symbol?.ContainingType;
+		SymbolInfo attributeSymbolInfo = semanticModel.GetSymbolInfo(source);
+		var attributeSymbol = attributeSymbolInfo.CandidateSymbols.FirstOrDefault()?.ContainingType;
 
 		// Retrieve constructor parameters if available
 		IMethodSymbol constructor = attributeSymbol!.Constructors.First();

@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Morris.Roslynject.Generator.Extensions;
 using Morris.Roslynject.Generator.Helpers;
+using Morris.Roslynject.Generator.Morris.Roslynject;
 using System.Collections.Immutable;
 
 namespace Morris.Roslynject.Generator.IncrementalValueProviders.RegistrationClassOutputs;

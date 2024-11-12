@@ -41,7 +41,10 @@ internal static class DeclaredRegistrationClassesFactory
 			.SemanticModel
 			.Compilation
 			.GetTypesByMetadataName("Morris.Roslynject.RoslynjectModule")
-			.First();
+			.FirstOrDefault();
+
+		if (roslynjectModuleType is null)
+			return null!;
 
 		if (!classSymbol.DescendsFrom(roslynjectModuleType))
 			return null!;

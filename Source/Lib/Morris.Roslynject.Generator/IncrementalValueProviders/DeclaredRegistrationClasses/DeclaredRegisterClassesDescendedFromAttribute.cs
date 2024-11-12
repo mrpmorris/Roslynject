@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Morris.Roslynject.Generator.Extensions;
 using Morris.Roslynject.Generator.IncrementalValueProviders.RegistrationClassOutputs;
+using Morris.Roslynject.Generator.Morris.Roslynject;
 using System.Collections.Immutable;
 
 namespace Morris.Roslynject.Generator.IncrementalValueProviders.DeclaredRegistrationClasses;

@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Morris.Roslynject.Generator;
+using static Basic.Reference.Assemblies.Net80;
 
 namespace Morris.RoslynjectTests.RegisterClassesDescendedFromAttributeTests;
 
@@ -10,11 +11,33 @@ public class WhenRegisteringNonGenericBaseType
 	[TestMethod]
 	public async Task ThenRegistersBaseClassForEachDescendantClass()
 	{
-		var syntaxTree = CSharpSyntaxTree.ParseText("struct Test {}");
+		var syntaxTree = CSharpSyntaxTree.ParseText(
+			$$$"""
+			using Microsoft.Extensions.DependencyInjection;
+			using Morris.Roslynject;
+			namespace MyNamespace;
+
+			[RegisterClassesDescendedFrom(typeof(BaseClass), ServiceLifetime.Scoped, ClassRegistration.BaseClass)]
+			internal class MyModule : RoslynjectModule
+			{
+			}
+
+			public class BaseClass {}
+			public class Child1 : BaseClass {}
+			public class Child2 : BaseClass {}
+			public class Child1Child1 : Child1 {}
+			"""
+		);
+
+		var morrisRoslynjectAssembly = typeof(Morris.Roslynject.RegisterClassesDescendedFromAttribute).Assembly;
+		var morrisRoslynjectMetadataReference = MetadataReference.CreateFromFile(morrisRoslynjectAssembly.Location);
+
 		var compilation = CSharpCompilation.Create(
 			assemblyName: "Test",
 			syntaxTrees: [syntaxTree],
-			references: Basic.Reference.Assemblies.Net80.References.All,
+			references: Basic.Reference.Assemblies.Net80.References
+				.All
+				.Union([morrisRoslynjectMetadataReference]),
 			options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
 		);
 
@@ -24,18 +47,12 @@ public class WhenRegisteringNonGenericBaseType
 			.Create(sourceGenerator)
 			.RunGenerators(compilation);
 
-		// Assert the driver doesn't recompute the output
-		GeneratorRunResult result = driver.GetRunResult().Results.Single();
-		//var allOutputs = result.TrackedOutputSteps.SelectMany(outputStep => outputStep.Value).SelectMany(output => output.Outputs);
-		//Assert.Collection(allOutputs, output => Assert.Equal(IncrementalStepRunReason.Cached, output.Reason));
+		GeneratorDriverRunResult runResult = driver.GetRunResult();
+		GeneratorRunResult result = runResult.Results.Single();
 
-		//// Assert the driver use the cached result from AssemblyName and Syntax
-		//var assemblyNameOutputs = result.TrackedSteps["AssemblyName"].Single().Outputs;
-		//Assert.Collection(assemblyNameOutputs, output => Assert.Equal(IncrementalStepRunReason.Unchanged, output.Reason));
-
-		//var syntaxOutputs = result.TrackedSteps["Syntax"].Single().Outputs;
-		//Assert.Collection(syntaxOutputs, output => Assert.Equal(IncrementalStepRunReason.Unchanged, output.Reason));
-
+		GeneratedSourceResult generatedSource = result.GeneratedSources.Single();
+		Assert.AreEqual("Morris.Roslynject.g.cs", generatedSource.HintName);
+		string generatedCode = generatedSource.SyntaxTree.ToString();
 
 		await Task.Yield();
 	}

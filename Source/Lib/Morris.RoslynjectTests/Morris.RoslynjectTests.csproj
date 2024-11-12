@@ -25,6 +25,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Morris.Roslynject.Generator\Morris.Roslynject.Generator.csproj" />
+	  <ProjectReference Include="..\Morris.Roslynject\Morris.Roslynject.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
