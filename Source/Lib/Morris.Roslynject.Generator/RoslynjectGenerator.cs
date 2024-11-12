@@ -30,8 +30,6 @@ public class RoslynjectGenerator : IIncrementalGenerator
 				using var sourceCodeBuilder = new StringWriter();
 				using var writer = new IndentedTextWriter(sourceCodeBuilder);
 
-				// TODO: PeteM - D1
-				writer.WriteLine($"// Generated at {DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")}");
 				writer.WriteLine("using Microsoft.Extensions.DependencyInjection;");
 
 				foreach (var registrationClass in input)
