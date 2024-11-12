@@ -1,7 +1,7 @@
 ﻿namespace Morris.RoslynjectTests.RegisterClassesDescendedFromAttributeTests;
 
 [TestClass]
-public class WhenRegisteringNonGenericBaseType
+public class WhenRegisteringDescendantClasses
 {
 	[TestMethod]
 	public void ThenRegistersDescendantClasses()
