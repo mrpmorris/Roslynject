@@ -54,4 +54,48 @@ namespace MyNamespace
 			);
 	}
 
+	[TestMethod]
+	public void ThenDoesNotRegisterAbstractClasses()
+	{
+		const string sourceCode =
+"""
+using Microsoft.Extensions.DependencyInjection;
+using Morris.Roslynject;
+namespace MyNamespace;
+
+[RegisterClassesDescendedFrom(typeof(BaseClass), ServiceLifetime.Scoped, RegisterClassAs.DescendantClass)]
+internal class MyModule : RoslynjectModule
+{
+}
+
+public class BaseClass {}
+public abstract class Child1 : BaseClass {}
+""";
+
+		const string expectedGeneratedCode =
+"""
+using Microsoft.Extensions.DependencyInjection;
+
+namespace MyNamespace
+{
+    partial class MyModule
+    {
+        static partial void AfterRegister(IServiceCollection services);
+
+        public static void Register(IServiceCollection services)
+        {
+            AfterRegister(services);
+        }
+    }
+}
+
+""";
+
+		SourceGeneratorExecutor.
+			AssertGeneratedCodeMatches(
+				sourceCode: sourceCode,
+				expectedGeneratedCode: expectedGeneratedCode
+			);
+	}
+
 }
