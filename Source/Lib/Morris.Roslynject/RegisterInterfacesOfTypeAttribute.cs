@@ -8,7 +8,7 @@ public class RegisterInterfacesOfTypeAttribute : Attribute
 {
 	public Type BaseInterface { get; set; }
 	public ServiceLifetime ServiceLifetime { get; set; }
-	public InterfaceRegistration As { get; set; }
+	public RegisterInterfaceAs RegisterInterfaceAs { get; set; }
 
 	[StringSyntax(StringSyntaxAttribute.Regex)]
 	public string? InterfaceRegex { get; set; }
@@ -16,10 +16,10 @@ public class RegisterInterfacesOfTypeAttribute : Attribute
 	public RegisterInterfacesOfTypeAttribute(
 		Type baseInterface,
 		ServiceLifetime serviceLifetime,
-		InterfaceRegistration @as)
+		RegisterInterfaceAs registerInterfaceAs)
 	{
 		BaseInterface = baseInterface;
 		ServiceLifetime = serviceLifetime;
-		As = @as;
+		RegisterInterfaceAs = registerInterfaceAs;
 	}
 }

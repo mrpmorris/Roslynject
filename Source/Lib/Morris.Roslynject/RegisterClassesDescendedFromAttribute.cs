@@ -8,7 +8,7 @@ public class RegisterClassesDescendedFromAttribute : Attribute
 {
 	public Type BaseClass { get; set; }
 	public ServiceLifetime ServiceLifetime { get; set; }
-	public ClassRegistration RegisterAs { get; set; }
+	public RegisterClassAs RegisterClassAs { get; set; }
 
 	[StringSyntax(StringSyntaxAttribute.Regex)]
 	public string? ClassRegex { get; set; }
@@ -16,10 +16,10 @@ public class RegisterClassesDescendedFromAttribute : Attribute
 	public RegisterClassesDescendedFromAttribute(
 		Type baseClass,
 		ServiceLifetime serviceLifetime,
-		ClassRegistration registerAs)
+		RegisterClassAs registerClassAs)
 	{
 		BaseClass = baseClass;
 		ServiceLifetime = serviceLifetime;
-		RegisterAs = registerAs;
+		RegisterClassAs = registerClassAs;
 	}
 }

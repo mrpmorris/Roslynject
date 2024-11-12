@@ -11,7 +11,7 @@ internal class RegisterClassesDescendedFromOutput :
 	IEquatable<RegisterClassesDescendedFromOutput>
 {
 	public readonly INamedTypeSymbol BaseClassType;
-	public readonly ClassRegistration RegisterAs;
+	public readonly RegisterClassAs RegisterAs;
 	public readonly string? ClassRegex;
 	public readonly ImmutableArray<string> ClassesToRegister;
 	private readonly Lazy<int> CachedHashCode;
@@ -20,7 +20,7 @@ internal class RegisterClassesDescendedFromOutput :
 		string attributeSourceCode,
 		INamedTypeSymbol baseClassType,
 		ServiceLifetime serviceLifetime,
-		ClassRegistration registerAs,
+		RegisterClassAs registerAs,
 		string? classRegex,
 		ImmutableArray<INamedTypeSymbol> injectionCandidates)
 	{
@@ -42,7 +42,7 @@ internal class RegisterClassesDescendedFromOutput :
 				attributeSourceCode: attributeSourceCode,
 				baseClassType: baseClassType,
 				serviceLifetime: serviceLifetime,
-				@as: registerAs,
+				registerClassAs: registerAs,
 				classRegex: classRegex,
 				classesToRegister: classesToRegister);
 	}
@@ -74,7 +74,7 @@ internal class RegisterClassesDescendedFromOutput :
 		string attributeSourceCode,
 		INamedTypeSymbol baseClassType,
 		ServiceLifetime serviceLifetime,
-		ClassRegistration @as,
+		RegisterClassAs registerClassAs,
 		string? classRegex,
 		ImmutableArray<string> classesToRegister)
 		: base(
@@ -83,7 +83,7 @@ internal class RegisterClassesDescendedFromOutput :
 	{
 		BaseClassType = baseClassType;
 		ClassesToRegister = classesToRegister;
-		RegisterAs = @as;
+		RegisterAs = registerClassAs;
 		ClassRegex = classRegex;
 		CachedHashCode = new Lazy<int>(() =>
 			HashCode

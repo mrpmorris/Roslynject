@@ -21,7 +21,7 @@ internal static class DeclaredRegisterAttributeFactory
 
 		var baseClass = arguments.GetValue<INamedTypeSymbol>("BaseClass");
 		var serviceLifetime = arguments.GetValue<ServiceLifetime>("ServiceLifetime");
-		var registerAs = arguments.GetValue<ClassRegistration>("RegisterAs");
+		var registerClassAs = arguments.GetValue<RegisterClassAs>("RegisterClassAs");
 		var classRegex = arguments.GetValueOrDefault<string?>("ClassRegex");
 
 		// Determine the specific attribute type and create the corresponding meta object
@@ -32,7 +32,7 @@ internal static class DeclaredRegisterAttributeFactory
 					attributeSyntax: attributeSyntax,
 					baseClass: baseClass,
 					serviceLifetime: serviceLifetime,
-					registerAs: registerAs,
+					registerAs: registerClassAs,
 					classRegex: classRegex,
 					cancellationToken: cancellationToken),
 
@@ -44,7 +44,7 @@ internal static class DeclaredRegisterAttributeFactory
 		AttributeSyntax attributeSyntax,
 		INamedTypeSymbol baseClass,
 		ServiceLifetime serviceLifetime,
-		ClassRegistration registerAs,
+		RegisterClassAs registerAs,
 		string? classRegex,
 		CancellationToken cancellationToken)
 	=>

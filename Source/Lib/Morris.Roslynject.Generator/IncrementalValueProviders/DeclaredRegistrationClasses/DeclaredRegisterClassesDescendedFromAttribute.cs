@@ -10,7 +10,7 @@ namespace Morris.Roslynject.Generator.IncrementalValueProviders.DeclaredRegistra
 internal class DeclaredRegisterClassesDescendedFromAttribute : DeclaredRegisterAttributeBase, IEquatable<DeclaredRegisterClassesDescendedFromAttribute>
 {
 	public readonly INamedTypeSymbol BaseClassType;
-	public readonly ClassRegistration RegisterAs;
+	public readonly RegisterClassAs RegisterAs;
 	public readonly string? ClassRegex;
 	private readonly Lazy<int> CachedHashCode;
 
@@ -18,7 +18,7 @@ internal class DeclaredRegisterClassesDescendedFromAttribute : DeclaredRegisterA
 		AttributeSyntax attributeSyntax,
 		INamedTypeSymbol baseClassType,
 		ServiceLifetime serviceLifetime,
-		ClassRegistration registerAs,
+		RegisterClassAs registerAs,
 		string? classRegex)
 		: base(
 			attributeSyntax: attributeSyntax,

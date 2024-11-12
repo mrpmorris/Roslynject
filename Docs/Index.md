@@ -1,18 +1,18 @@
 Filters
 
-public enum InterfaceAs
+public enum RegisterInterfaceAs
 {
     ImplementedInterface,
     BaseInterface,
     BaseOrClosedGenericInterface
 }
 
-public enum InterfaceOptions
+public enum RegisterInterfaceOptions
 {
 	SharedClassInstance
 }
 
-public enum ClassAs
+public enum RegisterClassAs
 {
     DescendantClass,
     BaseClass,
@@ -22,7 +22,7 @@ public enum ClassAs
 RegisterClassesDescendedFrom(
 	Type baseClass,
 	ServiceLifetime serviceLifetime,
-	ClassAs as,
+	RegisterClassAs registerClassAs,
 	string classRegex);
 
 RegisterClassesWithMarkerInterface(
@@ -34,7 +34,7 @@ RegisterClassesWithMarkerInterface(
 RegisterInterfacesOfType(
 	Type baseInterface,
 	ServiceLifetime serviceLifetime,
-	InterfaceAs as,
+	RegisterInterfaceAs registerInterfaceAs,
 	string interfaceRegex);
 
 RegisterInterfacesOnClassesDescendedFrom(

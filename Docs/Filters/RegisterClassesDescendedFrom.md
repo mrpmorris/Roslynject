@@ -7,7 +7,7 @@ specified `BaseClass` and registers them.
 ```c#
 required Type BaseClass,
 required ServiceLifetime ServiceLifetime,
-required ClassAs As,
+required RegisterClassAs As,
 optional string? ClassRegex
 ```
 
@@ -18,7 +18,7 @@ optional string? ClassRegex
 
 ### Manually written code
 ```c#
-[RegisterClassesDescendedFrom(typeof(CommunicationStrategy), ServiceLifetime.Scoped, ClassAs.BaseClass)]
+[RegisterClassesDescendedFrom(typeof(CommunicationStrategy), ServiceLifetime.Scoped, RegisterClassAs.BaseClass)]
 public partial class MyModule : RoslynjectModule
 {
 }
@@ -66,7 +66,7 @@ partial class Module
 
 ### Manually written code
 ```c#
-[RegisterClassesDescendedFrom(typeof(RepositoryBase), ServiceLifetime.Scoped, ClassAs.DescendantClass)]
+[RegisterClassesDescendedFrom(typeof(RepositoryBase), ServiceLifetime.Scoped, RegisterClassAs.DescendantClass)]
 public partial class MyModule : RoslynjectModule
 {
 }
@@ -102,7 +102,7 @@ partial class Module
 
 ### Manually written code
 ```c#
-[RegisterClassesDescendedFrom(typeof(RepositoryBase), ServiceLifetime.Scoped, ClassAs.BaseClass)]
+[RegisterClassesDescendedFrom(typeof(RepositoryBase), ServiceLifetime.Scoped, RegisterClassAs.BaseClass)]
 public partial class MyModule : RoslynjectModule
 {
 }
@@ -143,7 +143,7 @@ partial class Module
 
 ### Manually written code
 ```c#
-[RegisterClassesDescendedFrom(typeof(EventHandler<>), ServiceLifetime.Scoped, ClassAs.BaseOrClosedGenericClass)]
+[RegisterClassesDescendedFrom(typeof(EventHandler<>), ServiceLifetime.Scoped, RegisterClassAs.BaseOrClosedGenericClass)]
 public partial class MyModule : RoslynjectModule
 {
 }

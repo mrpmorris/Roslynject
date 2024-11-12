@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Morris.Roslynject;
 namespace MyNamespace;
 
-[RegisterClassesDescendedFrom(typeof(BaseClass), ServiceLifetime.Scoped, ClassRegistration.DescendantClass)]
+[RegisterClassesDescendedFrom(typeof(BaseClass), ServiceLifetime.Scoped, RegisterClassAs.DescendantClass)]
 internal class MyModule : RoslynjectModule
 {
 }
@@ -35,7 +35,7 @@ namespace MyNamespace
 
         public static void Register(IServiceCollection services)
         {
-            // RegisterClassesDescendedFrom(typeof(BaseClass), ServiceLifetime.Scoped, ClassRegistration.DescendantClass)
+            // RegisterClassesDescendedFrom(typeof(BaseClass), ServiceLifetime.Scoped, RegisterClassAs.DescendantClass)
             services.AddScoped(typeof(global::MyNamespace.Child1));
             services.AddScoped(typeof(global::MyNamespace.Child2));
             services.AddScoped(typeof(global::MyNamespace.Child1Child1));

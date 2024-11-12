@@ -1,7 +1,7 @@
 ﻿namespace Morris.Roslynject.Generator.Morris.Roslynject;
 
-// Must match Morris.Roslynject.InterfaceRegistration
-public enum InterfaceRegistration
+// Must match Morris.Roslynject.RegisterInterfaceAs
+public enum RegisterInterfaceAs
 {
 	ImplementedInterface,
 	BaseInterface,
