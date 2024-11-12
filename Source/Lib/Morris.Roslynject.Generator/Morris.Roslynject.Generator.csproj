@@ -1,32 +1,65 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+	<!-- Property groups for project settings -->
 	<PropertyGroup>
+		<!-- General project properties -->
 		<ImplicitUsings>true</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
 		<LangVersion>Latest</LangVersion>
-		<AssemblyTitle>Morris.Roslynject.Generator</AssemblyTitle>
-		<Description>Roslyn source generator for Morris.Roslynject.</Description>
 		<IsRoslynComponent>true</IsRoslynComponent>
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-	</PropertyGroup>
 
-	<PropertyGroup>
-		<Title>Roslynject</Title>
+		<!-- NuGet package metadata -->
 		<PackageId>Morris.Roslynject</PackageId>
-		<Description>Roslyn code-gen library for dependency injection registration</Description>
 		<Version>0.1.0</Version>
-		<RepositoryUrl>https://github.com/mrpmorris/Morris.Roslyninject</RepositoryUrl>
-		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Authors>Your Name</Authors>
+		<!-- Replace with your name or organization -->
+		<Description>Roslyn code-gen library for dependency injection registration</Description>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<!-- Update license if necessary -->
+		<RepositoryUrl>https://github.com/mrpmorris/Morris.Roslynject</RepositoryUrl>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	</PropertyGroup>
 
+	<!-- Package references -->
 	<ItemGroup>
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0" PrivateAssets="all" />
 	</ItemGroup>
 
+	<!-- Project references and packaging instructions -->
 	<ItemGroup>
-	  <ProjectReference Include="..\Morris.Roslynject\Morris.Roslynject.csproj" />
+		<!-- Reference the attributes project without adding it as a NuGet dependency -->
+		<ProjectReference Include="..\Morris.Roslynject\Morris.Roslynject.csproj">
+			<ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+			<PrivateAssets>All</PrivateAssets>
+			<ExcludeAssets>All</ExcludeAssets>
+			<Pack>false</Pack>
+		</ProjectReference>
 	</ItemGroup>
+
+	<!-- Include the compiled attributes DLLs in the NuGet package -->
+	<ItemGroup>
+		<!-- Ensure the attributes DLLs are built before packaging -->
+		<Content Include="..\Morris.Roslynject\bin\Release\netstandard2.0\Morris.Roslynject.dll">
+			<Pack>true</Pack>
+			<PackagePath>lib/netstandard2.0</PackagePath>
+		</Content>
+		<Content Include="..\Morris.Roslynject\bin\Release\net8.0\Morris.Roslynject.dll">
+			<Pack>true</Pack>
+			<PackagePath>lib/net8.0</PackagePath>
+		</Content>
+	</ItemGroup>
+
+	<!-- Include the code generator as an analyzer in the NuGet package -->
+	<ItemGroup>
+		<!-- Add the code generator DLL as an analyzer -->
+		<Analyzer Include="$(OutputPath)$(AssemblyName).dll">
+			<Pack>true</Pack>
+			<PackagePath>analyzers/dotnet/cs</PackagePath>
+		</Analyzer>
+	</ItemGroup>
+
 </Project>
