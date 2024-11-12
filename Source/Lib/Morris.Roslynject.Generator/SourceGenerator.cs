@@ -28,7 +28,7 @@ public class SourceGenerator : IIncrementalGenerator
 			static (productionContext, input) =>
 			{
 				using var sourceCodeBuilder = new StringWriter();
-				using var writer = new IndentedTextWriter(sourceCodeBuilder);
+				using var writer = new IndentedTextWriter(sourceCodeBuilder, tabString: "\t");
 
 				writer.WriteLine("using Microsoft.Extensions.DependencyInjection;");
 

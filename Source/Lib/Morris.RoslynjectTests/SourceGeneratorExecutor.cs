@@ -23,7 +23,7 @@ internal static class SourceGeneratorExecutor
 			.Location
 		);
 
-	public static string AssertGeneratedCodeMatches(
+	public static void AssertGeneratedCodeMatches(
 		string sourceCode,
 		string expectedGeneratedCode)
 	{
@@ -49,9 +49,38 @@ internal static class SourceGeneratorExecutor
 
 		GeneratedSourceResult generatedSource = result.GeneratedSources.Single();
 		Assert.AreEqual("Morris.Roslynject.g.cs", generatedSource.HintName);
-		string generatedCode = generatedSource.SyntaxTree.ToString().Replace("\r", "");
-		Assert.AreEqual(expectedGeneratedCode.Replace("\r", ""), generatedCode);
-
-		return generatedCode;
+		string generatedCode = generatedSource.SyntaxTree.ToString();
+		Assert.AreEqual(
+			TidyCode(expectedGeneratedCode),
+			TidyCode(generatedCode)
+		);
 	}
+
+	public static void AssertGeneratedEmptyModule(
+		string sourceCode,
+		string namespaceName = "MyNamespace",
+		string moduleClassName = "MyModule")
+	{
+		string expectedGeneratedCode =
+			$$$"""
+			using Microsoft.Extensions.DependencyInjection;
+
+			namespace {{{namespaceName}}}
+			{
+				partial class {{{moduleClassName}}}
+				{
+					static partial void AfterRegister(IServiceCollection services);
+
+					public static void Register(IServiceCollection services)
+					{
+						AfterRegister(services);
+					}
+				}
+			}
+
+			""";
+		AssertGeneratedCodeMatches(sourceCode, expectedGeneratedCode);
+	}
+
+	private static string TidyCode(string value) => value.Replace("\r", "");
 }
