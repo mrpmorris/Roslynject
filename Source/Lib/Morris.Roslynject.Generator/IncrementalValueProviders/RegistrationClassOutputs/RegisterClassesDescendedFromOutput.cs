@@ -3,6 +3,7 @@ using Morris.Roslynject.Generator.Extensions;
 using Morris.Roslynject.Generator.Helpers;
 using Morris.Roslynject.Generator.Morris.Roslynject;
 using System.Collections.Immutable;
+using System.Text.RegularExpressions;
 
 namespace Morris.Roslynject.Generator.IncrementalValueProviders.RegistrationClassOutputs;
 
@@ -24,9 +25,19 @@ internal class RegisterClassesDescendedFromOutput :
 		string? classRegex,
 		ImmutableArray<INamedTypeSymbol> injectionCandidates)
 	{
+		Regex? regex =
+			classRegex is null
+			? null
+			: new Regex(classRegex!);
+		Func<INamedTypeSymbol, bool> regexMatch =
+			regex is null
+			? _ => true
+			: x => regex.IsMatch(x.ToDisplayString());
+
 		ImmutableArray<string> classesToRegister =
 			injectionCandidates
 			.Where(x => x.DescendsFrom(baseClassType))
+			.Where(regexMatch)
 			.Select(x =>
 				NamespaceHelper.Combine(
 					namespaceSymbol: x.ContainingNamespace,

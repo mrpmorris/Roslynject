@@ -47,8 +47,8 @@ public class WhenRegisteringDescendantClasses
 
 			""";
 
-		SourceGeneratorExecutor.
-			AssertGeneratedCodeMatches(
+		SourceGeneratorExecutor
+			.AssertGeneratedCodeMatches(
 				sourceCode: sourceCode,
 				expectedGeneratedCode: expectedGeneratedCode
 			);
@@ -98,12 +98,73 @@ public class WhenRegisteringDescendantClasses
 
 			""";
 
-		SourceGeneratorExecutor.
-			AssertGeneratedCodeMatches(
+		SourceGeneratorExecutor
+			.AssertGeneratedCodeMatches(
 				sourceCode: sourceCode,
 				expectedGeneratedCode: expectedGeneratedCode
 			);
 	}
+
+	[TestMethod]
+	public void ThenRegistersOnlyClassesMatchingRegex()
+	{
+		const string sourceCode =
+			"""
+			namespace MyNamespace
+			{
+				using Microsoft.Extensions.DependencyInjection;
+				using Morris.Roslynject;
+				
+				[RegisterClassesDescendedFrom(typeof(BaseClass), ServiceLifetime.Scoped, RegisterClassAs.DescendantClass, ClassRegex=@"^MyOtherNamespace\.")]
+				internal class MyModule : RoslynjectModule
+				{
+				}
+			
+				public class BaseClass {}
+				public class Child1<T> : BaseClass {}
+				public class Child2<T> : BaseClass {}
+				public class Child1Child1 : Child1<int> {}
+			}
+
+			namespace MyOtherNamespace
+			{
+				using Microsoft.Extensions.DependencyInjection;
+				using Morris.Roslynject;
+				using MyNamespace;
+			
+				public class Child1Child1Child1 : Child1Child1 {}
+			}
+			""";
+
+		const string expectedGeneratedCode =
+			"""
+			using Microsoft.Extensions.DependencyInjection;
+
+			namespace MyNamespace
+			{
+				partial class MyModule
+				{
+					static partial void AfterRegister(IServiceCollection services);
+
+					public static void Register(IServiceCollection services)
+					{
+						// RegisterClassesDescendedFrom(typeof(BaseClass), ServiceLifetime.Scoped, RegisterClassAs.DescendantClass, ClassRegex=@"^MyOtherNamespace\.")
+						services.AddScoped(typeof(global::MyOtherNamespace.Child1Child1Child1));
+
+						AfterRegister(services);
+					}
+				}
+			}
+
+			""";
+
+		SourceGeneratorExecutor
+			.AssertGeneratedCodeMatches(
+				sourceCode: sourceCode,
+				expectedGeneratedCode: expectedGeneratedCode
+			);
+	}
+
 
 	[TestMethod]
 	public void ThenDoesNotRegisterAbstractClasses()
