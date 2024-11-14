@@ -1,4 +1,4 @@
-﻿namespace Morris.RoslynjectTests.RegisterClassesDescendedFromAttributeTests.NonGenericSearchCriteriaTests.RegisterClassAsDescendantClassTests;
+﻿namespace Morris.RoslynjectTests.RegisterClassesDescendedFromAttributeTests.NonGenericSearchCriteriaTests;
 
 [TestClass]
 public class WhenRegisteringDescendantClasses

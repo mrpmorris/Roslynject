@@ -1,7 +1,8 @@
 ﻿using System.CodeDom.Compiler;
 
 namespace Morris.Roslynject.Generator.Extensions;
-internal static class IndentedTextWriterAddBlankLineExtension
+
+internal static partial class IndentedTextWriterExtensions
 {
 	public static void AddBlankLine(this IndentedTextWriter writer)
 	{

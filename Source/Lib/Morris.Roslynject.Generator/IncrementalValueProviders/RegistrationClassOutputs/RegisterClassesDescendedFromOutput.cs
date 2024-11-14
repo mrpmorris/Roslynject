@@ -14,7 +14,7 @@ internal class RegisterClassesDescendedFromOutput :
 	public readonly INamedTypeSymbol BaseClassType;
 	public readonly RegisterClassAs RegisterAs;
 	public readonly string? ClassRegex;
-	public readonly ImmutableArray<string> ClassesToRegister;
+	public readonly ImmutableArray<INamedTypeSymbol> ClassesToRegister;
 	private readonly Lazy<int> CachedHashCode;
 
 	public static RegisterAttributeOutputBase? Create(
@@ -34,16 +34,10 @@ internal class RegisterClassesDescendedFromOutput :
 			? _ => true
 			: x => regex.IsMatch(x.ToDisplayString());
 
-		ImmutableArray<string> classesToRegister =
+		ImmutableArray<INamedTypeSymbol> classesToRegister =
 			injectionCandidates
 			.Where(x => x.DescendsFrom(baseClassType))
 			.Where(regexMatch)
-			.Select(x =>
-				NamespaceHelper.Combine(
-					namespaceSymbol: x.ContainingNamespace,
-					className: x.Name
-				)
-			)
 			.ToImmutableArray();
 
 		return
@@ -71,20 +65,37 @@ internal class RegisterClassesDescendedFromOutput :
 		)
 		&& Enumerable.SequenceEqual(
 			ClassesToRegister,
-			other.ClassesToRegister
+			other.ClassesToRegister,
+			SymbolEqualityComparer.Default
 		);
 
 	public override void GenerateCode(Action<string> writeLine)
 	{
-		string? baseClassRegistration = RegisterAs switch {
-			RegisterClassAs.DescendantClass => null,
-			RegisterClassAs.BaseClass => $"typeof({BaseClassType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}), ",
-			_ => throw new NotImplementedException(RegisterAs.ToString())
-		};
-			
-		foreach (string classToRegister in ClassesToRegister)
-			writeLine($"services.Add{ServiceLifetime}({baseClassRegistration}typeof(global::{classToRegister}));");
+		string? GetBaseClassRegistration(INamedTypeSymbol symbol)
+		{
+			INamedTypeSymbol? resultSymbol = RegisterAs switch {
+				RegisterClassAs.DescendantClass => null,
+				RegisterClassAs.BaseClass => BaseClassType,
+				RegisterClassAs.BaseOrClosedGenericClass => symbol.GetBaseOrClosedGenericType(BaseClassType),
+				_ => throw new NotImplementedException(RegisterAs.ToString())
+			};
+			return resultSymbol is null
+				? null
+				: resultSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+		}
+
+		foreach (INamedTypeSymbol classToRegister in ClassesToRegister)
+		{
+			string implementingClassFullName = classToRegister.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+			string? serviceKey = GetBaseClassRegistration(classToRegister);
+			if (serviceKey is null)
+				writeLine($"services.Add{ServiceLifetime}(typeof({implementingClassFullName}));");
+			else
+				writeLine($"services.Add{ServiceLifetime}(typeof({serviceKey}), typeof({implementingClassFullName}));");
+
+		}
 	}
+
 	public override int GetHashCode() => CachedHashCode.Value;
 
 	private RegisterClassesDescendedFromOutput(
@@ -93,7 +104,7 @@ internal class RegisterClassesDescendedFromOutput :
 		ServiceLifetime serviceLifetime,
 		RegisterClassAs registerClassAs,
 		string? classRegex,
-		ImmutableArray<string> classesToRegister)
+		ImmutableArray<INamedTypeSymbol> classesToRegister)
 		: base(
 			attributeSourceCode: attributeSourceCode,
 			serviceLifetime: serviceLifetime)
