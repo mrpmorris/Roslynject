@@ -76,8 +76,14 @@ internal class RegisterClassesDescendedFromOutput :
 
 	public override void GenerateCode(Action<string> writeLine)
 	{
+		string? baseClassRegistration = RegisterAs switch {
+			RegisterClassAs.DescendantClass => null,
+			RegisterClassAs.BaseClass => $"typeof({BaseClassType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}), ",
+			_ => throw new NotImplementedException(RegisterAs.ToString())
+		};
+			
 		foreach (string classToRegister in ClassesToRegister)
-			writeLine($"services.Add{ServiceLifetime}(typeof(global::{classToRegister}));");
+			writeLine($"services.Add{ServiceLifetime}({baseClassRegistration}typeof(global::{classToRegister}));");
 	}
 	public override int GetHashCode() => CachedHashCode.Value;
 
