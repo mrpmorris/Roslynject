@@ -115,46 +115,46 @@ public class WhenRegisteringBaseClass
 	}
 
 
-	//[TestMethod]
-	//public void ThenDoesNotRegisterAbstractClasses()
-	//{
-	//	const string sourceCode =
-	//		"""
-	//		using Microsoft.Extensions.DependencyInjection;
-	//		using Morris.Roslynject;
-	//		namespace MyNamespace;
+	[TestMethod]
+	public void ThenDoesNotRegisterAbstractClasses()
+	{
+		const string sourceCode =
+			"""
+			using Microsoft.Extensions.DependencyInjection;
+			using Morris.Roslynject;
+			using System.Collections.Generic;
+			namespace MyNamespace;
 
-	//		[RegisterClassesDescendedFrom(typeof(BaseClass), ServiceLifetime.Scoped, RegisterClassAs.BaseClass)]
-	//		internal class MyModule : RoslynjectModule
-	//		{
-	//		}
+			[RegisterClassesDescendedFrom(typeof(List<>), ServiceLifetime.Scoped, RegisterClassAs.BaseClass)]
+			internal class MyModule : RoslynjectModule
+			{
+			}
 
-	//		public abstract class BaseClass {}
-	//		public abstract class Child1 : BaseClass {}
-	//		""";
+			public abstract class Child1 : List<int> {}
+			""";
 
-	//	SourceGeneratorExecutor.AssertGeneratedEmptyModule(sourceCode);
-	//}
+		SourceGeneratorExecutor.AssertGeneratedEmptyModule(sourceCode);
+	}
 
 
-	//[TestMethod]
-	//public void ThenDoesNotRegisterOpenGenericClasses()
-	//{
-	//	const string sourceCode =
-	//		"""
-	//		using Microsoft.Extensions.DependencyInjection;
-	//		using Morris.Roslynject;
-	//		namespace MyNamespace;
+	[TestMethod]
+	public void ThenDoesNotRegisterOpenGenericClasses()
+	{
+		const string sourceCode =
+			"""
+			using Microsoft.Extensions.DependencyInjection;
+			using Morris.Roslynject;
+			using System.Collections.Generic;
+			namespace MyNamespace;
 
-	//		[RegisterClassesDescendedFrom(typeof(BaseClass), ServiceLifetime.Scoped, RegisterClassAs.BaseClass)]
-	//		internal class MyModule : RoslynjectModule
-	//		{
-	//		}
+			[RegisterClassesDescendedFrom(typeof(List<>), ServiceLifetime.Scoped, RegisterClassAs.BaseClass)]
+			internal class MyModule : RoslynjectModule
+			{
+			}
 
-	//		public abstract class BaseClass {}
-	//		public class Child1<T> : BaseClass {}
-	//		""";
+			public class Child1<T> : List<T> {}
+			""";
 
-	//	SourceGeneratorExecutor.AssertGeneratedEmptyModule(sourceCode);
-	//}
+		SourceGeneratorExecutor.AssertGeneratedEmptyModule(sourceCode);
+	}
 }
