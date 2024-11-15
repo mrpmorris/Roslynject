@@ -3,7 +3,7 @@
 namespace Morris.RoslynjectTests.RegisterClassesDescendedFromAttributeTests.GenericSearchCriteriaTests;
 
 [TestClass]
-public class WhenRegisteringBaseOrClosedGenericClass
+public class WhenRegisteringBaseClosedGenericClass
 {
 	[TestMethod]
 	public void ThenRegistersBaseClosedGenericClassForEachDescendantClass()
@@ -14,7 +14,7 @@ public class WhenRegisteringBaseOrClosedGenericClass
 			using Morris.Roslynject;
 			namespace MyNamespace;
 			
-			[RegisterClassesDescendedFrom(typeof(BaseClass<,>), ServiceLifetime.Scoped, RegisterClassAs.BaseOrClosedGenericClass)]
+			[RegisterClassesDescendedFrom(typeof(BaseClass<,>), ServiceLifetime.Scoped, RegisterClassAs.BaseClosedGenericClass)]
 			internal class MyModule : RoslynjectModule
 			{
 			}
@@ -37,7 +37,7 @@ public class WhenRegisteringBaseOrClosedGenericClass
 
 					public static void Register(IServiceCollection services)
 					{
-						// RegisterClassesDescendedFrom(typeof(BaseClass<,>), ServiceLifetime.Scoped, RegisterClassAs.BaseOrClosedGenericClass)
+						// RegisterClassesDescendedFrom(typeof(BaseClass<,>), ServiceLifetime.Scoped, RegisterClassAs.BaseClosedGenericClass)
 						services.AddScoped(typeof(global::MyNamespace.BaseClass<int, bool>), typeof(global::MyNamespace.Child1));
 						services.AddScoped(typeof(global::MyNamespace.BaseClass<string, bool>), typeof(global::MyNamespace.Child2Child1));
 
@@ -65,7 +65,7 @@ public class WhenRegisteringBaseOrClosedGenericClass
 				using Microsoft.Extensions.DependencyInjection;
 				using Morris.Roslynject;
 
-				[RegisterClassesDescendedFrom(typeof(BaseClass<,>), ServiceLifetime.Scoped, RegisterClassAs.BaseOrClosedGenericClass, ClassRegex=@"^MyOtherNamespace\.")]
+				[RegisterClassesDescendedFrom(typeof(BaseClass<,>), ServiceLifetime.Scoped, RegisterClassAs.BaseClosedGenericClass, ClassRegex=@"^MyOtherNamespace\.")]
 				internal class MyModule : RoslynjectModule
 				{
 				}
@@ -98,7 +98,7 @@ public class WhenRegisteringBaseOrClosedGenericClass
 
 					public static void Register(IServiceCollection services)
 					{
-						// RegisterClassesDescendedFrom(typeof(BaseClass<,>), ServiceLifetime.Scoped, RegisterClassAs.BaseOrClosedGenericClass, ClassRegex=@"^MyOtherNamespace\.")
+						// RegisterClassesDescendedFrom(typeof(BaseClass<,>), ServiceLifetime.Scoped, RegisterClassAs.BaseClosedGenericClass, ClassRegex=@"^MyOtherNamespace\.")
 						services.AddScoped(typeof(global::MyNamespace.BaseClass<int, bool>), typeof(global::MyOtherNamespace.Child1Child1Child1));
 
 						AfterRegister(services);

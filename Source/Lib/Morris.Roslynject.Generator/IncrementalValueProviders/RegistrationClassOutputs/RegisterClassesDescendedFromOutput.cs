@@ -76,7 +76,7 @@ internal class RegisterClassesDescendedFromOutput :
 			INamedTypeSymbol? resultSymbol = RegisterAs switch {
 				RegisterClassAs.DescendantClass => null,
 				RegisterClassAs.BaseClass => BaseClassType,
-				RegisterClassAs.BaseOrClosedGenericClass => symbol.GetBaseClosedGenericType(BaseClassType),
+				RegisterClassAs.BaseClosedGenericClass => symbol.GetBaseClosedGenericType(BaseClassType),
 				_ => throw new NotImplementedException(RegisterAs.ToString())
 			};
 			return resultSymbol is null

@@ -5,5 +5,5 @@ public enum RegisterClassAs
 {
 	DescendantClass,
 	BaseClass,
-	BaseOrClosedGenericClass
+	BaseClosedGenericClass
 }

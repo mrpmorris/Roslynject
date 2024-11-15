@@ -143,7 +143,7 @@ partial class Module
 
 ### Manually written code
 ```c#
-[RegisterClassesDescendedFrom(typeof(EventHandler<>), ServiceLifetime.Scoped, RegisterClassAs.BaseOrClosedGenericClass)]
+[RegisterClassesDescendedFrom(typeof(EventHandler<>), ServiceLifetime.Scoped, RegisterClassAs.BaseClosedGenericClass)]
 public partial class MyModule : RoslynjectModule
 {
 }
