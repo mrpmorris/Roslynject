@@ -1,118 +1,118 @@
-﻿//using Morris.Roslynject;
+﻿using Morris.Roslynject;
 
-//namespace Morris.RoslynjectTests.RegisterClassesDescendedFromAttributeTests.GenericSearchCriteriaTests;
+namespace Morris.RoslynjectTests.RegisterClassesDescendedFromAttributeTests.GenericSearchCriteriaTests;
 
-//[TestClass]
-//public class WhenRegisteringBaseOrClosedGenericClass
-//{
-//	[TestMethod]
-//	public void ThenRegistersBaseClosedGenericClassForEachDescendantClass()
-//	{
-//		const string sourceCode =
-//			"""
-//			using Microsoft.Extensions.DependencyInjection;
-//			using Morris.Roslynject;
-//			using System.Collections.Generic;
-//			namespace MyNamespace;
+[TestClass]
+public class WhenRegisteringBaseOrClosedGenericClass
+{
+	[TestMethod]
+	public void ThenRegistersBaseClosedGenericClassForEachDescendantClass()
+	{
+		const string sourceCode =
+			"""
+			using Microsoft.Extensions.DependencyInjection;
+			using Morris.Roslynject;
+			namespace MyNamespace;
 			
-//			[RegisterClassesDescendedFrom(typeof(List<>), ServiceLifetime.Scoped, RegisterClassAs.BaseOrClosedGenericClass)]
-//			internal class MyModule : RoslynjectModule
-//			{
-//			}
-			
-//			public class Child1 : List<int> {}
-//			public class Child2<T> : List<T> {}
-//			public class Child2Child1 : Child2<string> {}
-//			""";
+			[RegisterClassesDescendedFrom(typeof(BaseClass<,>), ServiceLifetime.Scoped, RegisterClassAs.BaseOrClosedGenericClass)]
+			internal class MyModule : RoslynjectModule
+			{
+			}
 
-//		const string expectedGeneratedCode =
-//			"""
-//			using Microsoft.Extensions.DependencyInjection;
+			public class BaseClass<TRequest, TResponse> {}
+			public class Child1 : BaseClass<int, bool> {}
+			public class Child2<TRequest> : BaseClass<TRequest, bool> {}
+			public class Child2Child1 : Child2<string> {}
+			""";
 
-//			namespace MyNamespace
-//			{
-//				partial class MyModule
-//				{
-//					static partial void AfterRegister(IServiceCollection services);
+		const string expectedGeneratedCode =
+			"""
+			using Microsoft.Extensions.DependencyInjection;
 
-//					public static void Register(IServiceCollection services)
-//					{
-//						// RegisterClassesDescendedFrom(typeof(List<>), ServiceLifetime.Scoped, RegisterClassAs.BaseOrClosedGenericClass)
-//						services.AddScoped(typeof(global::System.Collections.Generic.List<int>), typeof(global::MyNamespace.Child1));
-//						services.AddScoped(typeof(global::System.Collections.Generic.List<string>), typeof(global::MyNamespace.Child2Child1));
+			namespace MyNamespace
+			{
+				partial class MyModule
+				{
+					static partial void AfterRegister(IServiceCollection services);
 
-//						AfterRegister(services);
-//					}
-//				}
-//			}
+					public static void Register(IServiceCollection services)
+					{
+						// RegisterClassesDescendedFrom(typeof(BaseClass<,>), ServiceLifetime.Scoped, RegisterClassAs.BaseOrClosedGenericClass)
+						services.AddScoped(typeof(global::MyNamespace.BaseClass<int, bool>), typeof(global::MyNamespace.Child1));
+						services.AddScoped(typeof(global::MyNamespace.BaseClass<string, bool>), typeof(global::MyNamespace.Child2Child1));
 
-//			""";
+						AfterRegister(services);
+					}
+				}
+			}
 
-//		SourceGeneratorExecutor
-//			.AssertGeneratedCodeMatches(
-//				sourceCode: sourceCode,
-//				expectedGeneratedCode: expectedGeneratedCode
-//			);
-//	}
+			""";
 
-//	[TestMethod]
-//	public void ThenRegistersBaseClassForEachClassMatchingRegex()
-//	{
-//		const string sourceCode =
-//			"""
-//			namespace MyNamespace
-//			{
-//				using Microsoft.Extensions.DependencyInjection;
-//				using Morris.Roslynject;
+		SourceGeneratorExecutor
+			.AssertGeneratedCodeMatches(
+				sourceCode: sourceCode,
+				expectedGeneratedCode: expectedGeneratedCode
+			);
+	}
 
-//				[RegisterClassesDescendedFrom(typeof(BaseClass), ServiceLifetime.Scoped, RegisterClassAs.BaseOrClosedGenericClass, ClassRegex=@"^MyOtherNamespace\.")]
-//				internal class MyModule : RoslynjectModule
-//				{
-//				}
+	//[TestMethod]
+	//public void ThenRegistersBaseClassForEachClassMatchingRegex()
+	//{
+	//	const string sourceCode =
+	//		"""
+	//		namespace MyNamespace
+	//		{
+	//			using Microsoft.Extensions.DependencyInjection;
+	//			using Morris.Roslynject;
 
-//				public abstract class BaseClass {}
-//				public class Child1<T> : BaseClass {}
-//				public class Child2<T> : BaseClass {}
-//				public class Child1Child1 : Child1<int> {}
-//			}
+	//			[RegisterClassesDescendedFrom(typeof(BaseClass), ServiceLifetime.Scoped, RegisterClassAs.BaseOrClosedGenericClass, ClassRegex=@"^MyOtherNamespace\.")]
+	//			internal class MyModule : RoslynjectModule
+	//			{
+	//			}
 
-//			namespace MyOtherNamespace
-//			{
-//				using Microsoft.Extensions.DependencyInjection;
-//				using Morris.Roslynject;
-//				using MyNamespace;
+	//			public abstract class BaseClass {}
+	//			public class Child1<T> : BaseClass {}
+	//			public class Child2<T> : BaseClass {}
+	//			public class Child1Child1 : Child1<int> {}
+	//		}
 
-//				public class Child1Child1Child1 : Child1Child1 {}
-//			}
-//			""";
+	//		namespace MyOtherNamespace
+	//		{
+	//			using Microsoft.Extensions.DependencyInjection;
+	//			using Morris.Roslynject;
+	//			using MyNamespace;
 
-//		const string expectedGeneratedCode =
-//			"""
-//			using Microsoft.Extensions.DependencyInjection;
+	//			public class Child1Child1Child1 : Child1Child1 {}
+	//		}
+	//		""";
 
-//			namespace MyNamespace
-//			{
-//				partial class MyModule
-//				{
-//					static partial void AfterRegister(IServiceCollection services);
+	//	const string expectedGeneratedCode =
+	//		"""
+	//		using Microsoft.Extensions.DependencyInjection;
 
-//					public static void Register(IServiceCollection services)
-//					{
-//						// RegisterClassesDescendedFrom(typeof(BaseClass), ServiceLifetime.Scoped, RegisterClassAs.BaseOrClosedGenericClass, ClassRegex=@"^MyOtherNamespace\.")
-//						services.AddScoped(typeof(global::MyNamespace.BaseClass), typeof(global::MyOtherNamespace.Child1Child1Child1));
+	//		namespace MyNamespace
+	//		{
+	//			partial class MyModule
+	//			{
+	//				static partial void AfterRegister(IServiceCollection services);
 
-//						AfterRegister(services);
-//					}
-//				}
-//			}
+	//				public static void Register(IServiceCollection services)
+	//				{
+	//					// RegisterClassesDescendedFrom(typeof(BaseClass), ServiceLifetime.Scoped, RegisterClassAs.BaseOrClosedGenericClass, ClassRegex=@"^MyOtherNamespace\.")
+	//					services.AddScoped(typeof(global::MyNamespace.BaseClass), typeof(global::MyOtherNamespace.Child1Child1Child1));
 
-//			""";
+	//					AfterRegister(services);
+	//				}
+	//			}
+	//		}
 
-//		SourceGeneratorExecutor
-//			.AssertGeneratedCodeMatches(
-//				sourceCode: sourceCode,
-//				expectedGeneratedCode: expectedGeneratedCode
-//			);
-//	}
+	//		""";
 
-//}
+	//	SourceGeneratorExecutor
+	//		.AssertGeneratedCodeMatches(
+	//			sourceCode: sourceCode,
+	//			expectedGeneratedCode: expectedGeneratedCode
+	//		);
+	//}
+
+}
