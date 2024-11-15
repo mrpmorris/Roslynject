@@ -4,7 +4,7 @@
 public class WhenRegisteringDescendantClasses
 {
 	[TestMethod]
-	public void ThenRegistersConcreteDescendantClasses()
+	public void ThenRegistersAllConcreteDescendantClasses()
 	{
 		const string sourceCode =
 			"""
