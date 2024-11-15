@@ -1,7 +1,7 @@
 ﻿using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
-using Morris.Roslynject.Generator;
+using Morris.Roslynject;
 
 namespace Morris.RoslynjectTests;
 internal static class SourceGeneratorExecutor
