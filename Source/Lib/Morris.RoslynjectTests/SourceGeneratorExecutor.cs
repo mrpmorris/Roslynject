@@ -6,13 +6,6 @@ using Morris.Roslynject;
 namespace Morris.RoslynjectTests;
 internal static class SourceGeneratorExecutor
 {
-	private static readonly MetadataReference MorrisRoslynjectMetadataReference =
-		MetadataReference
-		.CreateFromFile(
-			typeof(Morris.Roslynject.RegisterClassesDescendedFromAttribute)
-			.Assembly
-			.Location
-		);
 
 	private static readonly MetadataReference MSDependencyInjectionMetadataReference =
 		MetadataReference
@@ -33,7 +26,7 @@ internal static class SourceGeneratorExecutor
 			syntaxTrees: [syntaxTree],
 			references: Basic.Reference.Assemblies.Net80.References
 				.All
-				.Union([MorrisRoslynjectMetadataReference, MSDependencyInjectionMetadataReference]),
+				.Union([MSDependencyInjectionMetadataReference]),
 			options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
 		);
 

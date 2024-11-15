@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Morris.Roslynject.StaticResources;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,16 +13,23 @@ public class StaticResourcesSourceGenerator : IIncrementalGenerator
 	{
 		context.RegisterPostInitializationOutput(ctx =>
 		{
-			const string SourceCode =
-			$$$"""
-			using Microsoft.Extensions.DependencyInjection;
-			using System.Diagnostics.CodeAnalysis;
+			string sourceCode =
+				$$$"""
+				using Microsoft.Extensions.DependencyInjection;
+				using System.Diagnostics.CodeAnalysis;
 
-			namespace Morris.Roslynject
-			{
-			}
-			""";
-			ctx.AddSource("Morris.Roslynject.StaticResources.g.cs", SourceCode);
+				namespace Morris.Roslynject
+				{
+					{{{StaticResources.SourceCode.RoslynjectModule}}}
+
+					{{{StaticResources.SourceCode.RegisterClassAs}}}
+
+					{{{StaticResources.SourceCode.RegisterInterfaceAs}}}
+
+					{{{StaticResources.SourceCode.RegisterClassesDescendedFromAttribute}}}
+				}
+				""";
+			ctx.AddSource("Morris.Roslynject.StaticResources.g.cs", sourceCode);
 		});
 	}
 }

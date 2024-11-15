@@ -12,10 +12,27 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.10.0" PrivateAssets="all" />
 	</ItemGroup>
+
+	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+		<PackageId>Roslynject</PackageId>
+		<PackageProjectUrl>https://github.com/mrpmorris/roslynject</PackageProjectUrl>
+		<Title>Roslyn source generator for registering injectable dependencies</Title>
+		<Authors>Peter Morris</Authors>
+		<Copyright>Peter Morris</Copyright>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/mrpmorris/roslynject</RepositoryUrl>
+		<PackageTags>Roslyn;Dependency;Injection;DependencyInjection</PackageTags>
+		<PackageOutputPath>c:\Temp\Source\LocalPackages</PackageOutputPath>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<None Include="..\..\..\README.md">
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
+		</None>
 	</ItemGroup>
 </Project>
