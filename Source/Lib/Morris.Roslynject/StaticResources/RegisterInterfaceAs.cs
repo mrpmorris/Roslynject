@@ -10,12 +10,12 @@ internal enum RegisterInterfaceAs
 internal static partial class SourceCode
 {
 	public const string RegisterInterfaceAs =
-		"""
+	"""
 		internal enum RegisterInterfaceAs
 		{
 			ImplementedInterface,
 			BaseInterface,
 			BaseOrClosedGenericInterface
 		}
-		""";
+	""";
 }

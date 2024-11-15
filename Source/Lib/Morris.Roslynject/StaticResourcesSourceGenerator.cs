@@ -16,17 +16,18 @@ public class StaticResourcesSourceGenerator : IIncrementalGenerator
 			string sourceCode =
 				$$$"""
 				using Microsoft.Extensions.DependencyInjection;
+				using System;
 				using System.Diagnostics.CodeAnalysis;
 
 				namespace Morris.Roslynject
 				{
-					{{{StaticResources.SourceCode.RoslynjectModule}}}
+				{{{StaticResources.SourceCode.RoslynjectModule}}}
 
-					{{{StaticResources.SourceCode.RegisterClassAs}}}
+				{{{StaticResources.SourceCode.RegisterClassAs}}}
 
-					{{{StaticResources.SourceCode.RegisterInterfaceAs}}}
+				{{{StaticResources.SourceCode.RegisterInterfaceAs}}}
 
-					{{{StaticResources.SourceCode.RegisterClassesDescendedFromAttribute}}}
+				{{{StaticResources.SourceCode.RegisterClassesDescendedFromAttribute}}}
 				}
 				""";
 			ctx.AddSource("Morris.Roslynject.StaticResources.g.cs", sourceCode);

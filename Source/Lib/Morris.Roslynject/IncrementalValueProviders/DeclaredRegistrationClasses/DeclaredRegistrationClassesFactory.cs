@@ -39,7 +39,8 @@ internal static class DeclaredRegistrationClassesFactory
 		INamedTypeSymbol? roslynjectModuleType = context
 			.SemanticModel
 			.Compilation
-			.GetTypesByMetadataName("Morris.Roslynject.RoslynjectModule")
+			This doesn't work, it needs to be "if it implements IRoslynject interface"
+			.GetTypesByMetadataName("Morris.Roslynject.IRoslynjectModule")
 			.FirstOrDefault();
 
 		if (roslynjectModuleType is null)

@@ -3,9 +3,9 @@
 internal static partial class SourceCode
 {
 	public const string RoslynjectModule =
-		"""
-		internal abstract class RoslynjectModule
+	"""
+		internal interface IRoslynjectModule
 		{
 		}
-		""";
+	""";
 }

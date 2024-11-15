@@ -10,12 +10,12 @@ internal enum RegisterClassAs
 internal static partial class SourceCode
 {
 	public const string RegisterClassAs =
-		"""
+	"""
 		internal enum RegisterClassAs
 		{
 			DescendantClass,
 			BaseClass,
 			BaseClosedGenericClass
 		}
-		""";
+	""";
 }
