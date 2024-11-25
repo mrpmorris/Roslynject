@@ -12,6 +12,7 @@ public class WhenRegisteringDescendantClasses
 			using Morris.Roslynject;
 			namespace MyNamespace;
 			
+			[RoslynjectModule]
 			[RegisterClassesDescendedFrom(typeof(BaseClass), ServiceLifetime.Scoped, RegisterClassAs.DescendantClass)]
 			internal class MyModule : RoslynjectModule
 			{
@@ -63,6 +64,7 @@ public class WhenRegisteringDescendantClasses
 			using Morris.Roslynject;
 			namespace MyNamespace;
 			
+			[RoslynjectModule]
 			[RegisterClassesDescendedFrom(typeof(BaseClass), ServiceLifetime.Scoped, RegisterClassAs.DescendantClass)]
 			internal class MyModule : RoslynjectModule
 			{
@@ -115,6 +117,7 @@ public class WhenRegisteringDescendantClasses
 				using Microsoft.Extensions.DependencyInjection;
 				using Morris.Roslynject;
 				
+				[RoslynjectModule]
 				[RegisterClassesDescendedFrom(typeof(BaseClass), ServiceLifetime.Scoped, RegisterClassAs.DescendantClass, ClassRegex=@"^MyOtherNamespace\.")]
 				internal class MyModule : RoslynjectModule
 				{
@@ -175,6 +178,7 @@ public class WhenRegisteringDescendantClasses
 			using Morris.Roslynject;
 			namespace MyNamespace;
 
+			[RoslynjectModule]
 			[RegisterClassesDescendedFrom(typeof(BaseClass), ServiceLifetime.Scoped, RegisterClassAs.DescendantClass)]
 			internal class MyModule : RoslynjectModule
 			{
@@ -197,6 +201,7 @@ public class WhenRegisteringDescendantClasses
 			using Morris.Roslynject;
 			namespace MyNamespace;
 
+			[RoslynjectModule]
 			[RegisterClassesDescendedFrom(typeof(BaseClass), ServiceLifetime.Scoped, RegisterClassAs.DescendantClass)]
 			internal class MyModule : RoslynjectModule
 			{

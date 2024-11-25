@@ -4,7 +4,8 @@ internal static partial class SourceCode
 {
 	public const string RoslynjectModule =
 	"""
-		internal interface IRoslynjectModule
+		[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+		internal class RoslynjectModuleAttribute : Atttribute
 		{
 		}
 	""";

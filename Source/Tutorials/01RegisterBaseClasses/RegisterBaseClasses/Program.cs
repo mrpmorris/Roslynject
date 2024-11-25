@@ -3,11 +3,15 @@ using Morris.Roslynject;
 
 Console.WriteLine("Hello, World!");
 
-public class MyModule : IRoslynjectModule
+namespace Eggs
 {
+	[RoslynjectModule]
+	public class MyModule
+	{
 
+	}
+
+	public class BaseClass { }
+	public class Child1 : BaseClass { }
+	public class Child2 : BaseClass { }
 }
-
-public class BaseClass { }
-public class Child1 : BaseClass { }
-public class Child2 : BaseClass { }

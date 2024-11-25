@@ -14,6 +14,7 @@ public class WhenRegisteringBaseClosedGenericClass
 			using Morris.Roslynject;
 			namespace MyNamespace;
 			
+			[RoslynjectModule]
 			[RegisterClassesDescendedFrom(typeof(BaseClass<,>), ServiceLifetime.Scoped, RegisterClassAs.BaseClosedGenericClass)]
 			internal class MyModule : RoslynjectModule
 			{
@@ -65,6 +66,7 @@ public class WhenRegisteringBaseClosedGenericClass
 				using Microsoft.Extensions.DependencyInjection;
 				using Morris.Roslynject;
 
+				[RoslynjectModule]
 				[RegisterClassesDescendedFrom(typeof(BaseClass<,>), ServiceLifetime.Scoped, RegisterClassAs.BaseClosedGenericClass, ClassRegex=@"^MyOtherNamespace\.")]
 				internal class MyModule : RoslynjectModule
 				{
