@@ -12,10 +12,11 @@ internal static class DeclaredRegistrationClassesFactory
 	=>
 		context
 		.SyntaxProvider
-		.CreateSyntaxProvider(
+		.ForAttributeWithMetadataName<DeclaredRegistrationClass>(
+			"Morris.Roslynject.RoslynjectModuleAttribute",
 			predicate: SyntaxNodePredicate,
 			transform: TransformSyntaxContext
-		 )
+		)
 		.Where(x => x is not null);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -24,22 +25,18 @@ internal static class DeclaredRegistrationClassesFactory
 		CancellationToken cancellationToken)
 	=>
 		syntaxNode is ClassDeclarationSyntax classDeclarationSyntax
-		&& classDeclarationSyntax.IsConcrete()
-		&& classDeclarationSyntax.HasAttribute("RoslynjectModule");
+		&& classDeclarationSyntax.IsConcrete();
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private static DeclaredRegistrationClass TransformSyntaxContext(
-			GeneratorSyntaxContext context,
+			GeneratorAttributeSyntaxContext context,
 			CancellationToken cancellationToken)
 	{
-		var classSymbol =
-			(INamedTypeSymbol)context
-			.SemanticModel
-			.GetDeclaredSymbol(context.Node)!;
+		ISymbol classSymbol = context.TargetSymbol;
 
 		var attributes =
 			context
-			.Node
+			.TargetNode
 			.DescendantNodes()
 			.OfType<AttributeSyntax>()
 			.Select(x =>

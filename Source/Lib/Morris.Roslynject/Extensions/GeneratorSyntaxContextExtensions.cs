@@ -9,10 +9,9 @@ internal static class GeneratorSyntaxContextExtensions
 {
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static (string? Namespace, string Name)? GetNamespaceAndName(
-		this GeneratorSyntaxContext context, CancellationToken cancellationToken)
+		this GeneratorAttributeSyntaxContext context, CancellationToken cancellationToken)
 	{
-		var typeDeclarationSyntax = (TypeDeclarationSyntax)context.Node;
-		var typeSymbol = (INamedTypeSymbol?)context.SemanticModel.GetDeclaredSymbol(typeDeclarationSyntax, cancellationToken);
+		ISymbol? typeSymbol = context.TargetSymbol;
 
 		if (typeSymbol is null)
 			return null;
