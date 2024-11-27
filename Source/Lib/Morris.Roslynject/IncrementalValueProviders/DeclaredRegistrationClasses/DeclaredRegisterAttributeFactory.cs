@@ -17,7 +17,7 @@ internal static class DeclaredRegisterAttributeFactory
 		if (semanticModel.GetTypeInfo(attributeSyntax, cancellationToken).Type is not INamedTypeSymbol attributeTypeSymbol)
 			return null;
 
-		if (!attributeSyntax.IsRegistrationAttribute())
+		if (!attributeSyntax.IsRegistrationAttribute(semanticModel))
 			return null;
 
 		// Determine the specific attribute type and create the corresponding meta object
