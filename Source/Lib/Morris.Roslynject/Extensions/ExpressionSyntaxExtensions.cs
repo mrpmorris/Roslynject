@@ -1,7 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Morris.Roslynject.StaticResources;
-using System.Threading;
 
 namespace Morris.Roslynject.Extensions;
 
@@ -35,9 +33,6 @@ internal static class ExpressionSyntaxExtensions
 			.GetSymbolInfo(expression, cancellationToken)
 			.Symbol;
 
-		if (symbol is null)
-			return ParseGeneratedEnumValue(expression);
-
 		if (
 			symbol is IFieldSymbol field
 			&& field.ContainingType.TypeKind == TypeKind.Enum)
@@ -48,17 +43,4 @@ internal static class ExpressionSyntaxExtensions
 		return null;
 	}
 
-	private static object? ParseGeneratedEnumValue(MemberAccessExpressionSyntax expression)
-	{
-		string[] values = expression.ToFullString().Split('.');
-
-		if (values.Length != 2)
-			return null;
-
-		return values[0] switch {
-			nameof(SourceCode.RegisterClassAs) => RegisterClassAsParser.Parse(values[1]),
-			nameof(SourceCode.RegisterInterfaceAs) => RegisterInterfaceAsParser.Parse(values[1]),
-			_ => null
-		};
-	}
 }
