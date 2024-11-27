@@ -32,8 +32,11 @@ internal static class DeclaredRegisterAttributeFactory
 
 		// Determine the specific attribute type and create the corresponding meta object
 		string attributeName = attributeTypeSymbol.Name;
+		if (!attributeName.EndsWith("Attribute"))
+			attributeName = attributeName + "Attribute";
+
 		return attributeName switch {
-			"RegisterClassesDescendedFromAttribute" =>
+			nameof(SourceCode.RegisterClassesDescendedFromAttribute) =>
 				CreateDeclaredRegisterClassesDescendedFromAttribute(
 					attributeSyntax: attributeSyntax,
 					baseClass: baseClass,
