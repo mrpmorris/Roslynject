@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis;
 using System.Collections.Immutable;
 using Morris.Roslynject.Extensions;
 using Morris.Roslynject.StaticResources;
+using Morris.Roslynject.Generator.Extensions;
 
 namespace Morris.Roslynject.IncrementalValueProviders.DeclaredRegistrationClasses;
 
@@ -43,13 +44,13 @@ internal static class DeclaredRegisterAttributeFactory
 		ImmutableDictionary<string, object?> arguments =
 			attributeSyntax.GetArguments(
 				semanticModel,
-				SourceCode.RegisterClassesDescendedFromAttributeArgumentNames,
 				cancellationToken);
 
 		var baseClass = arguments.GetValue<INamedTypeSymbol>("BaseClass");
 		var serviceLifetime = arguments.GetValue<ServiceLifetime>("ServiceLifetime");
 		var registerClassAs = arguments.GetValue<RegisterClassAs>("RegisterClassAs");
 		var classRegex = arguments.GetValueOrDefault<string?>("ClassRegex");
+
 		return new DeclaredRegisterClassesDescendedFromAttribute(
 			attributeSyntax: attributeSyntax,
 			baseClassType: baseClass,

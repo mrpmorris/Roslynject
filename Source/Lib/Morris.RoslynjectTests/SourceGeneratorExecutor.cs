@@ -19,11 +19,12 @@ internal static class SourceGeneratorExecutor
 		string sourceCode,
 		string expectedGeneratedCode)
 	{
-		var syntaxTree = CSharpSyntaxTree.ParseText(sourceCode);
+		var unitTestSyntaxTree = CSharpSyntaxTree.ParseText(sourceCode);
+		var staticResourcesSyntaxTree = CSharpSyntaxTree.ParseText(StaticResourcesSourceGenerator.SourceCode);
 
 		var compilation = CSharpCompilation.Create(
 			assemblyName: "Test",
-			syntaxTrees: [syntaxTree],
+			syntaxTrees: [staticResourcesSyntaxTree, unitTestSyntaxTree],
 			references: Basic.Reference.Assemblies.Net80.References
 				.All
 				.Union([MSDependencyInjectionMetadataReference]),

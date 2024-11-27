@@ -1,17 +1,15 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Morris.Roslynject.Extensions;
 using System.Collections.Immutable;
-using System.Runtime.CompilerServices;
 
-namespace Morris.Roslynject.Extensions;
+namespace Morris.Roslynject.Generator.Extensions;
 
-internal static class AttributeSyntaxGetArgumentsExtension
+internal static class AttributeSyntaxExtensions
 {
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ImmutableDictionary<string, object?> GetArguments(
 		this AttributeSyntax source,
 		SemanticModel semanticModel,
-		ImmutableArray<string> parameterNames,
 		CancellationToken cancellationToken)
 	{
 		SeparatedSyntaxList<AttributeArgumentSyntax>? arguments = source.ArgumentList?.Arguments;
@@ -19,6 +17,14 @@ internal static class AttributeSyntaxGetArgumentsExtension
 			return ImmutableDictionary<string, object?>.Empty;
 
 		var builder = ImmutableDictionary.CreateBuilder<string, object?>(StringComparer.CurrentCultureIgnoreCase);
+
+		// Get the symbol for the attribute type
+		SymbolInfo attributeSymbolInfo = semanticModel.GetSymbolInfo(source);
+		var attributeSymbol = attributeSymbolInfo.Symbol?.ContainingType;
+
+		// Retrieve constructor parameters if available
+		IMethodSymbol constructor = attributeSymbol!.Constructors.First();
+		ImmutableArray<IParameterSymbol> parameters = constructor.Parameters;
 
 		for (int argumentIndex = 0; argumentIndex < arguments.Value.Count; argumentIndex++)
 		{
@@ -30,7 +36,9 @@ internal static class AttributeSyntaxGetArgumentsExtension
 				? argument.NameEquals.Name.Identifier.ValueText
 				: argument.NameColon is not null
 				? argument.NameColon.Name.Identifier.ValueText
-				: parameterNames[argumentIndex];
+				: parameters != null && argumentIndex < parameters.Length
+				? parameters[argumentIndex].Name
+				: $"arg{argumentIndex}";
 
 			ExpressionSyntax argumentExpression = argument.Expression;
 			object? argumentValue = argumentExpression.GetValue(semanticModel, cancellationToken);
