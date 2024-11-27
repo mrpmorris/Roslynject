@@ -2,7 +2,7 @@
   "profiles": {
     "Profile 1": {
       "commandName": "DebugRoslynComponent",
-      "targetProject": "..\\Morris.RoslynjectTests\\Morris.RoslynjectTests.csproj"
+      "targetProject": "..\\..\\Tutorials\\01RegisterBaseClasses\\RegisterBaseClasses\\RegisterBaseClasses.csproj"
     }
   }
 }

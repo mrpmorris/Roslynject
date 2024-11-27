@@ -29,7 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tutorials", "Tutorials", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01RegisterClasses", "01RegisterClasses", "{1BA5B324-B5DC-4826-B5ED-756D348C4873}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegisterBaseClasses", "Tutorials\01RegisterBaseClasses\RegisterBaseClasses\RegisterBaseClasses.csproj", "{A94A0935-4A21-454E-81ED-09D0BB2E0414}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegisterBaseClasses", "Tutorials\01RegisterBaseClasses\RegisterBaseClasses\RegisterBaseClasses.csproj", "{A94A0935-4A21-454E-81ED-09D0BB2E0414}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

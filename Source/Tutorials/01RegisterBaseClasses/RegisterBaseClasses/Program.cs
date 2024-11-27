@@ -5,6 +5,7 @@ Console.WriteLine("Hello, World!");
 
 namespace Eggs
 {
+	[My("Hello")]
 	public partial class MyModule
 	{
 
