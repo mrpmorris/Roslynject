@@ -20,7 +20,10 @@ internal static class DeclaredRegisterAttributeFactory
 			return null;
 
 		ImmutableDictionary<string, object?> arguments =
-			attributeSyntax.GetArguments(semanticModel, cancellationToken);
+			attributeSyntax.GetArguments(
+				semanticModel,
+				["BaseClass", "ServiceLifetime", "RegisterClassAs"],
+				cancellationToken);
 
 		var baseClass = arguments.GetValue<INamedTypeSymbol>("BaseClass");
 		var serviceLifetime = arguments.GetValue<ServiceLifetime>("ServiceLifetime");

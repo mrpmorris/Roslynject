@@ -6,7 +6,7 @@ Console.WriteLine("Hello, World!");
 namespace Eggs
 {
 	[RoslynjectModule]
-	public class MyModule
+	public partial class MyModule
 	{
 
 	}

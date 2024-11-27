@@ -11,6 +11,7 @@ internal static class AttributeSyntaxGetArgumentsExtension
 	public static ImmutableDictionary<string, object?> GetArguments(
 		this AttributeSyntax source,
 		SemanticModel semanticModel,
+		ImmutableArray<string> parameterNames,
 		CancellationToken cancellationToken)
 	{
 		SeparatedSyntaxList<AttributeArgumentSyntax>? arguments = source.ArgumentList?.Arguments;
@@ -27,11 +28,9 @@ internal static class AttributeSyntaxGetArgumentsExtension
 			string argumentName =
 				argument.NameEquals is not null
 				? argument.NameEquals.Name.Identifier.ValueText
-				//: argument.NameColon is not null
-				//? argument.NameColon.Name.Identifier.ValueText
-				//: parameters != null && argumentIndex < parameters.Length
-				//? parameters[argumentIndex].Name
-				: $"arg{argumentIndex}";
+				: argument.NameColon is not null
+				? argument.NameColon.Name.Identifier.ValueText
+				: parameterNames[argumentIndex];
 
 			ExpressionSyntax argumentExpression = argument.Expression;
 			object? argumentValue = argumentExpression.GetValue(semanticModel, cancellationToken);
