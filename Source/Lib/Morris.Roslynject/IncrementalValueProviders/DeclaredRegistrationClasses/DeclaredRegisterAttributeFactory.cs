@@ -19,17 +19,6 @@ internal static class DeclaredRegisterAttributeFactory
 		if (!attributeSyntax.IsRegistrationAttribute())
 			return null;
 
-		ImmutableDictionary<string, object?> arguments =
-			attributeSyntax.GetArguments(
-				semanticModel,
-				["BaseClass", "ServiceLifetime", "RegisterClassAs", "ClassRegex"],
-				cancellationToken);
-
-		var baseClass = arguments.GetValue<INamedTypeSymbol>("BaseClass");
-		var serviceLifetime = arguments.GetValue<ServiceLifetime>("ServiceLifetime");
-		var registerClassAs = arguments.GetValue<RegisterClassAs>("RegisterClassAs");
-		var classRegex = arguments.GetValueOrDefault<string?>("ClassRegex");
-
 		// Determine the specific attribute type and create the corresponding meta object
 		string attributeName = attributeTypeSymbol.Name;
 		if (!attributeName.EndsWith("Attribute"))
@@ -39,10 +28,7 @@ internal static class DeclaredRegisterAttributeFactory
 			nameof(SourceCode.RegisterClassesDescendedFromAttribute) =>
 				CreateDeclaredRegisterClassesDescendedFromAttribute(
 					attributeSyntax: attributeSyntax,
-					baseClass: baseClass,
-					serviceLifetime: serviceLifetime,
-					registerAs: registerClassAs,
-					classRegex: classRegex,
+					semanticModel: semanticModel,
 					cancellationToken: cancellationToken),
 
 			_ => null
@@ -51,17 +37,25 @@ internal static class DeclaredRegisterAttributeFactory
 
 	private static DeclaredRegisterAttributeBase? CreateDeclaredRegisterClassesDescendedFromAttribute(
 		AttributeSyntax attributeSyntax,
-		INamedTypeSymbol baseClass,
-		ServiceLifetime serviceLifetime,
-		RegisterClassAs registerAs,
-		string? classRegex,
+		SemanticModel semanticModel,
 		CancellationToken cancellationToken)
-	=>
-		new DeclaredRegisterClassesDescendedFromAttribute(
+	{
+		ImmutableDictionary<string, object?> arguments =
+			attributeSyntax.GetArguments(
+				semanticModel,
+				SourceCode.RegisterClassesDescendedFromAttributeArgumentNames,
+				cancellationToken);
+
+		var baseClass = arguments.GetValue<INamedTypeSymbol>("BaseClass");
+		var serviceLifetime = arguments.GetValue<ServiceLifetime>("ServiceLifetime");
+		var registerClassAs = arguments.GetValue<RegisterClassAs>("RegisterClassAs");
+		var classRegex = arguments.GetValueOrDefault<string?>("ClassRegex");
+		return new DeclaredRegisterClassesDescendedFromAttribute(
 			attributeSyntax: attributeSyntax,
 			baseClassType: baseClass,
 			serviceLifetime: serviceLifetime,
-			registerAs: registerAs,
+			registerClassAs: registerClassAs,
 			classRegex: classRegex);
+	}
 }
 

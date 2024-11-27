@@ -11,7 +11,7 @@ internal class RegisterClassesDescendedFromOutput :
 	IEquatable<RegisterClassesDescendedFromOutput>
 {
 	public readonly INamedTypeSymbol BaseClassType;
-	public readonly RegisterClassAs RegisterAs;
+	public readonly RegisterClassAs RegisterClassAs;
 	public readonly string? ClassRegex;
 	public readonly ImmutableArray<INamedTypeSymbol> ClassesToRegister;
 	private readonly Lazy<int> CachedHashCode;
@@ -20,7 +20,7 @@ internal class RegisterClassesDescendedFromOutput :
 		string attributeSourceCode,
 		INamedTypeSymbol baseClassType,
 		ServiceLifetime serviceLifetime,
-		RegisterClassAs registerAs,
+		RegisterClassAs registerClassAs,
 		string? classRegex,
 		ImmutableArray<INamedTypeSymbol> injectionCandidates)
 	{
@@ -46,7 +46,7 @@ internal class RegisterClassesDescendedFromOutput :
 				attributeSourceCode: attributeSourceCode,
 				baseClassType: baseClassType,
 				serviceLifetime: serviceLifetime,
-				registerClassAs: registerAs,
+				registerClassAs: registerClassAs,
 				classRegex: classRegex,
 				classesToRegister: classesToRegister);
 	}
@@ -72,11 +72,11 @@ internal class RegisterClassesDescendedFromOutput :
 	{
 		string? GetBaseClassRegistration(INamedTypeSymbol symbol)
 		{
-			INamedTypeSymbol? resultSymbol = RegisterAs switch {
+			INamedTypeSymbol? resultSymbol = RegisterClassAs switch {
 				RegisterClassAs.DescendantClass => null,
 				RegisterClassAs.BaseClass => BaseClassType,
 				RegisterClassAs.BaseClosedGenericClass => symbol.GetBaseClosedGenericType(BaseClassType),
-				_ => throw new NotImplementedException(RegisterAs.ToString())
+				_ => throw new NotImplementedException(RegisterClassAs.ToString())
 			};
 			return resultSymbol is null
 				? null
@@ -110,14 +110,14 @@ internal class RegisterClassesDescendedFromOutput :
 	{
 		BaseClassType = baseClassType;
 		ClassesToRegister = classesToRegister;
-		RegisterAs = registerClassAs;
+		RegisterClassAs = registerClassAs;
 		ClassRegex = classRegex;
 		CachedHashCode = new Lazy<int>(() =>
 			HashCode
 			.Combine(
 				base.GetHashCode(),
 				TypeIdentityComparer.Default.GetHashCode(BaseClassType),
-				RegisterAs,
+				RegisterClassAs,
 				ClassRegex,
 				ClassesToRegister.GetContentsHashCode()
 			)

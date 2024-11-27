@@ -10,7 +10,7 @@ namespace Morris.Roslynject.IncrementalValueProviders.DeclaredRegistrationClasse
 internal class DeclaredRegisterClassesDescendedFromAttribute : DeclaredRegisterAttributeBase, IEquatable<DeclaredRegisterClassesDescendedFromAttribute>
 {
 	public readonly INamedTypeSymbol BaseClassType;
-	public readonly RegisterClassAs RegisterAs;
+	public readonly RegisterClassAs RegisterClassAs;
 	public readonly string? ClassRegex;
 	private readonly Lazy<int> CachedHashCode;
 
@@ -18,21 +18,21 @@ internal class DeclaredRegisterClassesDescendedFromAttribute : DeclaredRegisterA
 		AttributeSyntax attributeSyntax,
 		INamedTypeSymbol baseClassType,
 		ServiceLifetime serviceLifetime,
-		RegisterClassAs registerAs,
+		RegisterClassAs registerClassAs,
 		string? classRegex)
 		: base(
 			attributeSyntax: attributeSyntax,
 			serviceLifetime: serviceLifetime)
 	{
 		BaseClassType = baseClassType;
-		RegisterAs = registerAs;
+		RegisterClassAs = registerClassAs;
 		ClassRegex = classRegex;
 		CachedHashCode = new Lazy<int>(() =>
 			HashCode
 			.Combine(
 				base.GetHashCode(),
 				SymbolEqualityComparer.Default.GetHashCode(baseClassType),
-				RegisterAs,
+				RegisterClassAs,
 				ClassRegex
 			 )
 		);
@@ -45,7 +45,7 @@ internal class DeclaredRegisterClassesDescendedFromAttribute : DeclaredRegisterA
 			attributeSourceCode: AttributeSourceCode,
 			baseClassType: BaseClassType,
 			serviceLifetime: ServiceLifetime,
-			registerAs: RegisterAs,
+			registerClassAs: RegisterClassAs,
 			classRegex: ClassRegex,
 			injectionCandidates: injectionCandidates);
 
@@ -55,7 +55,7 @@ internal class DeclaredRegisterClassesDescendedFromAttribute : DeclaredRegisterA
 
 	public bool Equals(DeclaredRegisterClassesDescendedFromAttribute? other) =>
 		base.Equals(other)
-		&& RegisterAs == other.RegisterAs
+		&& RegisterClassAs == other.RegisterClassAs
 		&& ClassRegex == other.ClassRegex
 		&& SymbolEqualityComparer.Default.Equals(BaseClassType, other.BaseClassType);
 

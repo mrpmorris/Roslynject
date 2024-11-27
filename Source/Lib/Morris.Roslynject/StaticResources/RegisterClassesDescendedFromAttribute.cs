@@ -1,7 +1,12 @@
-﻿namespace Morris.Roslynject.StaticResources;
+﻿using System.Collections.Immutable;
+
+namespace Morris.Roslynject.StaticResources;
 
 internal static partial class SourceCode
 {
+	public static readonly ImmutableArray<string> RegisterClassesDescendedFromAttributeArgumentNames =
+		["BaseClass", "ServiceLifetime", "RegisterClassAs", "ClassRegex"];
+
 	public const string RegisterClassesDescendedFromAttribute =
 	"""
 		[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
