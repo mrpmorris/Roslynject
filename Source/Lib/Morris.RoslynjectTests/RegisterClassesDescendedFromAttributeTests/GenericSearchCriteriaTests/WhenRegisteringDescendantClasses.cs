@@ -149,6 +149,7 @@ public class WhenRegisteringDescendantClasses
 			using Morris.Roslynject;
 			namespace MyNamespace;
 
+			[RoslynjectModule]
 			[RegisterClassesDescendedFrom(typeof(BaseClass<>), ServiceLifetime.Scoped, RegisterClassAs.DescendantClass)]
 			internal class MyModule : RoslynjectModule
 			{
