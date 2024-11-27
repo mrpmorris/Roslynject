@@ -1,18 +1,11 @@
 ﻿using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
-using Morris.Roslynject.Generator;
+using Morris.Roslynject;
 
 namespace Morris.RoslynjectTests;
 internal static class SourceGeneratorExecutor
 {
-	private static readonly MetadataReference MorrisRoslynjectMetadataReference =
-		MetadataReference
-		.CreateFromFile(
-			typeof(Morris.Roslynject.RegisterClassesDescendedFromAttribute)
-			.Assembly
-			.Location
-		);
 
 	private static readonly MetadataReference MSDependencyInjectionMetadataReference =
 		MetadataReference
@@ -26,21 +19,21 @@ internal static class SourceGeneratorExecutor
 		string sourceCode,
 		string expectedGeneratedCode)
 	{
-		var syntaxTree = CSharpSyntaxTree.ParseText(sourceCode);
+		var unitTestSyntaxTree = CSharpSyntaxTree.ParseText(sourceCode);
+		var staticResourcesSyntaxTree = CSharpSyntaxTree.ParseText(StaticResourcesSourceGenerator.SourceCode);
 
 		var compilation = CSharpCompilation.Create(
 			assemblyName: "Test",
-			syntaxTrees: [syntaxTree],
+			syntaxTrees: [staticResourcesSyntaxTree, unitTestSyntaxTree],
 			references: Basic.Reference.Assemblies.Net80.References
 				.All
-				.Union([MorrisRoslynjectMetadataReference, MSDependencyInjectionMetadataReference]),
+				.Union([MSDependencyInjectionMetadataReference]),
 			options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
 		);
 
-		var subject = new SourceGenerator();
-		ISourceGenerator sourceGenerator = subject.AsSourceGenerator();
+		var subject = new SourceGenerator().AsSourceGenerator();
 		var driver = CSharpGeneratorDriver
-			.Create(sourceGenerator)
+			.Create(subject)
 			.RunGenerators(compilation);
 
 		GeneratorDriverRunResult runResult = driver.GetRunResult();

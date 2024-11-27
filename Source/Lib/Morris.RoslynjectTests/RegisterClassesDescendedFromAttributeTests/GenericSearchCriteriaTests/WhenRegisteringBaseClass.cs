@@ -13,6 +13,7 @@ public class WhenRegisteringBaseClass
 			using System.Collections.Generic;
 			namespace MyNamespace;
 			
+			[RoslynjectModule]
 			[RegisterClassesDescendedFrom(typeof(List<>), ServiceLifetime.Scoped, RegisterClassAs.BaseClass)]
 			internal class MyModule : RoslynjectModule
 			{
@@ -65,6 +66,7 @@ public class WhenRegisteringBaseClass
 				using Morris.Roslynject;
 				using System.Collections.Generic;
 				
+				[RoslynjectModule]
 				[RegisterClassesDescendedFrom(typeof(List<>), ServiceLifetime.Scoped, RegisterClassAs.BaseClass, ClassRegex=@"^MyOtherNamespace\.")]
 				internal class MyModule : RoslynjectModule
 				{
@@ -125,6 +127,7 @@ public class WhenRegisteringBaseClass
 			using System.Collections.Generic;
 			namespace MyNamespace;
 
+			[RoslynjectModule]
 			[RegisterClassesDescendedFrom(typeof(List<>), ServiceLifetime.Scoped, RegisterClassAs.BaseClass)]
 			internal class MyModule : RoslynjectModule
 			{
@@ -147,6 +150,7 @@ public class WhenRegisteringBaseClass
 			using System.Collections.Generic;
 			namespace MyNamespace;
 
+			[RoslynjectModule]
 			[RegisterClassesDescendedFrom(typeof(List<>), ServiceLifetime.Scoped, RegisterClassAs.BaseClass)]
 			internal class MyModule : RoslynjectModule
 			{

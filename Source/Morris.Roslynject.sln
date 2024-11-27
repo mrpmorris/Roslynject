@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Morris.Roslynject", "Lib\Mo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Morris.RoslynjectTests", "Lib\Morris.RoslynjectTests\Morris.RoslynjectTests.csproj", "{124D2466-FF7B-4355-819B-19910A5A3A00}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Morris.Roslynject.Generator", "Lib\Morris.Roslynject.Generator\Morris.Roslynject.Generator.csproj", "{C9D7143D-7E0E-4581-BAD3-B2A2ACCA5981}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E3BF3370-084D-4FA0-8C05-6D9CCBACE316}"
 	ProjectSection(SolutionItems) = preProject
 		..\README.md = ..\README.md
@@ -29,6 +27,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Filters", "Filters", "{B538
 		..\Docs\Filters\RegisterInterfacesOnClassesDescendedFrom.md = ..\Docs\Filters\RegisterInterfacesOnClassesDescendedFrom.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tutorials", "Tutorials", "{9A2B1775-87B6-41F3-8D2E-0B705DE1F594}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01RegisterClasses", "01RegisterClasses", "{1BA5B324-B5DC-4826-B5ED-756D348C4873}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegisterBaseClasses", "Tutorials\01RegisterBaseClasses\RegisterBaseClasses\RegisterBaseClasses.csproj", "{A94A0935-4A21-454E-81ED-09D0BB2E0414}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,10 +47,10 @@ Global
 		{124D2466-FF7B-4355-819B-19910A5A3A00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{124D2466-FF7B-4355-819B-19910A5A3A00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{124D2466-FF7B-4355-819B-19910A5A3A00}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C9D7143D-7E0E-4581-BAD3-B2A2ACCA5981}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C9D7143D-7E0E-4581-BAD3-B2A2ACCA5981}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C9D7143D-7E0E-4581-BAD3-B2A2ACCA5981}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C9D7143D-7E0E-4581-BAD3-B2A2ACCA5981}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A94A0935-4A21-454E-81ED-09D0BB2E0414}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A94A0935-4A21-454E-81ED-09D0BB2E0414}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A94A0935-4A21-454E-81ED-09D0BB2E0414}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A94A0935-4A21-454E-81ED-09D0BB2E0414}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,8 +58,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{ED22EDA0-4D55-4571-9AF2-2413A1084DA5} = {218D71E2-3402-44A5-A1B0-87E354623BC1}
 		{124D2466-FF7B-4355-819B-19910A5A3A00} = {218D71E2-3402-44A5-A1B0-87E354623BC1}
-		{C9D7143D-7E0E-4581-BAD3-B2A2ACCA5981} = {218D71E2-3402-44A5-A1B0-87E354623BC1}
 		{B5388CB8-9570-4E70-89EC-C1B13A30F914} = {968DCD71-75C4-4A16-BD2A-3D9BE8DB053D}
+		{1BA5B324-B5DC-4826-B5ED-756D348C4873} = {9A2B1775-87B6-41F3-8D2E-0B705DE1F594}
+		{A94A0935-4A21-454E-81ED-09D0BB2E0414} = {1BA5B324-B5DC-4826-B5ED-756D348C4873}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {15447A65-7BF5-4A77-A50B-0890396CC013}
