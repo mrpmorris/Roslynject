@@ -16,6 +16,9 @@ internal static class DeclaredRegisterAttributeFactory
 		if (semanticModel.GetTypeInfo(attributeSyntax, cancellationToken).Type is not INamedTypeSymbol attributeTypeSymbol)
 			return null;
 
+		if (!attributeSyntax.IsRegistrationAttribute())
+			return null;
+
 		ImmutableDictionary<string, object?> arguments =
 			attributeSyntax.GetArguments(semanticModel, cancellationToken);
 

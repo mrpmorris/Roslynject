@@ -5,7 +5,7 @@ internal static partial class SourceCode
 	public const string RoslynjectModule =
 	"""
 		[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-		internal class RoslynjectModuleAttribute : Atttribute
+		internal class RoslynjectModuleAttribute : Attribute
 		{
 		}
 	""";
