@@ -2,8 +2,8 @@
 using Microsoft.CodeAnalysis;
 using System.Collections.Immutable;
 using Morris.Roslynject.Extensions;
-using Morris.Roslynject.StaticResources;
 using Morris.Roslynject.Generator.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Morris.Roslynject.IncrementalValueProviders.DeclaredRegistrationClasses;
 
@@ -26,7 +26,7 @@ internal static class DeclaredRegisterAttributeFactory
 			attributeName = attributeName + "Attribute";
 
 		return attributeName switch {
-			nameof(SourceCode.RegisterClassesDescendedFromAttribute) =>
+			nameof(RegisterClassesDescendedFromAttribute) =>
 				CreateDeclaredRegisterClassesDescendedFromAttribute(
 					attributeSyntax: attributeSyntax,
 					semanticModel: semanticModel,

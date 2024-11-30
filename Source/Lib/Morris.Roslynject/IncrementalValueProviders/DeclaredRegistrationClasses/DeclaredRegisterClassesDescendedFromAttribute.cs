@@ -1,8 +1,8 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Extensions.DependencyInjection;
 using Morris.Roslynject.Extensions;
 using Morris.Roslynject.IncrementalValueProviders.RegistrationClassOutputs;
-using Morris.Roslynject.StaticResources;
 using System.Collections.Immutable;
 
 namespace Morris.Roslynject.IncrementalValueProviders.DeclaredRegistrationClasses;

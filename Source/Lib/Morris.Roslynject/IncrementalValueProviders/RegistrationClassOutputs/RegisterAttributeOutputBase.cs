@@ -1,4 +1,6 @@
-﻿namespace Morris.Roslynject.IncrementalValueProviders.RegistrationClassOutputs;
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace Morris.Roslynject.IncrementalValueProviders.RegistrationClassOutputs;
 
 internal abstract class RegisterAttributeOutputBase
 {

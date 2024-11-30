@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.Extensions.DependencyInjection;
 using Morris.Roslynject.Extensions;
-using Morris.Roslynject.StaticResources;
 using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 
@@ -91,7 +91,6 @@ internal class RegisterClassesDescendedFromOutput :
 				writeLine($"services.Add{ServiceLifetime}(typeof({implementingClassFullName}));");
 			else
 				writeLine($"services.Add{ServiceLifetime}(typeof({serviceKey}), typeof({implementingClassFullName}));");
-
 		}
 	}
 

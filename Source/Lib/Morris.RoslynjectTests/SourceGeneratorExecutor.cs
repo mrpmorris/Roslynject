@@ -20,7 +20,7 @@ internal static class SourceGeneratorExecutor
 		string expectedGeneratedCode)
 	{
 		var unitTestSyntaxTree = CSharpSyntaxTree.ParseText(sourceCode);
-		var staticResourcesSyntaxTree = CSharpSyntaxTree.ParseText(StaticResourcesSourceGenerator.SourceCode);
+		var staticResourcesSyntaxTree = CSharpSyntaxTree.ParseText(StaticResourcesSourceGenerator.SourceCode.Value);
 
 		var compilation = CSharpCompilation.Create(
 			assemblyName: "Test",
