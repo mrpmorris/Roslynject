@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Morris.Roslynject.Extensions;
+using Morris.Roslynject.IncrementalValueProviders;
 using System.CodeDom.Compiler;
 
 namespace Morris.Roslynject;

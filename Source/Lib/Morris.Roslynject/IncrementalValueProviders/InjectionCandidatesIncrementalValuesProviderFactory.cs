@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using System.Runtime.CompilerServices;
 using Morris.Roslynject.Extensions;
 
-namespace Morris.Roslynject;
+namespace Morris.Roslynject.IncrementalValueProviders;
 
 internal static class InjectionCandidatesIncrementalValuesProviderFactory
 {
