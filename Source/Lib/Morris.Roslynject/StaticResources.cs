@@ -5,6 +5,76 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Morris.Roslynject;
 
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+internal class RoslynjectAttribute : Attribute
+{
+	public ServiceLifetime ServiceLifetime { get; set; }
+	public Find Find { get; set; }
+	public Type Type { get; set; }
+	public Register Register { get; set; }
+	public string? ServiceKeyRegex { get; set; }
+	public string? ClassRegex { get; set; }
+
+	public RoslynjectAttribute(
+		ServiceLifetime serviceLifetime,
+		Find find,
+		Type type,
+		Register register)
+	{
+		ServiceLifetime = serviceLifetime;
+		Find = find;
+		Type = type;
+		Register = register;
+	}
+}
+
+/// <summary>
+/// Specifies the search criteria.
+/// </summary>
+internal enum Find
+{
+	/// <summary>
+	/// Only considers descendants of the specified type
+	/// as candidates for registration.
+	/// </summary>
+	DescendantsOf,
+	/// <summary>
+	/// Considers descendants of the specified type
+	/// and the specified type itself as candidates for registration.
+	/// </summary>
+	AnyTypeOf,
+	/// <summary>
+	/// Only considers the exact specified type when determining
+	/// candidates for registration.
+	/// </summary>
+	Exactly
+}
+
+/// <summary>
+/// Specifies what should be used as the service key.
+/// </summary>
+internal enum Register
+{
+	/// <summary>
+	/// The service key will be the type specified in the filter criteria.
+	/// </summary>
+	BaseType,
+	/// <summary>
+	/// The service key will be the base type as a closed-generic type.
+	/// </summary>
+	BaseClosedGenericType,
+	/// <summary>
+	/// The service key will be the class discovered.
+	/// </summary>
+	DiscoveredClasses,
+	/// <summary>
+	/// A service key will registered for each interface implemented
+	/// by the class discovered.
+	/// </summary>
+	DiscoveredInterfaces
+}
+
+
 /// <summary>
 /// Specifies which classes to register as the service key.
 /// </summary>
