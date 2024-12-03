@@ -38,7 +38,7 @@ public class SourceGenerator : IIncrementalGenerator
 					}
 
 					if (moduleClass.ClassRegex is not null)
-						writer.WriteLine($"// Only classes matching regex \"{moduleClass.ClassRegex}\"");
+						writer.WriteLine($"// Only classes matching regex: {moduleClass.ClassRegex}");
 
 					writer.WriteLine($"partial class {moduleClass.TargetClassName}");
 					using (writer.CodeBlock())
