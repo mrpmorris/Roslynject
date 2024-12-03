@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Morris.Roslynject.Generator.Extensions;
 
-internal static class ExpressionSyntaxExtensions
+internal static class ExpressionSyntaxGetValueExtension
 {
 	public static object? GetValue(
 		this ExpressionSyntax source,

@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Morris.Roslynject.Extensions;
 using Morris.Roslynject.IncrementalValueProviders;
+using Morris.Roslynject.IncrementalValueProviders.DeclaredRoslynjectModules;
 using System.CodeDom.Compiler;
 
 namespace Morris.Roslynject;
@@ -13,6 +14,15 @@ public class SourceGenerator : IIncrementalGenerator
 		IncrementalValuesProvider<INamedTypeSymbol> injectionCandidates =
 			InjectionCandidatesIncrementalValuesProviderFactory.CreateValuesProvider(context);
 
+		IncrementalValuesProvider<DeclaredRoslynjectModule> roslynjectModules =
+			DeclaredRoslynjectModuleIncrementalValuesProviderFactory.CreateValuesProvider(context);
+
+		context.RegisterSourceOutput(
+			source: roslynjectModules,
+			action: static (productionContext, input) =>
+			{
+				throw new NotImplementedException();
+			});
 		//context.RegisterSourceOutput(
 		//	source: registrationClassOutputs.Collect(),
 		//	static (productionContext, input) =>
