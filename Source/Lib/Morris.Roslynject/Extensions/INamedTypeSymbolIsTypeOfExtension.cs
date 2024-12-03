@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Morris.Roslynject.Extensions;
 
-internal static partial class INamedTypeSymbolExtensions
+internal static class INamedTypeSymbolIsOfTypeExtension
 {
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool IsOfType(this INamedTypeSymbol child, INamedTypeSymbol baseClass)

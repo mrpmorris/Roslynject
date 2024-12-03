@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Morris.Roslynject.Extensions;
 
-internal static partial class IndentedTextWriterExtensions
+internal static class IndentedTextWriterCodeBlockExtension
 {
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static IDisposable CodeBlock(this IndentedTextWriter writer)

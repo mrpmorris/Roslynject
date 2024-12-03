@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Morris.Roslynject.Extensions;
 
-internal static partial class INamedTypeSymbolGetNamespaceAndNameExtension
+internal static class INamedTypeSymbolGetNamespaceAndNameExtension
 {
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static (string? NamespaceName, string Name) GetNamespaceAndName(

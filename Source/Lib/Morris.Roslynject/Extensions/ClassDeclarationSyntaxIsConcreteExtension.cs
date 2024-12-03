@@ -1,12 +1,13 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Xml.Schema;
+using System.Runtime.CompilerServices;
 
 namespace Morris.Roslynject.Extensions;
 
 internal static class ClassDeclarationSyntaxIsConcreteExtension
 {
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool IsConcrete(
 		this ClassDeclarationSyntax source)
 	=>

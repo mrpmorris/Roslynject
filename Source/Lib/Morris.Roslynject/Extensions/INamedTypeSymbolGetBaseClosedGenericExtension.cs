@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Morris.Roslynject.Extensions;
 
-internal static partial class INamedTypeSymbolExtensions
+internal static class INamedTypeSymbolGetBaseClosedGenericExtension
 {
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static INamedTypeSymbol? GetBaseClosedGenericType(this INamedTypeSymbol descendantType, INamedTypeSymbol baseClass)

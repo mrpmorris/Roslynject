@@ -1,10 +1,12 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Runtime.CompilerServices;
 
 namespace Morris.Roslynject.Extensions;
 
 internal static class ExpressionSyntaxGetValueExtension
 {
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static object? GetValue(
 		this ExpressionSyntax source,
 		SemanticModel semanticModel,

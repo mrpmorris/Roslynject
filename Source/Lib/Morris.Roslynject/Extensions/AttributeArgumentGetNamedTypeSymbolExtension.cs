@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace Morris.Roslynject.Extensions;
 
-internal static class AttributeArgumentExtensions
+internal static class AttributeArgumentGetNamedTypeSymbolExtension
 {
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static INamedTypeSymbol? GetNamedTypeSymbol(
