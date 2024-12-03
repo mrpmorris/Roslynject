@@ -6,7 +6,7 @@ using Morris.Roslynject.Extensions;
 
 namespace Morris.Roslynject;
 
-internal static class InjectionCandidatesFactory
+internal static class InjectionCandidatesIncrementalValuesProviderFactory
 {
 	public static IncrementalValuesProvider<INamedTypeSymbol> CreateValuesProvider(
 		IncrementalGeneratorInitializationContext context)

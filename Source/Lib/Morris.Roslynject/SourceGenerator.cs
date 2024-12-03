@@ -10,7 +10,7 @@ public class SourceGenerator : IIncrementalGenerator
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
 		IncrementalValuesProvider<INamedTypeSymbol> injectionCandidates =
-			InjectionCandidatesFactory.CreateValuesProvider(context);
+			InjectionCandidatesIncrementalValuesProviderFactory.CreateValuesProvider(context);
 
 		//context.RegisterSourceOutput(
 		//	source: registrationClassOutputs.Collect(),
