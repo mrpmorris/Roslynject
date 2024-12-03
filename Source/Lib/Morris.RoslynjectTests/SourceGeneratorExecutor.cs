@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Morris.Roslynject;
 
 namespace Morris.RoslynjectTests;
+
 internal static class SourceGeneratorExecutor
 {
 
