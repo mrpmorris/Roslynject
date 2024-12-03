@@ -34,16 +34,54 @@ internal class DeclaredRoslynjectModuleIncrementalValuesProviderFactory
 		CancellationToken token)
 	{
 		var symbol = (INamedTypeSymbol)context.TargetSymbol;
-		(string? namespaceName, string className) = symbol.GetNamespaceAndName(token);
+
 		AttributeData attribute = context.Attributes[0];
 		ImmutableDictionary<string, object?> attributeArgs = attribute.GetArguments();
+
+		(string? namespaceName, string className) = symbol.GetNamespaceAndName(token);
 		var classRegex = (string?)attributeArgs["ClassRegex"];
 		var result = new DeclaredRoslynjectModuleAttribute(
 			targetNamespaceName: namespaceName,
 			targetClassName: className,
-			classRegex: classRegex);
+			classRegex: classRegex,
+			roslynjectAttributes: FindRoslynjectAttributes(context.SemanticModel, symbol).ToImmutableArray()
+		);
 		return result;
 	}
 
+	private static IEnumerable<DeclaredRoslynjectAttribute> FindRoslynjectAttributes(
+		SemanticModel semanticModel,
+		INamedTypeSymbol symbol)
+	{
+		INamedTypeSymbol roslynjectSymbolAttribute =
+				semanticModel
+				.Compilation
+				.GetTypeByMetadataName(typeof(RoslynjectAttribute).FullName)!;
 
+		IEnumerable<AttributeData> attributes =
+			symbol
+			.GetAttributes()
+			.Where(x => SymbolEqualityComparer.Default.Equals(x.AttributeClass, roslynjectSymbolAttribute));
+
+		foreach(AttributeData attribute in attributes)
+		{
+			ImmutableDictionary<string, object?> attributeArgs = attribute.GetArguments();
+			Find find = attributeArgs.GetValue<Find>("Find");
+			INamedTypeSymbol type = attributeArgs.GetValue<INamedTypeSymbol>("Type");
+			Register register = attributeArgs.GetValue<Register>("Register");
+			WithLifetime withLifetime = attributeArgs.GetValue<WithLifetime>("WithLifetime");
+			string? classRegex = attributeArgs.GetValueOrDefault<string?>("ClassRegex");
+			string? serviceKeyRegex = attributeArgs.GetValueOrDefault<string?>("ServiceKeyRegex");
+
+			yield return new DeclaredRoslynjectAttribute(
+				find: find,
+				type: type,
+				register: register,
+				withLifetime: withLifetime,
+				classRegex: classRegex,
+				serviceKeyRegex: serviceKeyRegex);
+		}
+
+
+	}
 }

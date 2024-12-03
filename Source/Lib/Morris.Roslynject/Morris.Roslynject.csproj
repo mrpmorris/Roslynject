@@ -38,4 +38,8 @@
 		  <PackagePath>\</PackagePath>
 		</None>
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="IncrementalValueProviders\DeclaredRoslynjectAttributes\" />
+	</ItemGroup>
 </Project>

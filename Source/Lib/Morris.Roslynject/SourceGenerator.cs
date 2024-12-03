@@ -1,7 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Morris.Roslynject.Extensions;
 using Morris.Roslynject.IncrementalValueProviders;
-using Morris.Roslynject.IncrementalValueProviders.DeclaredRoslynjectAttributes;
 using Morris.Roslynject.IncrementalValueProviders.DeclaredRoslynjectModuleAttributes;
 using System.CodeDom.Compiler;
 
@@ -17,9 +16,6 @@ public class SourceGenerator : IIncrementalGenerator
 
 		IncrementalValuesProvider<DeclaredRoslynjectModuleAttribute> roslynjectModules =
 			DeclaredRoslynjectModuleIncrementalValuesProviderFactory.CreateValuesProvider(context);
-
-		IncrementalValuesProvider<DeclaredRoslynjectAttribute> roslynjects =
-			DeclaredRoslynjectIncrementalValuesProviderFactory.CreateValuesProvider(context);
 
 		context.RegisterSourceOutput(
 			source: roslynjectModules.Collect(),
@@ -52,18 +48,22 @@ public class SourceGenerator : IIncrementalGenerator
 						writer.WriteLine("public static void RegisterServices(IServiceCollection services)");
 						using (writer.CodeBlock())
 						{
-							//foreach (RegisterAttributeOutputBase attr in moduleClass.Attributes)
-							//{
-							//	string attributeSourceCode = attr.AttributeSourceCode
-							//		.ToString()
-							//		.Replace("\r\n", " ")
-							//		.Replace('\n', ' ');
-							//	writer.WriteLine($"// {attributeSourceCode}");
+							foreach (DeclaredRoslynjectAttribute attr in moduleClass.RoslynjectAttributes)
+							{
+								writer.WriteLine(
+									$"// Find: {attr.Find},"
+									+ $" Type: {attr.Type.ToDisplayString()},"
+									+ $" Register: {attr.Register},"
+									+ $" WithLifetime: {attr.WithLifetime}"
+								);
+								if (attr.ClassRegex is not null)
+									writer.WriteLine($"// ClassRegex: {attr.ClassRegex}");
+								if (attr.ServiceKeyRegex is not null)
+									writer.WriteLine($"// ServiceKeyRegex: {attr.ServiceKeyRegex}");
 
-							//	attr.GenerateCode(writer.WriteLine);
-							//	writer.AddBlankLine();
-							//}
-							//writer.WriteLine("AfterRegisterServices(services);");
+								writer.AddBlankLine();
+							}
+							writer.WriteLine("AfterRegisterServices(services);");
 						}
 					}
 					namespaceCodeBlock?.Dispose();

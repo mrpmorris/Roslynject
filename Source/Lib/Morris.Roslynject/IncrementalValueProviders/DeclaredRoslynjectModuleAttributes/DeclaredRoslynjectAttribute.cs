@@ -1,10 +1,9 @@
 ﻿using Microsoft.CodeAnalysis;
 
-namespace Morris.Roslynject.IncrementalValueProviders.DeclaredRoslynjectAttributes;
+namespace Morris.Roslynject.IncrementalValueProviders.DeclaredRoslynjectModuleAttributes;
 
 internal class DeclaredRoslynjectAttribute : IEquatable<DeclaredRoslynjectAttribute>
 {
-	public readonly string TargetFullName;
 	public readonly Find Find;
 	public readonly INamedTypeSymbol Type;
 	public readonly Register Register;
@@ -15,7 +14,6 @@ internal class DeclaredRoslynjectAttribute : IEquatable<DeclaredRoslynjectAttrib
 	private readonly Lazy<int> CachedHashCode;
 
 	public DeclaredRoslynjectAttribute(
-		string targetFullName,
 		Find find,
 		INamedTypeSymbol type,
 		Register register,
@@ -23,7 +21,6 @@ internal class DeclaredRoslynjectAttribute : IEquatable<DeclaredRoslynjectAttrib
 		string? classRegex,
 		string? serviceKeyRegex)
 	{
-		TargetFullName = targetFullName;
 		Find = find;
 		Type = type;
 		Register = register;
@@ -38,7 +35,6 @@ internal class DeclaredRoslynjectAttribute : IEquatable<DeclaredRoslynjectAttrib
 				WithLifetime,
 				ClassRegex,
 				ServiceKeyRegex,
-				TargetFullName,
 				SymbolEqualityComparer.Default.GetHashCode(Type)
 			)
 		);
@@ -50,7 +46,6 @@ internal class DeclaredRoslynjectAttribute : IEquatable<DeclaredRoslynjectAttrib
 		&& WithLifetime == other.WithLifetime
 		&& string.Equals(ClassRegex, other.ClassRegex, StringComparison.OrdinalIgnoreCase)
 		&& string.Equals(ServiceKeyRegex, other.ServiceKeyRegex, StringComparison.OrdinalIgnoreCase)
-		&& string.Equals(TargetFullName, other.TargetFullName, StringComparison.OrdinalIgnoreCase)
 		&& SymbolEqualityComparer.Default.Equals(Type, other.Type);
 
 	public override bool Equals(object obj) =>
