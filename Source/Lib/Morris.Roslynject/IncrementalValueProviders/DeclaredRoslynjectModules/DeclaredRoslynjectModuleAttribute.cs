@@ -1,6 +1,6 @@
 ﻿namespace Morris.Roslynject.IncrementalValueProviders.DeclaredRoslynjectModules;
 
-internal sealed class DeclaredRoslynjectModule : IEquatable<DeclaredRoslynjectModule>
+internal sealed class DeclaredRoslynjectModuleAttribute : IEquatable<DeclaredRoslynjectModuleAttribute>
 {
 	public readonly string? TargetNamespaceName;
 	public readonly string TargetClassName;
@@ -8,7 +8,7 @@ internal sealed class DeclaredRoslynjectModule : IEquatable<DeclaredRoslynjectMo
 
 	private readonly Lazy<int> CachedHashCode;
 
-	public DeclaredRoslynjectModule(
+	public DeclaredRoslynjectModuleAttribute(
 		string? targetNamespaceName,
 		string targetClassName,
 		string? classRegex)
@@ -26,13 +26,13 @@ internal sealed class DeclaredRoslynjectModule : IEquatable<DeclaredRoslynjectMo
 		);
 	}
 
-	public bool Equals(DeclaredRoslynjectModule other) =>
+	public bool Equals(DeclaredRoslynjectModuleAttribute other) =>
 		string.Equals(TargetNamespaceName, other.TargetNamespaceName, StringComparison.OrdinalIgnoreCase)
 		&& string.Equals(TargetClassName, other.TargetClassName, StringComparison.OrdinalIgnoreCase)
 		&& string.Equals(ClassRegex!, other.ClassRegex!, StringComparison.OrdinalIgnoreCase);
 
 	public override bool Equals(object obj) =>
-		obj is DeclaredRoslynjectModule other
+		obj is DeclaredRoslynjectModuleAttribute other
 		&& other.Equals(this);
 
 	public override int GetHashCode() => CachedHashCode.Value;

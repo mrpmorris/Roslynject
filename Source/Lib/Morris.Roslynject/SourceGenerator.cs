@@ -14,7 +14,7 @@ public class SourceGenerator : IIncrementalGenerator
 		IncrementalValuesProvider<INamedTypeSymbol> injectionCandidates =
 			InjectionCandidatesIncrementalValuesProviderFactory.CreateValuesProvider(context);
 
-		IncrementalValuesProvider<DeclaredRoslynjectModule> roslynjectModules =
+		IncrementalValuesProvider<DeclaredRoslynjectModuleAttribute> roslynjectModules =
 			DeclaredRoslynjectModuleIncrementalValuesProviderFactory.CreateValuesProvider(context);
 
 		context.RegisterSourceOutput(
