@@ -1,9 +1,30 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-#if NET9_0_OR_GREATER
+﻿#if NET9_0_OR_GREATER
 using System.Diagnostics.CodeAnalysis;
 #endif
 
 namespace Morris.Roslynject;
+
+/// <summary>
+/// Specifies the lifetime of a service.
+/// </summary>
+public enum WithLifetime
+{
+	/// <summary>
+	/// Specifies that a single instance of the service will be created.
+	/// </summary>
+	Singleton,
+	/// <summary>
+	/// Specifies that a new instance of the service will be created for each scope.
+	/// </summary>
+	/// <remarks>
+	/// In ASP.NET Core applications a scope is created around each server request.
+	/// </remarks>
+	Scoped,
+	/// <summary>
+	/// Specifies that a new instance of the service will be created every time it is requested.
+	/// </summary>
+	Transient
+}
 
 /// <summary>
 /// Scans the assembly and registers all dependencies that match
@@ -13,19 +34,18 @@ namespace Morris.Roslynject;
 internal class RoslynjectAttribute : Attribute
 {
 	/// <summary>
-	/// The lifetime to use when registering the dependency.
+	/// If not null, then only depdendency classes with a full name matching
+	/// this regular expression will be registered.
 	/// </summary>
-	public ServiceLifetime ServiceLifetime { get; set; }
+#if NET9_0_OR_GREATER
+	[StringSyntax(StringSyntaxAttribute.Regex)]
+#endif
+	public string? ClassRegex { get; set; }
 
 	/// <summary>
 	/// The criteria to use when scanning for candidates to register.
 	/// </summary>
 	public Find Find { get; set; }
-
-	/// <summary>
-	/// The type to use when scanning for candidates to register.
-	/// </summary>
-	public Type Type { get; set; }
 
 	/// <summary>
 	/// Specifies what should be used as the service key when
@@ -43,24 +63,25 @@ internal class RoslynjectAttribute : Attribute
 	public string? ServiceKeyRegex { get; set; }
 
 	/// <summary>
-	/// If not null, then only depdendency classes with a full name matching
-	/// this regular expression will be registered.
+	/// The type to use when scanning for candidates to register.
 	/// </summary>
-#if NET9_0_OR_GREATER
-	[StringSyntax(StringSyntaxAttribute.Regex)]
-#endif
-	public string? ClassRegex { get; set; }
+	public Type Type { get; set; }
+
+	/// <summary>
+	/// The lifetime to use when registering the dependency.
+	/// </summary>
+	public WithLifetime WithLifetime { get; set; }
 
 	public RoslynjectAttribute(
-		ServiceLifetime serviceLifetime,
 		Find find,
 		Type type,
-		Register register)
+		Register register,
+		WithLifetime withLifetime)
 	{
-		ServiceLifetime = serviceLifetime;
 		Find = find;
 		Type = type;
 		Register = register;
+		WithLifetime = withLifetime;
 	}
 }
 

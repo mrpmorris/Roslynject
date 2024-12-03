@@ -6,8 +6,8 @@ Console.WriteLine("Hello, World!");
 
 namespace Eggs
 {
-	[RoslynjectModule]
-	[Roslynject(ServiceLifetime.Scoped, Find.DescendantsOf, typeof(BaseClass), Register.BaseType)]
+	[RoslynjectModule(ClassRegex = "Eggs")]
+	[Roslynject(Find.DescendantsOf, typeof(BaseClass), Register.BaseType, WithLifetime.Scoped)]
 	public partial class MyModule
 	{
 

@@ -2,6 +2,8 @@
 using Microsoft.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Morris.Roslynject.Extensions;
+using Morris.Roslynject.Generator.Extensions;
+using System.Collections.Immutable;
 
 namespace Morris.Roslynject.IncrementalValueProviders.DeclaredRoslynjectModules;
 
@@ -13,7 +15,7 @@ internal class DeclaredRoslynjectModuleIncrementalValuesProviderFactory
 		context
 		.SyntaxProvider
 		.ForAttributeWithMetadataName(
-			typeof(RoslynjectAttribute).FullName,
+			typeof(RoslynjectModuleAttribute).FullName,
 			predicate: SyntaxNodePredicate,
 			transform: SyntaxNodeTransformer
 		);
@@ -34,7 +36,14 @@ internal class DeclaredRoslynjectModuleIncrementalValuesProviderFactory
 	{
 		var symbol = (INamedTypeSymbol)context.TargetSymbol;
 		(string? namespaceName, string className) = symbol.GetNamespaceAndName(token);
-		throw new NotImplementedException();
+		AttributeData attribute = context.Attributes[0];
+		ImmutableDictionary<string, object?> attributeArgs = attribute.GetArguments();
+		var classRegex = (string?)attributeArgs["ClassRegex"];
+		var result = new DeclaredRoslynjectModule(
+			targetNamespaceName: namespaceName,
+			targetClassName: className,
+			classRegex: classRegex);
+		return result;
 	}
 
 

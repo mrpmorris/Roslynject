@@ -1,11 +1,10 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Morris.Roslynject.Extensions;
 using System.Collections.Immutable;
 
 namespace Morris.Roslynject.Generator.Extensions;
 
-internal static class AttributeSyntaxExtensions
+internal static class AttributeSyntaxGetArgumentsExtension
 {
 	public static ImmutableDictionary<string, object?> GetArguments(
 		this AttributeSyntax source,
