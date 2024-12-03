@@ -81,7 +81,5 @@ internal class DeclaredRoslynjectModuleIncrementalValuesProviderFactory
 				classRegex: classRegex,
 				serviceKeyRegex: serviceKeyRegex);
 		}
-
-
 	}
 }
