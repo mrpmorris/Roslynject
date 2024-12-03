@@ -1,7 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Morris.Roslynject.Generator.Extensions;
+namespace Morris.Roslynject.Extensions;
 
 internal static class ExpressionSyntaxGetValueExtension
 {

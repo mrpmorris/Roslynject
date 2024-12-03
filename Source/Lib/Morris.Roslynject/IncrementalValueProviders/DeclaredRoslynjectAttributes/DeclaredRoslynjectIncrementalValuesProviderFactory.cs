@@ -2,20 +2,19 @@
 using Microsoft.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Morris.Roslynject.Extensions;
-using Morris.Roslynject.Generator.Extensions;
 using System.Collections.Immutable;
 
-namespace Morris.Roslynject.IncrementalValueProviders.DeclaredRoslynjectModules;
+namespace Morris.Roslynject.IncrementalValueProviders.DeclaredRoslynjectAttributes;
 
-internal class DeclaredRoslynjectModuleIncrementalValuesProviderFactory
+internal class DeclaredRoslynjectIncrementalValuesProviderFactory
 {
-	public static IncrementalValuesProvider<DeclaredRoslynjectModuleAttribute> CreateValuesProvider(
+	public static IncrementalValuesProvider<DeclaredRoslynjectAttribute> CreateValuesProvider(
 		IncrementalGeneratorInitializationContext context)
 	=>
 		context
 		.SyntaxProvider
 		.ForAttributeWithMetadataName(
-			typeof(RoslynjectModuleAttribute).FullName,
+			typeof(RoslynjectAttribute).FullName,
 			predicate: SyntaxNodePredicate,
 			transform: SyntaxNodeTransformer
 		);
@@ -30,7 +29,7 @@ internal class DeclaredRoslynjectModuleIncrementalValuesProviderFactory
 		&& classNode.IsConcrete();
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private static DeclaredRoslynjectModuleAttribute SyntaxNodeTransformer(
+	private static DeclaredRoslynjectAttribute SyntaxNodeTransformer(
 		GeneratorAttributeSyntaxContext context,
 		CancellationToken token)
 	{
@@ -38,11 +37,21 @@ internal class DeclaredRoslynjectModuleIncrementalValuesProviderFactory
 		(string? namespaceName, string className) = symbol.GetNamespaceAndName(token);
 		AttributeData attribute = context.Attributes[0];
 		ImmutableDictionary<string, object?> attributeArgs = attribute.GetArguments();
-		var classRegex = (string?)attributeArgs["ClassRegex"];
-		var result = new DeclaredRoslynjectModuleAttribute(
-			targetNamespaceName: namespaceName,
-			targetClassName: className,
-			classRegex: classRegex);
+		var find = attributeArgs.GetValue<Find>("find");
+		var type = attributeArgs.GetValue<INamedTypeSymbol>("type");
+		var register = attributeArgs.GetValue<Register>("register");
+		var withLifetime = attributeArgs.GetValue<WithLifetime>("withLifetime");
+		var classRegex = attributeArgs.GetValueOrDefault<string?>("classRegex");
+		var serviceKeyRegex = attributeArgs.GetValueOrDefault<string?>("serviceKeyRegex");
+
+		var result = new DeclaredRoslynjectAttribute(
+			targetFullName: symbol.ToDisplayString(),
+			find: find,
+			type: type,
+			register: register,
+			withLifetime: withLifetime,
+			classRegex: classRegex,
+			serviceKeyRegex: serviceKeyRegex);
 		return result;
 	}
 

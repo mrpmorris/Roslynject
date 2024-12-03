@@ -1,7 +1,8 @@
 ﻿using Microsoft.CodeAnalysis;
 using Morris.Roslynject.Extensions;
 using Morris.Roslynject.IncrementalValueProviders;
-using Morris.Roslynject.IncrementalValueProviders.DeclaredRoslynjectModules;
+using Morris.Roslynject.IncrementalValueProviders.DeclaredRoslynjectAttributes;
+using Morris.Roslynject.IncrementalValueProviders.DeclaredRoslynjectModuleAttributes;
 using System.CodeDom.Compiler;
 
 namespace Morris.Roslynject;
@@ -16,6 +17,9 @@ public class SourceGenerator : IIncrementalGenerator
 
 		IncrementalValuesProvider<DeclaredRoslynjectModuleAttribute> roslynjectModules =
 			DeclaredRoslynjectModuleIncrementalValuesProviderFactory.CreateValuesProvider(context);
+
+		IncrementalValuesProvider<DeclaredRoslynjectAttribute> roslynjects =
+			DeclaredRoslynjectIncrementalValuesProviderFactory.CreateValuesProvider(context);
 
 		context.RegisterSourceOutput(
 			source: roslynjectModules.Collect(),

@@ -1,9 +1,12 @@
-﻿namespace Morris.Roslynject.IncrementalValueProviders.DeclaredRoslynjectModules;
+﻿using Morris.Roslynject.Helpers;
+
+namespace Morris.Roslynject.IncrementalValueProviders.DeclaredRoslynjectModuleAttributes;
 
 internal sealed class DeclaredRoslynjectModuleAttribute : IEquatable<DeclaredRoslynjectModuleAttribute>
 {
 	public readonly string? TargetNamespaceName;
 	public readonly string TargetClassName;
+	public readonly string TargetFullName;
 	public readonly string? ClassRegex;
 
 	private readonly Lazy<int> CachedHashCode;
@@ -15,6 +18,7 @@ internal sealed class DeclaredRoslynjectModuleAttribute : IEquatable<DeclaredRos
 	{
 		TargetNamespaceName = targetNamespaceName;
 		TargetClassName = targetClassName;
+		TargetFullName = NamespaceHelper.Combine(targetNamespaceName, targetClassName);
 		ClassRegex = classRegex;
 
 		CachedHashCode = new Lazy<int>(() =>

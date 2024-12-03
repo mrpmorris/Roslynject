@@ -1,7 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using System.Collections.Immutable;
 
-namespace Morris.Roslynject.Generator.Extensions;
+namespace Morris.Roslynject.Extensions;
 
 internal static class AttributeDataGetArgumentsExtension
 {

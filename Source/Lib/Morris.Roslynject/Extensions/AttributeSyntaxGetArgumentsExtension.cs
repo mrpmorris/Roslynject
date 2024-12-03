@@ -2,7 +2,7 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Collections.Immutable;
 
-namespace Morris.Roslynject.Generator.Extensions;
+namespace Morris.Roslynject.Extensions;
 
 internal static class AttributeSyntaxGetArgumentsExtension
 {
