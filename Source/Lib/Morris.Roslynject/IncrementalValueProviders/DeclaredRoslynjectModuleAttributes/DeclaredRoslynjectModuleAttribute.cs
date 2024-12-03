@@ -1,6 +1,8 @@
-﻿using Morris.Roslynject.Extensions;
+﻿using Microsoft.CodeAnalysis;
+using Morris.Roslynject.Extensions;
 using Morris.Roslynject.Helpers;
 using System.Collections.Immutable;
+using System.Text.RegularExpressions;
 
 namespace Morris.Roslynject.IncrementalValueProviders.DeclaredRoslynjectModuleAttributes;
 
@@ -13,6 +15,7 @@ internal sealed class DeclaredRoslynjectModuleAttribute : IEquatable<DeclaredRos
 	public readonly ImmutableArray<DeclaredRoslynjectAttribute> RoslynjectAttributes;
 
 	private readonly Lazy<int> CachedHashCode;
+	private readonly Lazy<Func<INamedTypeSymbol, bool>> ClassRegexMatches;
 
 	public DeclaredRoslynjectModuleAttribute(
 		string? targetNamespaceName,
@@ -26,6 +29,7 @@ internal sealed class DeclaredRoslynjectModuleAttribute : IEquatable<DeclaredRos
 		ClassRegex = classRegex;
 		RoslynjectAttributes = roslynjectAttributes;
 
+		ClassRegexMatches = TypeNamePredicate.Create(ClassRegex);
 		CachedHashCode = new Lazy<int>(() =>
 			HashCode.Combine(
 				TargetNamespaceName,
@@ -47,4 +51,7 @@ internal sealed class DeclaredRoslynjectModuleAttribute : IEquatable<DeclaredRos
 		&& other.Equals(this);
 
 	public override int GetHashCode() => CachedHashCode.Value;
+
+	public bool IsMatch(INamedTypeSymbol symbol) =>
+		ClassRegexMatches.Value(symbol);
 }
