@@ -1,4 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using Microsoft.Extensions.DependencyInjection;
 using Morris.Roslynject;
 
 Console.WriteLine("Hello, World!");
@@ -6,7 +7,7 @@ Console.WriteLine("Hello, World!");
 namespace Eggs
 {
 	[RoslynjectModule]
-	[RegisterClassesDescendedFrom(typeof(BaseClass), Microsoft.Extensions.DependencyInjection.ServiceLifetime.Scoped, Morris.Roslynject.RegisterClassAs.BaseClass)]
+	[Roslynject(ServiceLifetime.Scoped, Find.DescendantsOf, typeof(BaseClass), Register.BaseType)]
 	public partial class MyModule
 	{
 
