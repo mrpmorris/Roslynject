@@ -44,7 +44,7 @@ internal class DeclaredRoslynjectModuleIncrementalValuesProviderFactory
 			targetNamespaceName: namespaceName,
 			targetClassName: className,
 			classRegex: classRegex,
-			roslynjectAttributes: FindRoslynjectAttributes(context.SemanticModel, symbol).ToImmutableArray()
+			roslynjectAttributes: FindRoslynjectAttributes(context.SemanticModel, symbol)
 		);
 		return result;
 	}

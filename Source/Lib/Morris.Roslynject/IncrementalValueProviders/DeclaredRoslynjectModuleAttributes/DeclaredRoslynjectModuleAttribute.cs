@@ -21,13 +21,13 @@ internal sealed class DeclaredRoslynjectModuleAttribute : IEquatable<DeclaredRos
 		string? targetNamespaceName,
 		string targetClassName,
 		string? classRegex,
-		ImmutableArray<DeclaredRoslynjectAttribute> roslynjectAttributes)
+		IEnumerable<DeclaredRoslynjectAttribute> roslynjectAttributes)
 	{
 		TargetNamespaceName = targetNamespaceName;
 		TargetClassName = targetClassName;
 		TargetFullName = NamespaceHelper.Combine(targetNamespaceName, targetClassName);
 		ClassRegex = classRegex;
-		RoslynjectAttributes = roslynjectAttributes;
+		RoslynjectAttributes = roslynjectAttributes.ToImmutableArray();
 
 		ClassRegexMatches = TypeNamePredicate.Create(ClassRegex);
 		CachedHashCode = new Lazy<int>(() =>
