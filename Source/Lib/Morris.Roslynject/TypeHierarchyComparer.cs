@@ -2,9 +2,9 @@
 
 namespace Morris.Roslynject;
 
-internal class TypeIdentityComparer : IEqualityComparer<INamedTypeSymbol>
+internal class TypeHierarchyComparer : IEqualityComparer<INamedTypeSymbol>
 {
-	public static readonly TypeIdentityComparer Default = new();
+	public static readonly TypeHierarchyComparer Default = new();
 
 	public bool Equals(INamedTypeSymbol? x, INamedTypeSymbol? y) =>
 		(x, y) switch {

@@ -2,11 +2,10 @@
 using Morris.Roslynject.Extensions;
 using Morris.Roslynject.Helpers;
 using System.Collections.Immutable;
-using System.Text.RegularExpressions;
 
 namespace Morris.Roslynject.IncrementalValueProviders.DeclaredRoslynjectModuleAttributes;
 
-internal sealed class DeclaredRoslynjectModuleAttribute : IEquatable<DeclaredRoslynjectModuleAttribute>
+internal sealed class DeclaredRoslynjectModule : IEquatable<DeclaredRoslynjectModule>
 {
 	public readonly string? TargetNamespaceName;
 	public readonly string TargetClassName;
@@ -17,7 +16,7 @@ internal sealed class DeclaredRoslynjectModuleAttribute : IEquatable<DeclaredRos
 	private readonly Lazy<int> CachedHashCode;
 	private readonly Lazy<Func<INamedTypeSymbol, bool>> ClassRegexMatches;
 
-	public DeclaredRoslynjectModuleAttribute(
+	public DeclaredRoslynjectModule(
 		string? targetNamespaceName,
 		string targetClassName,
 		string? classRegex,
@@ -40,14 +39,14 @@ internal sealed class DeclaredRoslynjectModuleAttribute : IEquatable<DeclaredRos
 		);
 	}
 
-	public bool Equals(DeclaredRoslynjectModuleAttribute other) =>
+	public bool Equals(DeclaredRoslynjectModule other) =>
 		string.Equals(TargetNamespaceName, other.TargetNamespaceName, StringComparison.OrdinalIgnoreCase)
 		&& string.Equals(TargetClassName, other.TargetClassName, StringComparison.OrdinalIgnoreCase)
 		&& string.Equals(ClassRegex!, other.ClassRegex!, StringComparison.OrdinalIgnoreCase)
 		&& Enumerable.SequenceEqual(RoslynjectAttributes, other.RoslynjectAttributes);
 
 	public override bool Equals(object obj) =>
-		obj is DeclaredRoslynjectModuleAttribute other
+		obj is DeclaredRoslynjectModule other
 		&& other.Equals(this);
 
 	public override int GetHashCode() => CachedHashCode.Value;

@@ -8,7 +8,7 @@ namespace Morris.Roslynject.IncrementalValueProviders.DeclaredRoslynjectModuleAt
 
 internal class DeclaredRoslynjectModuleIncrementalValuesProviderFactory
 {
-	public static IncrementalValuesProvider<DeclaredRoslynjectModuleAttribute> CreateValuesProvider(
+	public static IncrementalValuesProvider<DeclaredRoslynjectModule> CreateValuesProvider(
 		IncrementalGeneratorInitializationContext context)
 	=>
 		context
@@ -29,7 +29,7 @@ internal class DeclaredRoslynjectModuleIncrementalValuesProviderFactory
 		&& classNode.IsConcrete();
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private static DeclaredRoslynjectModuleAttribute SyntaxNodeTransformer(
+	private static DeclaredRoslynjectModule SyntaxNodeTransformer(
 		GeneratorAttributeSyntaxContext context,
 		CancellationToken token)
 	{
@@ -40,7 +40,7 @@ internal class DeclaredRoslynjectModuleIncrementalValuesProviderFactory
 
 		(string? namespaceName, string className) = symbol.GetNamespaceAndName(token);
 		var classRegex = (string?)attributeArgs["ClassRegex"];
-		var result = new DeclaredRoslynjectModuleAttribute(
+		var result = new DeclaredRoslynjectModule(
 			targetNamespaceName: namespaceName,
 			targetClassName: className,
 			classRegex: classRegex,

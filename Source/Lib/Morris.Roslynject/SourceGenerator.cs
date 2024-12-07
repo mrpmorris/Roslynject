@@ -3,6 +3,7 @@ using Morris.Roslynject.Extensions;
 using Morris.Roslynject.IncrementalValueProviders;
 using Morris.Roslynject.IncrementalValueProviders.DeclaredRoslynjectModuleAttributes;
 using System.CodeDom.Compiler;
+using System.Collections.Immutable;
 
 namespace Morris.Roslynject;
 
@@ -11,36 +12,50 @@ public class SourceGenerator : IIncrementalGenerator
 {
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
-		IncrementalValuesProvider<INamedTypeSymbol> injectionCandidates =
-			InjectionCandidatesIncrementalValuesProviderFactory.CreateValuesProvider(context);
-
-		IncrementalValuesProvider<DeclaredRoslynjectModuleAttribute> roslynjectModules =
+		IncrementalValuesProvider<DeclaredRoslynjectModule> roslynjectModulesProvider =
 			DeclaredRoslynjectModuleIncrementalValuesProviderFactory.CreateValuesProvider(context);
 
+		IncrementalValuesProvider<INamedTypeSymbol> injectionCandidatesProvider =
+			InjectionCandidatesIncrementalValuesProviderFactory.CreateValuesProvider(context);
+
+		var x =
+			roslynjectModulesProvider
+			.Combine(injectionCandidatesProvider.Collect())
+			.Select((x, _) =>
+			{
+				DeclaredRoslynjectModule left = x.Left;
+				ImmutableArray<INamedTypeSymbol> right = x.Right;
+				return x;
+			});
+
 		context.RegisterSourceOutput(
-			source: roslynjectModules.Collect(),
+			source: roslynjectModulesProvider.Collect().Combine(injectionCandidatesProvider.Collect()),
 			action: static (productionContext, input) =>
 			{
 				using var sourceCodeBuilder = new StringWriter();
 				using var writer = new IndentedTextWriter(sourceCodeBuilder, tabString: "\t");
 
 				writer.WriteLine("using Microsoft.Extensions.DependencyInjection;");
+				// TODO: PeteM - D1
+				writer.WriteLine("// " + DateTime.UtcNow.ToString("HH:mm:ss"));
 
-				foreach (var moduleClass in input)
+				ImmutableArray<DeclaredRoslynjectModule> roslynjectModules = input.Left;
+				ImmutableArray<INamedTypeSymbol> injectionCandidates = input.Right;
+				foreach (var roslynjectModule in roslynjectModules)
 				{
 					writer.AddBlankLine();
 
 					IDisposable? namespaceCodeBlock = null;
-					if (!string.IsNullOrEmpty(moduleClass.TargetNamespaceName))
+					if (!string.IsNullOrEmpty(roslynjectModule.TargetNamespaceName))
 					{
-						writer.WriteLine($"namespace {moduleClass.TargetNamespaceName}");
+						writer.WriteLine($"namespace {roslynjectModule.TargetNamespaceName}");
 						namespaceCodeBlock = writer.CodeBlock();
 					}
 
-					if (moduleClass.ClassRegex is not null)
-						writer.WriteLine($"// Only classes matching regex: {moduleClass.ClassRegex}");
+					if (roslynjectModule.ClassRegex is not null)
+						writer.WriteLine($"// Only classes matching regex: {roslynjectModule.ClassRegex}");
 
-					writer.WriteLine($"partial class {moduleClass.TargetClassName}");
+					writer.WriteLine($"partial class {roslynjectModule.TargetClassName}");
 					using (writer.CodeBlock())
 					{
 						writer.WriteLine("static partial void AfterRegisterServices(IServiceCollection services);");
@@ -48,7 +63,7 @@ public class SourceGenerator : IIncrementalGenerator
 						writer.WriteLine("public static void RegisterServices(IServiceCollection services)");
 						using (writer.CodeBlock())
 						{
-							foreach (DeclaredRoslynjectAttribute attr in moduleClass.RoslynjectAttributes)
+							foreach (DeclaredRoslynjectAttribute attr in roslynjectModule.RoslynjectAttributes)
 							{
 								writer.WriteLine(
 									$"// Find: {attr.Find},"
@@ -68,7 +83,6 @@ public class SourceGenerator : IIncrementalGenerator
 					}
 					namespaceCodeBlock?.Dispose();
 				}
-
 				writer.Flush();
 
 				string generatedSourceCode = sourceCodeBuilder.ToString();

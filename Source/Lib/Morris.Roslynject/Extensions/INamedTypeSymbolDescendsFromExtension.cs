@@ -11,7 +11,7 @@ internal static partial class INamedTypeSymbolDescendsFromExtension
 		INamedTypeSymbol? current = child.BaseType;
 		while (current is not null)
 		{
-			if (TypeIdentityComparer.Default.Equals(current.ConstructedFrom, baseClass.ConstructedFrom))
+			if (TypeHierarchyComparer.Default.Equals(current.ConstructedFrom, baseClass.ConstructedFrom))
 				return true;
 			current = current.BaseType;
 		}
