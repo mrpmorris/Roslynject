@@ -1,17 +1,17 @@
 ﻿using Microsoft.CodeAnalysis;
+using Morris.Roslynject.Extensions;
 
 namespace Morris.Roslynject;
 
-internal class TypeHierarchyComparer : IEqualityComparer<INamedTypeSymbol>
+internal class TypeSignatureComparer : IEqualityComparer<INamedTypeSymbol>
 {
-	public static readonly TypeHierarchyComparer Default = new();
+	public static readonly TypeSignatureComparer Default = new();
 
 	public bool Equals(INamedTypeSymbol? x, INamedTypeSymbol? y) =>
 		(x, y) switch {
 			(INamedTypeSymbol left, INamedTypeSymbol right) =>
-				left.Name == right.Name
-				&& left.ContainingNamespace.ToDisplayString() == right.ContainingNamespace.ToDisplayString()
-				&& Equals(left.BaseType, right.BaseType),
+			TypeHierarchyComparer.Default.Equals(left, right)
+			&& left.AllInterfaces.SequenceEqual(right.AllInterfaces, TypeIdentityComparer.Default),
 			(null, null) => true,
 			(INamedTypeSymbol left, null) => false,
 			(null, INamedTypeSymbol right) => false
@@ -23,6 +23,6 @@ internal class TypeHierarchyComparer : IEqualityComparer<INamedTypeSymbol>
 		: HashCode.Combine(
 			obj.Name,
 			obj.ContainingNamespace.ToDisplayString(),
-			GetHashCode(obj.BaseType)
+			obj.AllInterfaces.GetContentsHashCode(TypeIdentityComparer.Default)
 		  );
 }

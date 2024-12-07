@@ -2,7 +2,7 @@
 
 namespace Morris.Roslynject;
 
-internal class TypeHierarchyComparer : IEqualityComparer<INamedTypeSymbol>
+internal class TypeIdentityComparer : IEqualityComparer<INamedTypeSymbol>
 {
 	public static readonly TypeHierarchyComparer Default = new();
 
@@ -10,8 +10,7 @@ internal class TypeHierarchyComparer : IEqualityComparer<INamedTypeSymbol>
 		(x, y) switch {
 			(INamedTypeSymbol left, INamedTypeSymbol right) =>
 				left.Name == right.Name
-				&& left.ContainingNamespace.ToDisplayString() == right.ContainingNamespace.ToDisplayString()
-				&& Equals(left.BaseType, right.BaseType),
+				&& left.ContainingNamespace.ToDisplayString() == right.ContainingNamespace.ToDisplayString(),
 			(null, null) => true,
 			(INamedTypeSymbol left, null) => false,
 			(null, INamedTypeSymbol right) => false
@@ -22,7 +21,6 @@ internal class TypeHierarchyComparer : IEqualityComparer<INamedTypeSymbol>
 		? 0
 		: HashCode.Combine(
 			obj.Name,
-			obj.ContainingNamespace.ToDisplayString(),
-			GetHashCode(obj.BaseType)
+			obj.ContainingNamespace.ToDisplayString()
 		  );
 }
