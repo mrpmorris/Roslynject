@@ -22,7 +22,8 @@ internal static class InjectionCandidatesIncrementalValuesProviderFactory
 					.GetDeclaredSymbol(context.Node)!;
 				return result;
 			}
-		);
+		)
+		.WithComparer(TypeHierarchyComparer.Default);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private static bool SyntaxNodePredicate(
