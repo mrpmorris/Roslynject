@@ -20,7 +20,7 @@ internal sealed class Module
 		DeclaredModule = declaredModule;
 		if (declaredModule.ClassRegex is not null)
 			injectionCandidates = injectionCandidates
-				.Where(x => Regex.IsMatch(declaredModule.ClassRegex, x.ToDisplayString()));
+				.Where(x => Regex.IsMatch(x.ToDisplayString(), declaredModule.ClassRegex));
 
 		AttributeAndRegistrations = CreateAttributeRegistrations(declaredModule, injectionCandidates);
 
@@ -36,6 +36,14 @@ internal sealed class Module
 		DeclaredRoslynjectModule declaredModule,
 		IEnumerable<INamedTypeSymbol> injectionCandidates)
 	{
-		throw new NotImplementedException();
+		var builder = ImmutableArray.CreateBuilder<AttributeAndRegistrations>();
+		foreach(DeclaredRoslynjectAttribute declaredAttribute in declaredModule.RoslynjectAttributes)
+		{
+			var item = new AttributeAndRegistrations(
+				declaredRoslynjectAttribute: declaredAttribute,
+				injectionCandidates: injectionCandidates);
+			builder.Add(item);
+		}
+		return builder.ToImmutable();
 	}
 }

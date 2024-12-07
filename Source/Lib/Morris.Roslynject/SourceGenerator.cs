@@ -4,7 +4,6 @@ using Morris.Roslynject.IncrementalValueProviders;
 using Morris.Roslynject.IncrementalValueProviders.DeclaredRoslynjectModuleAttributes;
 using Morris.Roslynject.IncrementalValueProviders.RoslynjectModules;
 using System.CodeDom.Compiler;
-using System.Collections.Immutable;
 
 namespace Morris.Roslynject;
 
@@ -13,19 +12,19 @@ public class SourceGenerator : IIncrementalGenerator
 {
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
-		IncrementalValuesProvider<DeclaredRoslynjectModule> roslynjectModulesProvider =
+		IncrementalValuesProvider<DeclaredRoslynjectModule> declaredModulesProvider =
 			DeclaredRoslynjectModuleIncrementalValuesProviderFactory.CreateValuesProvider(context);
 
 		IncrementalValuesProvider<INamedTypeSymbol> injectionCandidatesProvider =
 			InjectionCandidatesIncrementalValuesProviderFactory.CreateValuesProvider(context);
 
-		var x =
-			roslynjectModulesProvider
+		IncrementalValuesProvider<Module> modulesProvider =
+			declaredModulesProvider
 			.Combine(injectionCandidatesProvider.Collect())
 			.Select(static (x, _) => new Module(x.Left, x.Right));
 
 		context.RegisterSourceOutput(
-			source: roslynjectModulesProvider.Collect().Combine(injectionCandidatesProvider.Collect()),
+			source: modulesProvider.Collect(),
 			action: static (productionContext, input) =>
 			{
 				using var sourceCodeBuilder = new StringWriter();
@@ -35,23 +34,22 @@ public class SourceGenerator : IIncrementalGenerator
 				// TODO: PeteM - D1
 				writer.WriteLine("// " + DateTime.UtcNow.ToString("HH:mm:ss"));
 
-				ImmutableArray<DeclaredRoslynjectModule> roslynjectModules = input.Left;
-				ImmutableArray<INamedTypeSymbol> injectionCandidates = input.Right;
-				foreach (var roslynjectModule in roslynjectModules)
+				foreach (Module module in input)
 				{
+					DeclaredRoslynjectModule declaredModule = module.DeclaredModule;
 					writer.AddBlankLine();
 
 					IDisposable? namespaceCodeBlock = null;
-					if (!string.IsNullOrEmpty(roslynjectModule.TargetNamespaceName))
+					if (!string.IsNullOrEmpty(declaredModule.TargetNamespaceName))
 					{
-						writer.WriteLine($"namespace {roslynjectModule.TargetNamespaceName}");
+						writer.WriteLine($"namespace {declaredModule.TargetNamespaceName}");
 						namespaceCodeBlock = writer.CodeBlock();
 					}
 
-					if (roslynjectModule.ClassRegex is not null)
-						writer.WriteLine($"// Only classes matching regex: {roslynjectModule.ClassRegex}");
+					if (declaredModule.ClassRegex is not null)
+						writer.WriteLine($"// Only classes matching regex: {declaredModule.ClassRegex}");
 
-					writer.WriteLine($"partial class {roslynjectModule.TargetClassName}");
+					writer.WriteLine($"partial class {declaredModule.TargetClassName}");
 					using (writer.CodeBlock())
 					{
 						writer.WriteLine("static partial void AfterRegisterServices(IServiceCollection services);");
@@ -59,18 +57,26 @@ public class SourceGenerator : IIncrementalGenerator
 						writer.WriteLine("public static void RegisterServices(IServiceCollection services)");
 						using (writer.CodeBlock())
 						{
-							foreach (DeclaredRoslynjectAttribute attr in roslynjectModule.RoslynjectAttributes)
+							foreach (AttributeAndRegistrations attributeAndRegistrations in module.AttributeAndRegistrations)
 							{
+								var declaredAttribute = attributeAndRegistrations.DeclaredRoslynjectAttribute;
 								writer.WriteLine(
-									$"// Find: {attr.Find},"
-									+ $" Type: {attr.Type.ToDisplayString()},"
-									+ $" Register: {attr.Register},"
-									+ $" WithLifetime: {attr.WithLifetime}"
+									$"// Find: {declaredAttribute.Find},"
+									+ $" Type: {declaredAttribute.Type.ToDisplayString()},"
+									+ $" Register: {declaredAttribute.Register},"
+									+ $" WithLifetime: {declaredAttribute.WithLifetime}"
 								);
-								if (attr.ClassRegex is not null)
-									writer.WriteLine($"// ClassRegex: {attr.ClassRegex}");
-								if (attr.ServiceKeyRegex is not null)
-									writer.WriteLine($"// ServiceKeyRegex: {attr.ServiceKeyRegex}");
+								if (declaredAttribute.ClassRegex is not null)
+									writer.WriteLine($"// ClassRegex: {declaredAttribute.ClassRegex}");
+
+								foreach (ServiceRegistration registration in attributeAndRegistrations.Registrations)
+								{
+									writer.WriteLine(
+										$"services.Add{registration.WithLifetime}("
+										+ $"typeof({registration.ServiceKeyTypeName ?? registration.ServiceTypeName})"
+										+ $", typeof({registration.ServiceTypeName}))"
+									);
+								}
 
 								writer.AddBlankLine();
 							}

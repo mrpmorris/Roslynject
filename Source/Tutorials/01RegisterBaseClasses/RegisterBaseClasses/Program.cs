@@ -1,5 +1,4 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using Microsoft.Extensions.DependencyInjection;
 using Morris.Roslynject;
 
 Console.WriteLine("Hello, World!");
@@ -16,4 +15,5 @@ namespace Eggs
 	public class BaseClass { }
 	public class Child1 : BaseClass { }
 	public class Child2 : BaseClass { }
+	public class ThisShouldNotBeThere { }
 }
