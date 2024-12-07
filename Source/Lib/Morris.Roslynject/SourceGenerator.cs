@@ -2,6 +2,7 @@
 using Morris.Roslynject.Extensions;
 using Morris.Roslynject.IncrementalValueProviders;
 using Morris.Roslynject.IncrementalValueProviders.DeclaredRoslynjectModuleAttributes;
+using Morris.Roslynject.IncrementalValueProviders.RoslynjectModules;
 using System.CodeDom.Compiler;
 using System.Collections.Immutable;
 
@@ -21,12 +22,7 @@ public class SourceGenerator : IIncrementalGenerator
 		var x =
 			roslynjectModulesProvider
 			.Combine(injectionCandidatesProvider.Collect())
-			.Select((x, _) =>
-			{
-				DeclaredRoslynjectModule left = x.Left;
-				ImmutableArray<INamedTypeSymbol> right = x.Right;
-				return x;
-			});
+			.Select(static (x, _) => new RoslynjectModule(x.Left, x.Right));
 
 		context.RegisterSourceOutput(
 			source: roslynjectModulesProvider.Collect().Combine(injectionCandidatesProvider.Collect()),
