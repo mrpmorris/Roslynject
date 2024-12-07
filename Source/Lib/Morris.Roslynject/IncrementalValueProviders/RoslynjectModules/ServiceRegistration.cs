@@ -1,6 +1,6 @@
 ﻿namespace Morris.Roslynject.IncrementalValueProviders.RoslynjectModules;
 
-internal sealed class RoslynjectRegistration
+internal sealed class ServiceRegistration
 {
 	public readonly string? ServiceKeyTypeName;
 	public readonly string ServiceTypeName;
@@ -8,7 +8,7 @@ internal sealed class RoslynjectRegistration
 
 	private readonly Lazy<int> CachedHashCode;
 
-	public RoslynjectRegistration(
+	public ServiceRegistration(
 		WithLifetime withLifetime,
 		string? serviceKeyTypeName,
 		string serviceTypeName)
@@ -27,7 +27,7 @@ internal sealed class RoslynjectRegistration
 	}
 
 	public override bool Equals(object obj) =>
-		obj is RoslynjectRegistration other
+		obj is ServiceRegistration other
 		&& other.WithLifetime == WithLifetime
 		&& other.ServiceKeyTypeName == ServiceKeyTypeName
 		&& other.ServiceTypeName == ServiceTypeName;

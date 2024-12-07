@@ -22,7 +22,7 @@ public class SourceGenerator : IIncrementalGenerator
 		var x =
 			roslynjectModulesProvider
 			.Combine(injectionCandidatesProvider.Collect())
-			.Select(static (x, _) => new RoslynjectModule(x.Left, x.Right));
+			.Select(static (x, _) => new Module(x.Left, x.Right));
 
 		context.RegisterSourceOutput(
 			source: roslynjectModulesProvider.Collect().Combine(injectionCandidatesProvider.Collect()),

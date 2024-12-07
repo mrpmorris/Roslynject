@@ -6,14 +6,14 @@ using System.Text.RegularExpressions;
 
 namespace Morris.Roslynject.IncrementalValueProviders.RoslynjectModules;
 
-internal sealed class RoslynjectModule
+internal sealed class Module
 {
 	public readonly DeclaredRoslynjectModule DeclaredModule;
-	public readonly ImmutableArray<RoslynjectAttributeRegistrations> AttributeRegistrations;
+	public readonly ImmutableArray<AttributeAndRegistrations> AttributeAndRegistrations;
 
 	private readonly Lazy<int> CachedHashCode;
 
-	public RoslynjectModule(
+	public Module(
 		DeclaredRoslynjectModule declaredModule,
 		IEnumerable<INamedTypeSymbol> injectionCandidates)
 	{
@@ -22,17 +22,17 @@ internal sealed class RoslynjectModule
 			injectionCandidates = injectionCandidates
 				.Where(x => Regex.IsMatch(declaredModule.ClassRegex, x.ToDisplayString()));
 
-		AttributeRegistrations = CreateAttributeRegistrations(declaredModule, injectionCandidates);
+		AttributeAndRegistrations = CreateAttributeRegistrations(declaredModule, injectionCandidates);
 
 		CachedHashCode = new Lazy<int>(() =>
 			HashCode.Combine(
 				DeclaredModule,
-				AttributeRegistrations.GetContentsHashCode()
+				AttributeAndRegistrations.GetContentsHashCode()
 			)
 		);
 	}
 
-	private ImmutableArray<RoslynjectAttributeRegistrations> CreateAttributeRegistrations(
+	private ImmutableArray<AttributeAndRegistrations> CreateAttributeRegistrations(
 		DeclaredRoslynjectModule declaredModule,
 		IEnumerable<INamedTypeSymbol> injectionCandidates)
 	{

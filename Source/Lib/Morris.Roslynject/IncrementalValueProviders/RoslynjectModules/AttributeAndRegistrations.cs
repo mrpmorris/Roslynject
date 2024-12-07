@@ -4,16 +4,16 @@ using System.Collections.Immutable;
 
 namespace Morris.Roslynject.IncrementalValueProviders.RoslynjectModules;
 
-internal sealed class RoslynjectAttributeRegistrations
+internal sealed class AttributeAndRegistrations
 {
 	public readonly DeclaredRoslynjectAttribute DeclaredRoslynjectAttribute;
-	public readonly ImmutableArray<RoslynjectRegistration> Registrations;
+	public readonly ImmutableArray<ServiceRegistration> Registrations;
 
 	private readonly Lazy<int> CachedHashCode;
 
-	public RoslynjectAttributeRegistrations(
+	public AttributeAndRegistrations(
 		DeclaredRoslynjectAttribute declaredRoslynjectAttribute,
-		ImmutableArray<RoslynjectRegistration> registrations)
+		ImmutableArray<ServiceRegistration> registrations)
 	{
 		DeclaredRoslynjectAttribute = declaredRoslynjectAttribute;
 		Registrations = registrations;
@@ -27,7 +27,7 @@ internal sealed class RoslynjectAttributeRegistrations
 	}
 
 	public override bool Equals(object obj) =>
-		obj is RoslynjectAttributeRegistrations other
+		obj is AttributeAndRegistrations other
 		&& other.DeclaredRoslynjectAttribute.Equals(DeclaredRoslynjectAttribute)
 		&& other.Registrations.SequenceEqual(Registrations);
 
