@@ -3,8 +3,9 @@ using Microsoft.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Morris.Roslynject.Extensions;
 using System.Collections.Immutable;
+using Morris.Roslynject.IncrementalValueProviders.DeclaredRoslynjectModuleAttributes;
 
-namespace Morris.Roslynject.IncrementalValueProviders.DeclaredRoslynjectModuleAttributes;
+namespace Morris.Roslynject.IncrementalValueProviders;
 
 internal class DeclaredRoslynjectModuleIncrementalValuesProviderFactory
 {
@@ -63,7 +64,7 @@ internal class DeclaredRoslynjectModuleIncrementalValuesProviderFactory
 			.GetAttributes()
 			.Where(x => SymbolEqualityComparer.Default.Equals(x.AttributeClass, roslynjectSymbolAttribute));
 
-		foreach(AttributeData attribute in attributes)
+		foreach (AttributeData attribute in attributes)
 		{
 			ImmutableDictionary<string, object?> attributeArgs = attribute.GetArguments();
 			Find find = attributeArgs.GetValue<Find>("Find");
