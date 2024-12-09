@@ -1,6 +1,8 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Morris.Roslynject.Extensions;
+using Morris.Roslynject.Helpers;
+using System;
 using System.CodeDom.Compiler;
 using System.Collections.Immutable;
 
@@ -37,30 +39,67 @@ public class InjectionSourceGenerator : IIncrementalGenerator
 		{
 			var attributes = items.Left;
 			var candidates = items.Right;
+			var targetsAndAttributes =
+				attributes
+				.GroupBy(
+					keySelector: static x => x.Key,
+					elementSelector: static x => x.Value,
+					comparer: SymbolEqualityComparer.Default
+				);
 
 			using var output = new StringWriter();
-			using var codeWriter = new IndentedTextWriter(output);
-			codeWriter.WriteLine($"// {DateTime.UtcNow}");
-			foreach (KeyValuePair<INamedTypeSymbol, RoslynjectAttributeData> targetAndAttribute in attributes)
+			using var writer = new IndentedTextWriter(output);
+
+			writer.WriteLine($"// {DateTime.UtcNow}");
+
+			foreach (var targetAndAttributes in targetsAndAttributes)
 			{
-				RoslynjectAttributeData attribute = targetAndAttribute.Value;
-				codeWriter.Write("//"
-					+ $"Find {attribute.Find}"
-					+ $", Type {attribute.Type.ToDisplayString()}"
-					+ $", Register {attribute.Register}"
-					+ $", WithLifetime {attribute.WithLifetime}"
-				);
-				if (attribute.ClassRegex is not null)
-					codeWriter.Write($", ClassRegex {attribute.ClassRegex}");
-				if (attribute.ServiceKeyRegex is not null)
-					codeWriter.Write($", ServiceKeyRegex {attribute.ServiceKeyRegex}");
-				codeWriter.WriteLine();
-				GenerateRegistrations(codeWriter, candidates, targetAndAttribute);
+				GenerateCodeForTarget(
+					context: context,
+					candidates: candidates,
+					writer: writer,
+					target: (INamedTypeSymbol)targetAndAttributes.Key!,
+					attributeData: targetAndAttributes);
+				writer.AddBlankLine();
 			}
 
-			codeWriter.Flush();
+			writer.Flush();
 			context.AddSource("Morris.Roslynject.g.cs", output.ToString());
 		});
+	}
+
+	private static void GenerateCodeForTarget(
+		SourceProductionContext context,
+		ImmutableArray<INamedTypeSymbol> candidates,
+		IndentedTextWriter writer,
+		INamedTypeSymbol target,
+		IEnumerable<RoslynjectAttributeData> attributeData)
+	{
+		(string? namespaceName, string className) = target.GetNamespaceNameAndClassName(context.CancellationToken);
+
+		IDisposable? namespaceBlock =
+			namespaceName is null
+			? null
+			: writer.CodeBlock();
+
+		foreach (RoslynjectAttributeData attributeDatum in attributeData)
+		{
+			writer.Write("//"
+				+ $"Find {attributeDatum.Find}"
+				+ $", Type {attributeDatum.Type.ToDisplayString()}"
+				+ $", Register {attributeDatum.Register}"
+				+ $", WithLifetime {attributeDatum.WithLifetime}"
+			);
+			if (attributeDatum.ClassRegex is not null)
+				writer.Write($", ClassRegex {attributeDatum.ClassRegex}");
+			if (attributeDatum.ServiceKeyRegex is not null)
+				writer.Write($", ServiceKeyRegex {attributeDatum.ServiceKeyRegex}");
+			writer.WriteLine();
+
+			GenerateRegistrations(writer, candidates, attributeDatum);
+		}
+
+		namespaceBlock?.Dispose();
 	}
 
 	private static ImmutableArray<KeyValuePair<INamedTypeSymbol, RoslynjectAttributeData>> TransformRoslynjectAttributeNode(
@@ -81,16 +120,16 @@ public class InjectionSourceGenerator : IIncrementalGenerator
 		GeneratorSyntaxContext context,
 		CancellationToken token)
 	=>
-		(INamedTypeSymbol) context
+		(INamedTypeSymbol)context
 		.SemanticModel
 		.GetDeclaredSymbol((TypeDeclarationSyntax)context.Node, token)!;
 
 	private static void GenerateRegistrations(
 		IndentedTextWriter codeWriter,
 		ImmutableArray<INamedTypeSymbol> candidates,
-		KeyValuePair<INamedTypeSymbol, RoslynjectAttributeData> targetAndAttribute)
+		RoslynjectAttributeData attributeDatum)
 	{
-		foreach(INamedTypeSymbol candidate in candidates)
+		foreach (INamedTypeSymbol candidate in candidates)
 		{
 
 		}

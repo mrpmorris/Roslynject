@@ -6,7 +6,7 @@ namespace Morris.Roslynject.Extensions;
 internal static class INamedTypeSymbolGetNamespaceAndNameExtension
 {
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static (string? NamespaceName, string Name) GetNamespaceAndName(
+	public static (string? NamespaceName, string Name) GetNamespaceNameAndClassName(
 		this INamedTypeSymbol symbol, CancellationToken cancellationToken)
 	=>
 		(
