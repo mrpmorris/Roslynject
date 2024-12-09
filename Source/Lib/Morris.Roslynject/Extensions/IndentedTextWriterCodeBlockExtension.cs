@@ -6,8 +6,11 @@ namespace Morris.Roslynject.Extensions;
 internal static class IndentedTextWriterCodeBlockExtension
 {
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static IDisposable CodeBlock(this IndentedTextWriter writer)
+	public static IDisposable CodeBlock(this IndentedTextWriter writer, string? prefix = null)
 	{
+		if (prefix is not null)
+			writer.WriteLine(prefix);
+
 		writer.WriteLine("{");
 		writer.Indent++;
 		return new DisposableAction(() =>

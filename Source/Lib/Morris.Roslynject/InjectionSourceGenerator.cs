@@ -1,8 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Morris.Roslynject.Extensions;
-using Morris.Roslynject.Helpers;
-using System;
 using System.CodeDom.Compiler;
 using System.Collections.Immutable;
 
@@ -51,6 +49,7 @@ public class InjectionSourceGenerator : IIncrementalGenerator
 			using var writer = new IndentedTextWriter(output);
 
 			writer.WriteLine($"// {DateTime.UtcNow}");
+			writer.WriteLine("using Microsoft.Extensions.DependencyInjection;");
 
 			foreach (var targetAndAttributes in targetsAndAttributes)
 			{
@@ -60,6 +59,7 @@ public class InjectionSourceGenerator : IIncrementalGenerator
 					writer: writer,
 					target: (INamedTypeSymbol)targetAndAttributes.Key!,
 					attributeData: targetAndAttributes);
+
 				writer.AddBlankLine();
 			}
 
@@ -80,23 +80,38 @@ public class InjectionSourceGenerator : IIncrementalGenerator
 		IDisposable? namespaceBlock =
 			namespaceName is null
 			? null
-			: writer.CodeBlock();
+			: writer.CodeBlock($"namespace {namespaceName}");
 
-		foreach (RoslynjectAttributeData attributeDatum in attributeData)
+		using (writer.CodeBlock($"partial class {className}"))
 		{
-			writer.Write("//"
-				+ $"Find {attributeDatum.Find}"
-				+ $", Type {attributeDatum.Type.ToDisplayString()}"
-				+ $", Register {attributeDatum.Register}"
-				+ $", WithLifetime {attributeDatum.WithLifetime}"
-			);
-			if (attributeDatum.ClassRegex is not null)
-				writer.Write($", ClassRegex {attributeDatum.ClassRegex}");
-			if (attributeDatum.ServiceKeyRegex is not null)
-				writer.Write($", ServiceKeyRegex {attributeDatum.ServiceKeyRegex}");
-			writer.WriteLine();
+			writer.WriteLine("static partial void AfterRegisterServices(IServiceCollection services);");
+			writer.AddBlankLine();
+			using (writer.CodeBlock("public static void RegisterServices(IServiceCollection services)"))
+			{
+				bool addBlankLine = false;
+				foreach (RoslynjectAttributeData attributeDatum in attributeData)
+				{
+					if (addBlankLine)
+						writer.AddBlankLine();
+					addBlankLine = true;
 
-			GenerateRegistrations(writer, candidates, attributeDatum);
+					writer.Write("//"
+						+ $"Find {attributeDatum.Find}"
+						+ $", Type {attributeDatum.Type.ToDisplayString()}"
+						+ $", Register {attributeDatum.Register}"
+						+ $", WithLifetime {attributeDatum.WithLifetime}"
+					);
+					if (attributeDatum.ClassRegex is not null)
+						writer.Write($", ClassRegex {attributeDatum.ClassRegex}");
+					if (attributeDatum.ServiceKeyRegex is not null)
+						writer.Write($", ServiceKeyRegex {attributeDatum.ServiceKeyRegex}");
+					writer.AddBlankLine();
+
+					GenerateRegistrations(writer, candidates, attributeDatum);
+				}
+				writer.AddBlankLine();
+				writer.WriteLine("AfterRegisterServices(services);");
+			}
 		}
 
 		namespaceBlock?.Dispose();
@@ -131,8 +146,34 @@ public class InjectionSourceGenerator : IIncrementalGenerator
 	{
 		foreach (INamedTypeSymbol candidate in candidates)
 		{
+			bool isMatch =
+				GetRegistrationDetails(
+					attributeDatum: attributeDatum,
+					candidate: candidate,
+					out INamedTypeSymbol serviceKeyType,
+					out INamedTypeSymbol serviceType
+				);
 
+			if (isMatch)
+			{
+				codeWriter.WriteLine(
+					// Lifetime
+					$"services.Add{attributeDatum.WithLifetime}("
+					// Service key
+					+ $"typeof({serviceKeyType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)})"
+					// Service class
+					+ $"typeof({serviceType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}));"
+				);
+			}
 		}
 	}
 
+	private static bool GetRegistrationDetails(
+		RoslynjectAttributeData attributeDatum,
+		INamedTypeSymbol candidate,
+		out INamedTypeSymbol serviceKeyType,
+		out INamedTypeSymbol serviceType)
+	{
+		throw new NotImplementedException();
+	}
 }
