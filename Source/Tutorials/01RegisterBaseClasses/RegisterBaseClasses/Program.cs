@@ -5,14 +5,7 @@ Console.WriteLine("Hello, World!");
 
 namespace Eggs
 {
-	[
-		Roslynject(Find.DescendantsOf, typeof(BaseClass), Register.BaseType, WithLifetime.Scoped),
-		Roslynject(Find.DescendantsOf, typeof(BaseClass), Register.BaseType, WithLifetime.Scoped)
-	]
-	[
-		Roslynject(Find.DescendantsOf, typeof(BaseClass), Register.BaseType, WithLifetime.Scoped),
-		Roslynject(Find.DescendantsOf, typeof(BaseClass), Register.BaseType, WithLifetime.Scoped)
-	]
+	[Roslynject(Find.DescendantsOf, typeof(BaseClass), Register.BaseType, WithLifetime.Scoped)]
 	public partial class MyModule
 	{
 		public static void Hello() { }

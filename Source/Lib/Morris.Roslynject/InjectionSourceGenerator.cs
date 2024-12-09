@@ -146,34 +146,57 @@ public class InjectionSourceGenerator : IIncrementalGenerator
 	{
 		foreach (INamedTypeSymbol candidate in candidates)
 		{
-			bool isMatch =
+			IEnumerable<KeyValuePair<INamedTypeSymbol, INamedTypeSymbol>> registrationDetails =
 				GetRegistrationDetails(
 					attributeDatum: attributeDatum,
-					candidate: candidate,
-					out INamedTypeSymbol serviceKeyType,
-					out INamedTypeSymbol serviceType
+					candidate: candidate
 				);
 
-			if (isMatch)
+			foreach(var registration in registrationDetails)
 			{
 				codeWriter.WriteLine(
 					// Lifetime
 					$"services.Add{attributeDatum.WithLifetime}("
 					// Service key
-					+ $"typeof({serviceKeyType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)})"
+					+ $"typeof({registration.Key.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)})"
 					// Service class
-					+ $"typeof({serviceType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}));"
+					+ $", typeof({registration.Value.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)}));"
 				);
 			}
 		}
 	}
 
-	private static bool GetRegistrationDetails(
+	private static IEnumerable<KeyValuePair<INamedTypeSymbol, INamedTypeSymbol>> GetRegistrationDetails(
 		RoslynjectAttributeData attributeDatum,
-		INamedTypeSymbol candidate,
-		out INamedTypeSymbol serviceKeyType,
-		out INamedTypeSymbol serviceType)
+		INamedTypeSymbol candidate)
 	{
-		throw new NotImplementedException();
+		IEnumerable<INamedTypeSymbol> potentialKeys =
+			attributeDatum.Type.TypeKind == TypeKind.Interface
+			? candidate.Interfaces
+			: [candidate];
+
+		Func<INamedTypeSymbol, bool> isMatch = attributeDatum.Find switch {
+			Find.DescendantsOf => t => t.DescendsFrom(attributeDatum.Type),
+			Find.Exactly => t => SymbolEqualityComparer.Default.Equals(t, attributeDatum.Type),
+			Find.AnyTypeOf => t => t.IsTypeOf(attributeDatum.Type),
+			_ => throw new NotImplementedException(attributeDatum.Find.ToString())
+		};
+
+		Func<INamedTypeSymbol, INamedTypeSymbol> getServiceKey = attributeDatum.Register switch {
+			Register.BaseType => _ => attributeDatum.Type,
+			Register.DiscoveredInterfaces => _ => throw new NotImplementedException(),
+			Register.DiscoveredClasses => _ => throw new NotImplementedException(),
+			Register.BaseClosedGenericType => _ => throw new NotImplementedException(),
+			_ => throw new NotImplementedException(attributeDatum.Register.ToString())
+		};
+
+		foreach(INamedTypeSymbol potentialKey in potentialKeys)
+		{
+			if (isMatch(potentialKey))
+			{
+				INamedTypeSymbol serviceKey = getServiceKey(potentialKey);
+				yield return new KeyValuePair<INamedTypeSymbol, INamedTypeSymbol>(serviceKey, candidate);
+			}
+		}
 	}
 }
