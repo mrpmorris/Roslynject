@@ -20,12 +20,15 @@ internal static class SourceGeneratorExecutor
 		string sourceCode,
 		string expectedGeneratedCode)
 	{
-		var unitTestSyntaxTree = CSharpSyntaxTree.ParseText(sourceCode);
-		var staticResourcesSyntaxTree = CSharpSyntaxTree.ParseText(StaticResourcesSourceGenerator.SourceCode.Value);
+		string fullSource =
+			StaticResourcesSourceGenerator.SourceCode.Value
+			+ "\r\n\r\n"
+			+ sourceCode;
+		var unitTestSyntaxTree = CSharpSyntaxTree.ParseText(fullSource);
 
 		var compilation = CSharpCompilation.Create(
 			assemblyName: "Test",
-			syntaxTrees: [staticResourcesSyntaxTree, unitTestSyntaxTree],
+			syntaxTrees: [unitTestSyntaxTree],
 			references: Basic.Reference.Assemblies.Net80.References
 				.All
 				.Union([MSDependencyInjectionMetadataReference]),
