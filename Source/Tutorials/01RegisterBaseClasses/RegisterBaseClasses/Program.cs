@@ -21,5 +21,7 @@ namespace Eggs
 	public class BaseClass { }
 	public class Child1 : BaseClass { }
 	public class Child2 : BaseClass { }
-	public class ThisShouldNotBeThere { }
+	public class ThisShouldNotBeThere {
+		public static void Hello() { }
+	}
 }

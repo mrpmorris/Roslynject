@@ -5,28 +5,6 @@ using System.Diagnostics.CodeAnalysis;
 namespace Morris.Roslynject
 {
 	/// <summary>
-	/// Specifies the lifetime of a service.
-	/// </summary>
-	public enum WithLifetime
-	{
-		/// <summary>
-		/// Specifies that a single instance of the service will be created.
-		/// </summary>
-		Singleton,
-		/// <summary>
-		/// Specifies that a new instance of the service will be created for each scope.
-		/// </summary>
-		/// <remarks>
-		/// In ASP.NET Core applications a scope is created around each server request.
-		/// </remarks>
-		Scoped,
-		/// <summary>
-		/// Specifies that a new instance of the service will be created every time it is requested.
-		/// </summary>
-		Transient
-	}
-
-	/// <summary>
 	/// Scans the assembly and registers all dependencies that match
 	/// the given criteria.
 	/// </summary>
@@ -129,5 +107,27 @@ namespace Morris.Roslynject
 		/// by the class discovered.
 		/// </summary>
 		DiscoveredInterfaces
+	}
+
+	/// <summary>
+	/// Specifies the lifetime of a service.
+	/// </summary>
+	public enum WithLifetime
+	{
+		/// <summary>
+		/// Specifies that a single instance of the service will be created.
+		/// </summary>
+		Singleton,
+		/// <summary>
+		/// Specifies that a new instance of the service will be created for each scope.
+		/// </summary>
+		/// <remarks>
+		/// In ASP.NET Core applications a scope is created around each server request.
+		/// </remarks>
+		Scoped,
+		/// <summary>
+		/// Specifies that a new instance of the service will be created every time it is requested.
+		/// </summary>
+		Transient
 	}
 }
