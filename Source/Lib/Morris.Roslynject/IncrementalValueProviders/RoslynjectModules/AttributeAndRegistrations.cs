@@ -58,7 +58,7 @@ internal sealed class AttributeAndRegistrations
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private static IEnumerable<INamedTypeSymbol> FilterInjectionCandidates(
+	private static IEnumerable<(INamedTypeSymbol serviceKeySymbol, INamedTypeSymbol serviceSymbol)> FilterInjectionCandidates(
 		DeclaredRoslynjectAttribute declaredRoslynjectAttribute,
 		IEnumerable<INamedTypeSymbol> injectionCandidates)
 	{
@@ -85,8 +85,13 @@ internal sealed class AttributeAndRegistrations
 			&& inheritanceMatches(x);
 
 		return declaredRoslynjectAttribute.Type.TypeKind switch {
-			TypeKind.Class => injectionCandidates.Where(typeIsMatch),
-			TypeKind.Interface => injectionCandidates.Where(x => x.Interfaces.Any(typeIsMatch)),
+			TypeKind.Class =>
+				injectionCandidates
+				.Where(typeIsMatch)
+				.Select(x => (x, x)),
+			TypeKind.Interface => injectionCandidates
+				.SelectMany(x => x.Interfaces, (serviceTypeSymbol, classTypeSymbol) => (classTypeSymbol, serviceTypeSymbol))
+				.Where(x => x.serviceTypeSymbol)
 			_ => throw new NotImplementedException(declaredRoslynjectAttribute.Type.TypeKind.ToString())
 		};
 	}
