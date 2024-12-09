@@ -130,22 +130,4 @@ namespace Morris.Roslynject
 		/// </summary>
 		DiscoveredInterfaces
 	}
-
-	/// <summary>
-	/// If not null, then only depdendency classes with a full name matching
-	/// this regular expression will be registered.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-	internal class RoslynjectModuleAttribute : Attribute
-	{
-		/// <summary>
-		/// If not null, then only depdendency classes with a full name matching
-		/// this regular expression will be registered against any of the
-		/// <see cref="RoslynjectAttribute"/> attributes found on the same target class.
-		/// </summary>
-#if NET9_0_OR_GREATER
-	[StringSyntax(StringSyntaxAttribute.Regex)]
-#endif
-		public string? ClassRegex { get; set; }
-	}
 }

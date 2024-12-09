@@ -32,7 +32,7 @@ internal static class SourceGeneratorExecutor
 			options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
 		);
 
-		var subject = new SourceGenerator().AsSourceGenerator();
+		var subject = new InjectionSourceGenerator().AsSourceGenerator();
 		var driver = CSharpGeneratorDriver
 			.Create(subject)
 			.RunGenerators(compilation);
