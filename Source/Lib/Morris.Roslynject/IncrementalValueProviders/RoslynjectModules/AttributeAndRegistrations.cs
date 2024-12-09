@@ -4,6 +4,7 @@ using Morris.Roslynject.IncrementalValueProviders.DeclaredRoslynjectModuleAttrib
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using Morris.Roslynject.Extensions;
 
 namespace Morris.Roslynject.IncrementalValueProviders.RoslynjectModules;
 
@@ -61,16 +62,32 @@ internal sealed class AttributeAndRegistrations
 		DeclaredRoslynjectAttribute declaredRoslynjectAttribute,
 		IEnumerable<INamedTypeSymbol> injectionCandidates)
 	{
-		Func<INamedTypeSymbol, bool> classMatches =
+		Func<INamedTypeSymbol, bool> classFullNameMatches =
 			declaredRoslynjectAttribute.ClassRegex is null
 			? _ => true
 			: x => Regex.IsMatch(x.ToDisplayString(), declaredRoslynjectAttribute.ClassRegex);
-		Func<INamedTypeSymbol, bool> keyMatches =
+
+		Func<INamedTypeSymbol, bool> keyFullNameMatches =
 			declaredRoslynjectAttribute.ServiceKeyRegex is null
 			? _ => true
 			: x => Regex.IsMatch(x.ToDisplayString(), declaredRoslynjectAttribute.ServiceKeyRegex);
-		Func<INamedTypeSymbol, bool> isMatch = x => classMatches(x) && keyMatches(x);
-		injectionCandidates = injectionCandidates.Where(isMatch);
-		return injectionCandidates;
+
+		Func<INamedTypeSymbol, bool> inheritanceMatches = declaredRoslynjectAttribute.Find switch {
+			Find.AnyTypeOf => x => SymbolEqualityComparer.Default.Equals(x, declaredRoslynjectAttribute.Type),
+			Find.DescendantsOf => x => x.DescendsFrom(declaredRoslynjectAttribute.Type),
+			Find.Exactly => x => x.IsTypeOf(declaredRoslynjectAttribute.Type),
+			_ => throw new NotImplementedException(declaredRoslynjectAttribute.Find.ToString())
+		};
+
+		Func<INamedTypeSymbol, bool> typeIsMatch = x =>
+			classFullNameMatches(x)
+			&& keyFullNameMatches(x)
+			&& inheritanceMatches(x);
+
+		return declaredRoslynjectAttribute.Type.TypeKind switch {
+			TypeKind.Class => injectionCandidates.Where(typeIsMatch),
+			TypeKind.Interface => injectionCandidates.Where(x => x.Interfaces.Any(typeIsMatch)),
+			_ => throw new NotImplementedException(declaredRoslynjectAttribute.Type.TypeKind.ToString())
+		};
 	}
 }
