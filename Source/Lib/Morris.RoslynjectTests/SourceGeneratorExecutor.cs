@@ -26,7 +26,7 @@ internal static class SourceGeneratorExecutor
 		var compilation = CSharpCompilation.Create(
 			assemblyName: "Test",
 			syntaxTrees: [staticResourcesSyntaxTree, unitTestSyntaxTree],
-			references: Basic.Reference.Assemblies.Net80.References
+			references: Basic.Reference.Assemblies.Net90.References
 				.All
 				.Union([MSDependencyInjectionMetadataReference]),
 			options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
