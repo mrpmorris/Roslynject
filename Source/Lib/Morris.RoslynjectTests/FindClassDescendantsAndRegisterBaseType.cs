@@ -14,10 +14,9 @@ public class FindClassDescendantsAndRegisterBaseType
 	{
 		string sourceCode =
 			$$"""
+			using Morris.Roslynject;
 			namespace Tests
 			{
-				using Morris.Roslynject;
-
 				public class BaseClass { }
 				public class Child1 : BaseClass { }
 				public class Child2 : BaseClass { }

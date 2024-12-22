@@ -1,4 +1,5 @@
-﻿#if NET9_0_OR_GREATER
+﻿#nullable enable
+#if NET9_0_OR_GREATER
 using System.Diagnostics.CodeAnalysis;
 #endif
 
@@ -131,3 +132,4 @@ namespace Morris.Roslynject
 		Transient
 	}
 }
+#nullable restore
