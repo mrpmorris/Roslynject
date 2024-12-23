@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Morris.Roslynject.Extensions;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 
 namespace Morris.Roslynject;

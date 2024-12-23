@@ -29,7 +29,7 @@ internal static class SourceGeneratorExecutor
 			references: Basic.Reference.Assemblies.Net90.References
 				.All
 				.Union([MSDependencyInjectionMetadataReference]),
-			options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
+			options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, reportSuppressedDiagnostics: true)
 		);
 
 		var subject = new InjectionSourceGenerator().AsSourceGenerator();

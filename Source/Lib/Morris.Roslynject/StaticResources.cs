@@ -3,6 +3,8 @@
 using System.Diagnostics.CodeAnalysis;
 #endif
 
+using System;
+
 namespace Morris.Roslynject
 {
 	/// <summary>

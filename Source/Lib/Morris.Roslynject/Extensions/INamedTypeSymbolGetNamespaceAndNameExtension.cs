@@ -1,5 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace Morris.Roslynject.Extensions;
 

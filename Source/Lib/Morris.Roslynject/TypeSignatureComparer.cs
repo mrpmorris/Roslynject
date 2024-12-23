@@ -1,5 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Morris.Roslynject.Extensions;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Morris.Roslynject;
 

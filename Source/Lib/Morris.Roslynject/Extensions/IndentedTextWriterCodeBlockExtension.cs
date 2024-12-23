@@ -1,4 +1,5 @@
-﻿using System.CodeDom.Compiler;
+﻿using System;
+using System.CodeDom.Compiler;
 using System.Runtime.CompilerServices;
 
 namespace Morris.Roslynject.Extensions;
