@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Morris.Roslynject;
+using System.Text.RegularExpressions;
 
 namespace Morris.RoslynjectTests;
 
@@ -75,5 +76,11 @@ internal static class SourceGeneratorExecutor
 		AssertGeneratedCodeMatches(sourceCode, expectedGeneratedCode);
 	}
 
-	private static string TidyCode(string value) => value.Replace("\r", "");
+	private static string TidyCode(string value) =>
+		Regex.Replace(
+			input: value.Replace("\r", ""),
+			pattern: "(?m)^\t+",
+			evaluator: x => new string(' ', x.Length * 4)
+		)
+		.Trim();
 }

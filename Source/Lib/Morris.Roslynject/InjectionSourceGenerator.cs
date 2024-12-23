@@ -53,7 +53,7 @@ public class InjectionSourceGenerator : IIncrementalGenerator
 			using var output = new StringWriter();
 			using var writer = new IndentedTextWriter(output);
 
-			writer.WriteLine($"// {DateTime.UtcNow}");
+			//writer.WriteLine($"// {DateTime.UtcNow}");
 			writer.WriteLine("using Microsoft.Extensions.DependencyInjection;");
 
 			foreach (var targetAndAttributes in targetsAndAttributes)
