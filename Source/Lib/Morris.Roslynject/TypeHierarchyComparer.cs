@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Morris.Roslynject;
 
-internal class TypeIdentityComparer : IEqualityComparer<INamedTypeSymbol>
+internal class TypeHierarchyComparer : IEqualityComparer<INamedTypeSymbol>
 {
 	public static readonly TypeHierarchyComparer Default = new();
 
@@ -11,7 +11,8 @@ internal class TypeIdentityComparer : IEqualityComparer<INamedTypeSymbol>
 		(x, y) switch {
 			(INamedTypeSymbol left, INamedTypeSymbol right) =>
 				left.Name == right.Name
-				&& left.ContainingNamespace.ToDisplayString() == right.ContainingNamespace.ToDisplayString(),
+				&& left.ContainingNamespace.ToDisplayString() == right.ContainingNamespace.ToDisplayString()
+				&& Equals(left.BaseType, right.BaseType),
 			(null, null) => true,
 			(INamedTypeSymbol left, null) => false,
 			(null, INamedTypeSymbol right) => false
@@ -22,6 +23,7 @@ internal class TypeIdentityComparer : IEqualityComparer<INamedTypeSymbol>
 		? 0
 		: HashCode.Combine(
 			obj.Name,
-			obj.ContainingNamespace.ToDisplayString()
+			obj.ContainingNamespace.ToDisplayString(),
+			GetHashCode(obj.BaseType)
 		  );
 }

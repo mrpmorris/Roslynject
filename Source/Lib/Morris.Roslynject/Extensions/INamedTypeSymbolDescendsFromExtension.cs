@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace Morris.Roslynject.Extensions;
 
-internal static partial class INamedTypeSymbolExtensions
+internal static partial class INamedTypeSymbolDescendsFromExtension
 {
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool DescendsFrom(this INamedTypeSymbol child, INamedTypeSymbol baseClass)
@@ -11,7 +11,7 @@ internal static partial class INamedTypeSymbolExtensions
 		INamedTypeSymbol? current = child.BaseType;
 		while (current is not null)
 		{
-			if (TypeIdentityComparer.Default.Equals(current.ConstructedFrom, baseClass.ConstructedFrom))
+			if (TypeHierarchyComparer.Default.Equals(current.ConstructedFrom, baseClass.ConstructedFrom))
 				return true;
 			current = current.BaseType;
 		}

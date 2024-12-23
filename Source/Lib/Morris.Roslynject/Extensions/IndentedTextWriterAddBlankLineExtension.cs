@@ -1,9 +1,11 @@
 ﻿using System.CodeDom.Compiler;
+using System.Runtime.CompilerServices;
 
 namespace Morris.Roslynject.Extensions;
 
-internal static partial class IndentedTextWriterExtensions
+internal static class IndentedTextWriterAddBlankLineExtension
 {
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static void AddBlankLine(this IndentedTextWriter writer)
 	{
 		int originalIndent = writer.Indent;

@@ -1,4 +1,6 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 
 namespace Morris.Roslynject.Extensions;
@@ -20,6 +22,24 @@ internal static class ImmutableArrayTGetContentsHashCodeExtension
 		{
 			for (int i = 0; i < source.Length; i++)
 				result = result * 31 + getHashCode(source[i]);
+		}
+		return result;
+	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static int GetContentsHashCode<T>(
+		this ImmutableArray<T> source,
+		IEqualityComparer<T> comparer)
+	{
+		if (source.IsDefaultOrEmpty)
+			return 0;
+
+		int result = 17;
+
+		unchecked
+		{
+			for (int i = 0; i < source.Length; i++)
+				result = result * 31 + comparer.GetHashCode(source[i]);
 		}
 		return result;
 	}

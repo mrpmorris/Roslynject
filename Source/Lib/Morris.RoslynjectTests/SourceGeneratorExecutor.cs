@@ -2,8 +2,10 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.DependencyInjection;
 using Morris.Roslynject;
+using System.Text.RegularExpressions;
 
 namespace Morris.RoslynjectTests;
+
 internal static class SourceGeneratorExecutor
 {
 
@@ -19,19 +21,19 @@ internal static class SourceGeneratorExecutor
 		string sourceCode,
 		string expectedGeneratedCode)
 	{
-		var unitTestSyntaxTree = CSharpSyntaxTree.ParseText(sourceCode);
 		var staticResourcesSyntaxTree = CSharpSyntaxTree.ParseText(StaticResourcesSourceGenerator.SourceCode.Value);
+		var unitTestSyntaxTree = CSharpSyntaxTree.ParseText(sourceCode);
 
 		var compilation = CSharpCompilation.Create(
 			assemblyName: "Test",
 			syntaxTrees: [staticResourcesSyntaxTree, unitTestSyntaxTree],
-			references: Basic.Reference.Assemblies.Net80.References
+			references: Basic.Reference.Assemblies.Net90.References
 				.All
 				.Union([MSDependencyInjectionMetadataReference]),
-			options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
+			options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, reportSuppressedDiagnostics: true)
 		);
 
-		var subject = new SourceGenerator().AsSourceGenerator();
+		var subject = new InjectionSourceGenerator().AsSourceGenerator();
 		var driver = CSharpGeneratorDriver
 			.Create(subject)
 			.RunGenerators(compilation);
@@ -74,5 +76,11 @@ internal static class SourceGeneratorExecutor
 		AssertGeneratedCodeMatches(sourceCode, expectedGeneratedCode);
 	}
 
-	private static string TidyCode(string value) => value.Replace("\r", "");
+	private static string TidyCode(string value) =>
+		Regex.Replace(
+			input: value.Replace("\r", ""),
+			pattern: "(?m)^\t+",
+			evaluator: x => new string(' ', x.Length * 4)
+		)
+		.Trim();
 }

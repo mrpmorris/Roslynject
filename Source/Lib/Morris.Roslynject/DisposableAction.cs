@@ -1,4 +1,6 @@
-﻿namespace Morris.Roslynject;
+﻿using System;
+
+namespace Morris.Roslynject;
 
 internal class DisposableAction : IDisposable
 {
