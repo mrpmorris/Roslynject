@@ -157,7 +157,7 @@ public class InjectionSourceGenerator : IIncrementalGenerator
 					candidate: candidate
 				);
 
-			foreach(var registration in registrationDetails)
+			foreach (var registration in registrationDetails)
 			{
 				codeWriter.WriteLine(
 					// Lifetime
@@ -187,21 +187,19 @@ public class InjectionSourceGenerator : IIncrementalGenerator
 			_ => throw new NotImplementedException(attributeDatum.Find.ToString())
 		};
 
-		Func<INamedTypeSymbol, INamedTypeSymbol> getServiceKey = attributeDatum.Register switch {
-			Register.BaseType => _ => attributeDatum.Type,
-			Register.DiscoveredInterfaces => _ => throw new NotImplementedException(),
-			Register.DiscoveredClasses => _ => candidate,
-			Register.BaseClosedGenericType => _ => candidate.GetBaseClosedGenericType(attributeDatum.Type)!,
+		Func<INamedTypeSymbol, IEnumerable<INamedTypeSymbol>> getServiceKeys = attributeDatum.Register switch {
+			Register.BaseType => _ => [attributeDatum.Type],
+			Register.DiscoveredInterfaces => _ => candidate.Interfaces,
+			Register.DiscoveredClasses => _ => [candidate],
+			Register.BaseClosedGenericType => _ => [candidate.GetBaseClosedGenericType(attributeDatum.Type)!],
 			_ => throw new NotImplementedException(attributeDatum.Register.ToString())
 		};
 
-		foreach(INamedTypeSymbol potentialKey in potentialKeys)
+		foreach (INamedTypeSymbol potentialKey in potentialKeys)
 		{
 			if (isMatch(potentialKey))
-			{
-				INamedTypeSymbol serviceKey = getServiceKey(potentialKey);
-				yield return new KeyValuePair<INamedTypeSymbol, INamedTypeSymbol>(serviceKey, candidate);
-			}
+				foreach (INamedTypeSymbol serviceKey in getServiceKeys(potentialKey))
+					yield return new KeyValuePair<INamedTypeSymbol, INamedTypeSymbol>(serviceKey, candidate);
 		}
 	}
 }
