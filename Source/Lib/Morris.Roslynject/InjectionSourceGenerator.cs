@@ -190,7 +190,7 @@ public class InjectionSourceGenerator : IIncrementalGenerator
 		Func<INamedTypeSymbol, INamedTypeSymbol> getServiceKey = attributeDatum.Register switch {
 			Register.BaseType => _ => attributeDatum.Type,
 			Register.DiscoveredInterfaces => _ => throw new NotImplementedException(),
-			Register.DiscoveredClasses => _ => throw new NotImplementedException(),
+			Register.DiscoveredClasses => _ => candidate,
 			Register.BaseClosedGenericType => _ => throw new NotImplementedException(),
 			_ => throw new NotImplementedException(attributeDatum.Register.ToString())
 		};
