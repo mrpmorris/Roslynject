@@ -12,6 +12,7 @@ internal static class ClassDeclarationSyntaxIsConcreteExtension
 		this ClassDeclarationSyntax source)
 	=>
 		!source.Modifiers.Any(SyntaxKind.AbstractKeyword)
-		&& !source.Modifiers.Any(SyntaxKind.StaticKeyword);
+		&& !source.Modifiers.Any(SyntaxKind.StaticKeyword)
+		&& !(source.TypeParameterList?.Parameters.Any() ?? false);
 }
 
