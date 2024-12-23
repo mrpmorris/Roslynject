@@ -191,7 +191,7 @@ public class InjectionSourceGenerator : IIncrementalGenerator
 			Register.BaseType => _ => attributeDatum.Type,
 			Register.DiscoveredInterfaces => _ => throw new NotImplementedException(),
 			Register.DiscoveredClasses => _ => candidate,
-			Register.BaseClosedGenericType => _ => throw new NotImplementedException(),
+			Register.BaseClosedGenericType => _ => candidate.GetBaseClosedGenericType(attributeDatum.Type)!,
 			_ => throw new NotImplementedException(attributeDatum.Register.ToString())
 		};
 
