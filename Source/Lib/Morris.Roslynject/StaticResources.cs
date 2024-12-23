@@ -15,15 +15,6 @@ namespace Morris.Roslynject
 	internal class RoslynjectAttribute : Attribute
 	{
 		/// <summary>
-		/// If not null, then only depdendency classes with a full name matching
-		/// this regular expression will be registered.
-		/// </summary>
-#if NET9_0_OR_GREATER
-	[StringSyntax(StringSyntaxAttribute.Regex)]
-#endif
-		public string? ClassRegex { get; set; }
-
-		/// <summary>
 		/// The criteria to use when scanning for candidates to register.
 		/// </summary>
 		public Find Find { get; set; }
@@ -42,6 +33,15 @@ namespace Morris.Roslynject
 	[StringSyntax(StringSyntaxAttribute.Regex)]
 #endif
 		public string? ServiceKeyRegex { get; set; }
+
+		/// <summary>
+		/// If not null, then only depdendency classes with a full name matching
+		/// this regular expression will be registered.
+		/// </summary>
+#if NET9_0_OR_GREATER
+	[StringSyntax(StringSyntaxAttribute.Regex)]
+#endif
+		public string? ServiceImplementationRegex { get; set; }
 
 		/// <summary>
 		/// The type to use when scanning for candidates to register.

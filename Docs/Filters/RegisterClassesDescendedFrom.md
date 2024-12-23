@@ -8,11 +8,11 @@ specified `BaseClass` and registers them.
 required Type BaseClass,
 required ServiceLifetime ServiceLifetime,
 required RegisterClassAs As,
-optional string? ClassRegex
+optional string? ServiceImplementationRegex
 ```
 
 **Note** : If not null, only classes with a fullname matching
-`ClassRegex` will be registered.
+`ServiceImplementationRegex` will be registered.
 
 ## Scenario 1: Register using the base class as the service key
 

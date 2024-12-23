@@ -11,7 +11,7 @@ internal class RoslynjectAttributeData : IEqualityComparer<RoslynjectAttributeDa
 	public readonly INamedTypeSymbol Type;
 	public readonly Register Register;
 	public readonly WithLifetime WithLifetime;
-	public readonly string? ClassRegex;
+	public readonly string? ServiceImplementationRegex;
 	public readonly string? ServiceKeyRegex;
 
 	public RoslynjectAttributeData(ImmutableDictionary<string, object?> dictionary)
@@ -20,7 +20,7 @@ internal class RoslynjectAttributeData : IEqualityComparer<RoslynjectAttributeDa
 		Type = dictionary.GetValue<INamedTypeSymbol>(nameof(RoslynjectAttribute.Type));
 		Register = dictionary.GetValue<Register>(nameof(RoslynjectAttribute.Register));
 		WithLifetime = dictionary.GetValue<WithLifetime>(nameof(RoslynjectAttribute.WithLifetime));
-		ClassRegex = dictionary.GetValueOrDefault<string?>(nameof(RoslynjectAttribute.ClassRegex));
+		ServiceImplementationRegex = dictionary.GetValueOrDefault<string?>(nameof(RoslynjectAttribute.ServiceImplementationRegex));
 		ServiceKeyRegex = dictionary.GetValueOrDefault<string?>(nameof(RoslynjectAttribute.ServiceKeyRegex));
 	}
 
@@ -28,10 +28,10 @@ internal class RoslynjectAttributeData : IEqualityComparer<RoslynjectAttributeDa
 		x.Find == y.Find
 		&& x.Register == y.Register
 		&& x.WithLifetime == y.WithLifetime
-		&& x.ClassRegex == y.ClassRegex
+		&& x.ServiceImplementationRegex == y.ServiceImplementationRegex
 		&& x.ServiceKeyRegex == y.ServiceKeyRegex
 		&& SymbolEqualityComparer.Default.Equals(x.Type, y.Type);
 
 	public int GetHashCode(RoslynjectAttributeData other) =>
-		HashCode.Combine(Find, Type, Register, WithLifetime, ClassRegex, ServiceKeyRegex);
+		HashCode.Combine(Find, Type, Register, WithLifetime, ServiceImplementationRegex, ServiceKeyRegex);
 }

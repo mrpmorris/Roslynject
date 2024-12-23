@@ -23,12 +23,12 @@ RegisterClassesDescendedFrom(
 	Type baseClass,
 	ServiceLifetime serviceLifetime,
 	RegisterClassAs registerClassAs,
-	string classRegex);
+	string ServiceImplementationRegex);
 
 RegisterClassesWithMarkerInterface(
 	Type baseInterface,
 	ServiceLifetime serviceLifetime,
-	string classRegex);
+	string ServiceImplementationRegex);
 
 
 RegisterInterfacesOfType(

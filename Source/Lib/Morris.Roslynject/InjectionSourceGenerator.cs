@@ -106,8 +106,8 @@ public class InjectionSourceGenerator : IIncrementalGenerator
 						+ $", Register {attributeDatum.Register}"
 						+ $", WithLifetime {attributeDatum.WithLifetime}"
 					);
-					if (attributeDatum.ClassRegex is not null)
-						writer.Write($", ClassRegex {attributeDatum.ClassRegex}");
+					if (attributeDatum.ServiceImplementationRegex is not null)
+						writer.Write($", ServiceImplementationRegex {attributeDatum.ServiceImplementationRegex}");
 					if (attributeDatum.ServiceKeyRegex is not null)
 						writer.Write($", ServiceKeyRegex {attributeDatum.ServiceKeyRegex}");
 					writer.AddBlankLine();

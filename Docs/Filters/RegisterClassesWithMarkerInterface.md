@@ -9,13 +9,13 @@ key.
 * Open-generic interfaces are not permitted.
 
 **Note** : If not null, only classes with a fullname matching
-`ClassRegex` will be registered.
+`ServiceImplementationRegex` will be registered.
 
 ## Signature
 ```c#
 required Type BaseInterface,
 required ServiceLifetime ServiceLifetime,
-optional string? ClassRegex
+optional string? ServiceImplementationRegex
 ```
 
 ## Scenario 1: Register all classes implementing IRepository
